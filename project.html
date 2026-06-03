@@ -1,0 +1,919 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Worked Example Project — Bank Management System (Java) · Computer Programming 2</title>
+  <meta name="description" content="A full worked-example Java project for Computer Programming 2 (CP2): a bank management system built with proper OOP — abstract classes, interfaces, inheritance, polymorphism, generics, the Collections framework, custom exceptions, file persistence and JUnit 5 tests. BCSAI, IE University." />
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    /* ===== project.html — page-specific layer, reuses tokens from styles.css ===== */
+    #proj-main { max-width: var(--max); margin: 0 auto; padding: 2.4rem 2rem 1rem; }
+    .proj-hero { background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 2rem 2.2rem; margin-bottom: 1.6rem; }
+    .proj-hero h1 { margin-top: 0; font-size: 2.3rem; }
+    .proj-hero .lede { color: var(--ink-2); font-size: 1.06rem; max-width: 72ch; }
+    .crumb { font-size: .82rem; color: var(--ink-2); margin-bottom: .8rem; }
+    .crumb a { color: var(--ink-2); }
+
+    /* meta grid (mirrors course.html) */
+    .meta-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: .8rem; margin: 1.4rem 0 .2rem; }
+    .meta-cell { background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: .7rem .9rem; }
+    .meta-cell .k { font-size: .7rem; text-transform: uppercase; letter-spacing: .07em; color: var(--ink-2); }
+    .meta-cell .v { font-weight: 600; margin-top: .1rem; }
+
+    /* on-page nav (mirrors course.html) */
+    #proj-nav { position: sticky; top: 0; z-index: 20; background: rgba(255,255,255,.95); backdrop-filter: blur(6px); border-bottom: 1px solid var(--line); }
+    #proj-nav .inner { max-width: var(--max); margin: 0 auto; display: flex; gap: 1.1rem; flex-wrap: wrap; align-items: center; padding: .7rem 2rem; }
+    #proj-nav a { color: var(--ink-2); font-size: .9rem; padding: .15rem 0; border-bottom: 2px solid transparent; }
+    #proj-nav a:hover { color: var(--ink); text-decoration: none; border-color: var(--accent); }
+    #proj-nav .brand { margin-right: auto; font-weight: 700; color: var(--ink); }
+
+    /* sections */
+    section.proj-section { background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 1.8rem 2.1rem; margin: 1.4rem 0; scroll-margin-top: 70px; }
+    section.proj-section > h2 { margin-top: .1em; }
+    .step-num { font-family: "JetBrains Mono", Consolas, monospace; font-size: .78rem; background: var(--ink); color: var(--accent-soft); padding: .15rem .55rem; border-radius: 6px; margin-right: .5rem; vertical-align: middle; }
+    .section-intro { color: var(--ink-2); max-width: 76ch; }
+
+    /* file label above a code block */
+    .filename { font-family: "JetBrains Mono", Consolas, monospace; font-size: .78rem; color: var(--ink-2); background: var(--bg); border: 1px solid var(--line); border-bottom: none; border-radius: 8px 8px 0 0; padding: .35rem .8rem; display: inline-block; margin: 1rem 0 0; }
+    .filename + pre { margin-top: 0; border-top-left-radius: 0; }
+
+    /* ascii diagram block stays light, monospace */
+    pre.diagram { background: var(--bg); color: var(--ink); border: 1px solid var(--line); font-size: .82rem; }
+
+    /* terminal / sample output */
+    pre.term { background: #14161c; }
+    pre.term .prompt { color: #6cd07e; }
+    pre.term .out { color: var(--code-ink); }
+
+    /* note / callout boxes reuse the lesson palette */
+    .note { background: var(--paper); border: 1px solid var(--line); border-left: 3px solid var(--accent); padding: .8rem 1.2rem; border-radius: 4px; margin: 1.2rem 0; }
+    .note.green { border-left-color: #4caf94; }
+    .note.red   { border-left-color: #d65a5a; }
+    .note h4 { margin: .1em 0 .4em; font-family: "Inter", sans-serif; font-size: .85rem; text-transform: uppercase; letter-spacing: .07em; color: var(--ink-2); }
+
+    /* outcome mapping table reuses .matrix from styles.css; add small helper */
+    .pill { display: inline-block; background: var(--accent-soft); color: var(--accent); font-size: .72rem; padding: .1rem .5rem; border-radius: 999px; font-weight: 600; margin: .1rem .15rem .1rem 0; }
+    .pill.s { background: #e7f1fb; color: #3c7bbf; }
+
+    .toc { columns: 2; column-gap: 2rem; font-size: .94rem; }
+    @media (max-width: 620px) { .toc { columns: 1; } }
+    .toc a { color: var(--ink-2); }
+    .toc a:hover { color: var(--accent); }
+
+    .crosslinks { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: .8rem; margin-top: 1rem; }
+    .xlink { background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: .7rem .9rem; }
+    .xlink .k { font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-2); }
+    .xlink a { display: block; margin-top: .15rem; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <!-- Site top bar (matches index.html / course.html) -->
+  <header id="topbar">
+    <a href="index.html" class="brand">
+      <span class="logo">{ }</span>
+      <span>Java Study</span>
+    </a>
+    <div class="search" style="flex:1;max-width:380px;margin-left:1rem;"></div>
+    <nav>
+      <a href="course.html">Course outline</a>
+      <a href="index.html">Lessons</a>
+      <a href="index.html#quiz">Quiz</a>
+      <a href="index.html#reference">Cheatsheet</a>
+      <a href="project.html" class="active">Example project</a>
+      <a href="SYLLABUS.pdf">Syllabus PDF</a>
+    </nav>
+  </header>
+
+  <!-- On-page section nav -->
+  <nav id="proj-nav">
+    <div class="inner">
+      <span class="brand">Worked Example Project</span>
+      <a href="#overview">Overview</a>
+      <a href="#design">OO design</a>
+      <a href="#build">Implementation</a>
+      <a href="#tests">Tests &amp; run</a>
+      <a href="#patterns">Patterns</a>
+      <a href="#outcomes">Outcomes</a>
+      <a href="#extensions">Extensions</a>
+      <a href="#references">References</a>
+    </div>
+  </nav>
+
+  <main id="proj-main">
+
+    <div class="crumb"><a href="index.html">Java Study</a> &rsaquo; <a href="course.html">Course structure</a> &rsaquo; Worked example project</div>
+
+    <!-- ====================  HERO  ==================== -->
+    <div class="proj-hero">
+      <span class="tag">Worked example · Java 17</span>
+      <h1>A Bank Management System in Java</h1>
+      <p class="lede">
+        One complete, end-to-end worked example that ties together everything Computer Programming 2
+        builds toward: an object-oriented domain model (an <em>abstract base class</em>, concrete
+        subclasses, and an interface), a <em>generic</em> repository over the
+        <em>Collections framework</em>, <em>custom checked exceptions</em>, simple <em>file
+        persistence</em>, and a suite of <em>JUnit 5</em> tests. The code below is real, compiles on a
+        standard JDK, and is broken into well-explained steps with a sample run at the end.
+      </p>
+
+      <div class="meta-grid">
+        <div class="meta-cell"><div class="k">Language</div><div class="v">Java 17 (LTS)</div></div>
+        <div class="meta-cell"><div class="k">Build</div><div class="v">Maven</div></div>
+        <div class="meta-cell"><div class="k">Tests</div><div class="v">JUnit 5</div></div>
+        <div class="meta-cell"><div class="k">Paradigm</div><div class="v">OOP + Generics</div></div>
+        <div class="meta-cell"><div class="k">Lines</div><div class="v">~450 (+tests)</div></div>
+        <div class="meta-cell"><div class="k">Sessions</div><div class="v">10–28</div></div>
+      </div>
+
+      <div class="note" style="margin-top:1.4rem">
+        <h4>On this page</h4>
+        <div class="toc">
+          <a href="#overview">1. Project overview &amp; goal</a><br/>
+          <a href="#design">2. Object-oriented design</a><br/>
+          <a href="#build">3. Step-by-step implementation</a><br/>
+          <a href="#tests">4. Unit tests &amp; a sample run</a><br/>
+          <a href="#patterns">5. UML &amp; design-pattern notes</a><br/>
+          <a href="#outcomes">6. Mapping to learning outcomes</a><br/>
+          <a href="#extensions">7. Extensions (JavaFX, streams, concurrency)</a><br/>
+          <a href="#references">8. References</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====================  1. OVERVIEW  ==================== -->
+    <section id="overview" class="proj-section">
+      <h2><span class="step-num">01</span>Project overview</h2>
+      <p class="section-intro">
+        We are building the back end of a small retail bank. A bank holds a set of <strong>accounts</strong>;
+        every account belongs to a <strong>customer</strong>, has a balance, and can be credited or
+        debited. Different <em>kinds</em> of account behave differently — a checking account allows an
+        overdraft up to a limit, a savings account refuses any debit that would go below zero but pays
+        monthly interest. We expose all of this through a <strong>generic repository</strong> and a thin
+        <strong>service</strong> layer, persist the data to a CSV file, and prove it works with JUnit.
+      </p>
+
+      <h3>What it exercises</h3>
+      <p>The project is deliberately chosen to touch the second half of the syllabus end-to-end:</p>
+      <table class="matrix">
+        <tr><th>Concept</th><th>Where it shows up in the project</th><th>Session</th></tr>
+        <tr><td>Encapsulation</td><td><code>Account</code> guards its <code>balance</code>; only methods mutate it</td><td>13</td></tr>
+        <tr><td>Inheritance &amp; <code>super</code></td><td><code>CheckingAccount</code>/<code>SavingsAccount</code> extend <code>Account</code></td><td>14</td></tr>
+        <tr><td>Polymorphism / dynamic binding</td><td><code>account.withdraw(..)</code> dispatches to the right subclass</td><td>15</td></tr>
+        <tr><td>Abstract classes &amp; interfaces</td><td><code>abstract Account</code> + <code>InterestBearing</code> interface</td><td>16</td></tr>
+        <tr><td>SOLID / design</td><td>repository depends on an interface, not a concrete map</td><td>17</td></tr>
+        <tr><td>Custom exceptions</td><td><code>InsufficientFundsException</code>, <code>AccountNotFoundException</code></td><td>21</td></tr>
+        <tr><td>Generics &amp; wildcards</td><td><code>Repository&lt;ID, T&gt;</code>, bounded type parameters</td><td>25</td></tr>
+        <tr><td>Collections (Map/List)</td><td><code>HashMap</code> store, <code>List</code> query results</td><td>26</td></tr>
+        <tr><td>File I/O</td><td>CSV load/save with <code>BufferedReader</code>/<code>BufferedWriter</code></td><td>14ch</td></tr>
+        <tr><td>JUnit testing</td><td><code>BankServiceTest</code> with assertions and exception tests</td><td>21</td></tr>
+        <tr><td>Design patterns</td><td>Repository, Factory, Strategy (interest)</td><td>28</td></tr>
+      </table>
+
+      <h3>Project layout (Maven)</h3>
+      <pre class="diagram"><code>bank-management/
+├── pom.xml
+└── src
+    ├── main/java/com/iebank
+    │   ├── App.java                     <span class="com"># console entry point / demo</span>
+    │   ├── model
+    │   │   ├── Account.java             <span class="com"># abstract base class</span>
+    │   │   ├── CheckingAccount.java     <span class="com"># subclass: overdraft</span>
+    │   │   ├── SavingsAccount.java      <span class="com"># subclass: interest</span>
+    │   │   ├── InterestBearing.java     <span class="com"># interface (Strategy seam)</span>
+    │   │   └── Customer.java            <span class="com"># immutable value object (record)</span>
+    │   ├── repo
+    │   │   ├── Repository.java          <span class="com"># generic interface</span>
+    │   │   └── InMemoryRepository.java  <span class="com"># Map-backed implementation</span>
+    │   ├── service
+    │   │   └── BankService.java         <span class="com"># business operations</span>
+    │   ├── persistence
+    │   │   └── CsvAccountStore.java     <span class="com"># file load/save</span>
+    │   └── exception
+    │       ├── InsufficientFundsException.java
+    │       └── AccountNotFoundException.java
+    └── test/java/com/iebank
+        └── service/BankServiceTest.java <span class="com"># JUnit 5</span></code></pre>
+
+      <div class="filename">pom.xml</div>
+      <pre><code><span class="annot">&lt;project</span> <span class="type">xmlns</span>=<span class="str">"http://maven.apache.org/POM/4.0.0"</span><span class="annot">&gt;</span>
+  <span class="annot">&lt;modelVersion&gt;</span>4.0.0<span class="annot">&lt;/modelVersion&gt;</span>
+  <span class="annot">&lt;groupId&gt;</span>com.iebank<span class="annot">&lt;/groupId&gt;</span>
+  <span class="annot">&lt;artifactId&gt;</span>bank-management<span class="annot">&lt;/artifactId&gt;</span>
+  <span class="annot">&lt;version&gt;</span>1.0.0<span class="annot">&lt;/version&gt;</span>
+  <span class="annot">&lt;properties&gt;</span>
+    <span class="annot">&lt;maven.compiler.release&gt;</span>17<span class="annot">&lt;/maven.compiler.release&gt;</span>
+    <span class="annot">&lt;project.build.sourceEncoding&gt;</span>UTF-8<span class="annot">&lt;/project.build.sourceEncoding&gt;</span>
+  <span class="annot">&lt;/properties&gt;</span>
+  <span class="annot">&lt;dependencies&gt;</span>
+    <span class="annot">&lt;dependency&gt;</span>
+      <span class="annot">&lt;groupId&gt;</span>org.junit.jupiter<span class="annot">&lt;/groupId&gt;</span>
+      <span class="annot">&lt;artifactId&gt;</span>junit-jupiter<span class="annot">&lt;/artifactId&gt;</span>
+      <span class="annot">&lt;version&gt;</span>5.10.2<span class="annot">&lt;/version&gt;</span>
+      <span class="annot">&lt;scope&gt;</span>test<span class="annot">&lt;/scope&gt;</span>
+    <span class="annot">&lt;/dependency&gt;</span>
+  <span class="annot">&lt;/dependencies&gt;</span>
+<span class="annot">&lt;/project&gt;</span></code></pre>
+      <p>Build &amp; test from the project root with <code>mvn test</code>; run the demo with
+        <code>mvn exec:java -Dexec.mainClass=com.iebank.App</code> (or package a jar — see
+        <a href="index.html#packaging">the packaging lesson</a>).</p>
+    </section>
+
+    <!-- ====================  2. DESIGN  ==================== -->
+    <section id="design" class="proj-section">
+      <h2><span class="step-num">02</span>Object-oriented design</h2>
+      <p class="section-intro">
+        The model has one <strong>abstract base class</strong>, <code>Account</code>, that owns the data
+        and behaviour common to every account (id, owner, balance, <code>deposit</code>). It declares one
+        <strong>abstract method</strong>, <code>withdraw</code>, because <em>how much</em> you may take out
+        is the one thing that differs by account type — that is the textbook trigger for polymorphism.
+        <code>SavingsAccount</code> additionally implements the <code>InterestBearing</code> interface.
+      </p>
+
+      <h3>Class relationships</h3>
+      <pre class="diagram"><code>            &lt;&lt;abstract&gt;&gt;                       &lt;&lt;interface&gt;&gt;
+            ┌───────────────────┐               ┌────────────────────┐
+            │     Account       │               │  InterestBearing   │
+            ├───────────────────┤               ├────────────────────┤
+            │ -id: String       │               │ +applyInterest()   │
+            │ -owner: Customer  │               │ +annualRate(): double
+            │ #balance: BigDec  │               └────────▲───────────┘
+            ├───────────────────┤                        │ implements
+            │ +deposit(amt)     │                        │
+            │ +withdraw(amt)*   │  * abstract            │
+            │ +getBalance()     │                        │
+            └────────▲──────────┘                        │
+                     │ extends                           │
+        ┌────────────┴───────────┐            ┌──────────┴──────────┐
+        │   CheckingAccount      │            │   SavingsAccount    │
+        ├────────────────────────┤            ├─────────────────────┤
+        │ -overdraftLimit        │            │ -rate: double       │
+        │ +withdraw(amt) override │            │ +withdraw(amt) over.│
+        └────────────────────────┘            │ +applyInterest()    │
+                                              └─────────────────────┘
+
+   Repository&lt;ID, T extends Account&gt;  ◄── InMemoryRepository (HashMap-backed)
+                  ▲
+                  │ used by
+            BankService  ──uses──►  CsvAccountStore (file persistence)</code></pre>
+
+      <div class="note green">
+        <h4>Design decision — why <code>withdraw</code> is abstract</h4>
+        <p><code>deposit</code> is identical for every account, so it lives in the base class. But the rule
+        for taking money out is exactly what distinguishes the subtypes, so <code>Account</code> declares it
+        <code>abstract</code> and forces each subclass to supply its own. Callers hold an
+        <code>Account</code> reference and never need to know which concrete type they have — dynamic binding
+        picks the right rule at runtime. See <a href="index.html#polymorphism">the polymorphism lesson</a>.</p>
+      </div>
+
+      <div class="note">
+        <h4>Why a generic <code>Repository&lt;ID, T&gt;</code></h4>
+        <p>The repository does not care that it stores accounts — it stores "things with an id". Making it
+        generic (<code>T extends Account</code> is a <em>bounded type parameter</em>) means we could reuse the
+        exact same class for a <code>Customer</code> store tomorrow with zero changes. <code>BankService</code>
+        depends on the <code>Repository</code> <em>interface</em>, not the concrete map — the Dependency
+        Inversion principle from <a href="course.html#program">session 17</a>.</p>
+      </div>
+    </section>
+
+    <!-- ====================  3. IMPLEMENTATION  ==================== -->
+    <section id="build" class="proj-section">
+      <h2><span class="step-num">03</span>Step-by-step implementation</h2>
+      <p class="section-intro">Each step adds one file. Read top to bottom — later files depend on earlier ones.</p>
+
+      <h3>Step 3.1 — The customer value object</h3>
+      <p>A <code>Customer</code> never changes after creation, so we model it as an immutable Java
+        <code>record</code> (a concise, final, value-based class — see
+        <a href="index.html#encapsulation">encapsulation</a>). The compact constructor validates input.</p>
+      <div class="filename">model/Customer.java</div>
+      <pre><code><span class="kw">package</span> com.iebank.model;
+
+<span class="com">/** Immutable customer. A record gives us equals/hashCode/toString for free. */</span>
+<span class="kw">public record</span> <span class="type">Customer</span>(<span class="type">String</span> id, <span class="type">String</span> name, <span class="type">String</span> email) {
+    <span class="kw">public</span> <span class="type">Customer</span> {                       <span class="com">// compact canonical constructor</span>
+        <span class="kw">if</span> (id == <span class="kw">null</span> || id.isBlank())
+            <span class="kw">throw new</span> <span class="type">IllegalArgumentException</span>(<span class="str">"customer id required"</span>);
+        <span class="kw">if</span> (name == <span class="kw">null</span> || name.isBlank())
+            <span class="kw">throw new</span> <span class="type">IllegalArgumentException</span>(<span class="str">"customer name required"</span>);
+    }
+}</code></pre>
+
+      <h3>Step 3.2 — Custom exceptions</h3>
+      <p>We define two <em>checked</em> exceptions so the compiler forces callers to deal with the
+        failure modes that are part of normal banking flow. They carry useful context, not just a string.
+        Background: <a href="index.html#exceptions">the exception-handling lesson</a>.</p>
+      <div class="filename">exception/AccountNotFoundException.java</div>
+      <pre><code><span class="kw">package</span> com.iebank.exception;
+
+<span class="com">/** Thrown when an account id is not present in the repository. */</span>
+<span class="kw">public class</span> <span class="type">AccountNotFoundException</span> <span class="kw">extends</span> <span class="type">Exception</span> {
+    <span class="kw">private final</span> <span class="type">String</span> accountId;
+
+    <span class="kw">public</span> <span class="type">AccountNotFoundException</span>(<span class="type">String</span> accountId) {
+        <span class="kw">super</span>(<span class="str">"No account with id: "</span> + accountId);
+        <span class="kw">this</span>.accountId = accountId;
+    }
+    <span class="kw">public</span> <span class="type">String</span> getAccountId() { <span class="kw">return</span> accountId; }
+}</code></pre>
+      <div class="filename">exception/InsufficientFundsException.java</div>
+      <pre><code><span class="kw">package</span> com.iebank.exception;
+
+<span class="kw">import</span> java.math.BigDecimal;
+
+<span class="com">/** Thrown when a debit would breach the account's allowed minimum. */</span>
+<span class="kw">public class</span> <span class="type">InsufficientFundsException</span> <span class="kw">extends</span> <span class="type">Exception</span> {
+    <span class="kw">public</span> <span class="type">InsufficientFundsException</span>(<span class="type">String</span> id, <span class="type">BigDecimal</span> balance, <span class="type">BigDecimal</span> requested) {
+        <span class="kw">super</span>(<span class="type">String</span>.format(
+            <span class="str">"Account %s: balance %.2f cannot cover withdrawal of %.2f"</span>,
+            id, balance, requested));
+    }
+}</code></pre>
+
+      <h3>Step 3.3 — The abstract base class</h3>
+      <p>This is the heart of the model. Note: <code>balance</code> is <code>protected</code> so subclasses
+        can read it, but it is mutated only through methods (encapsulation). We use
+        <code>BigDecimal</code>, never <code>double</code>, for money — floating point cannot represent
+        cents exactly. <code>withdraw</code> is <code>abstract</code>; <code>equals</code>/<code>hashCode</code>
+        are overridden on identity (<a href="index.html#inheritance">Object methods</a>).</p>
+      <div class="filename">model/Account.java</div>
+      <pre><code><span class="kw">package</span> com.iebank.model;
+
+<span class="kw">import</span> com.iebank.exception.InsufficientFundsException;
+<span class="kw">import</span> java.math.BigDecimal;
+<span class="kw">import</span> java.util.Objects;
+
+<span class="kw">public abstract class</span> <span class="type">Account</span> {
+    <span class="kw">private final</span> <span class="type">String</span> id;
+    <span class="kw">private final</span> <span class="type">Customer</span> owner;
+    <span class="kw">protected</span> <span class="type">BigDecimal</span> balance;       <span class="com">// visible to subclasses</span>
+
+    <span class="kw">protected</span> <span class="type">Account</span>(<span class="type">String</span> id, <span class="type">Customer</span> owner, <span class="type">BigDecimal</span> opening) {
+        <span class="kw">this</span>.id = <span class="type">Objects</span>.requireNonNull(id, <span class="str">"id"</span>);
+        <span class="kw">this</span>.owner = <span class="type">Objects</span>.requireNonNull(owner, <span class="str">"owner"</span>);
+        <span class="kw">this</span>.balance = opening == <span class="kw">null</span> ? <span class="type">BigDecimal</span>.ZERO : opening;
+    }
+
+    <span class="com">/** Common to every account — so it is concrete here. */</span>
+    <span class="kw">public void</span> deposit(<span class="type">BigDecimal</span> amount) {
+        requirePositive(amount);
+        balance = balance.add(amount);
+    }
+
+    <span class="com">/** Differs per account type — each subclass MUST implement it. */</span>
+    <span class="kw">public abstract void</span> withdraw(<span class="type">BigDecimal</span> amount) <span class="kw">throws</span> <span class="type">InsufficientFundsException</span>;
+
+    <span class="kw">protected static void</span> requirePositive(<span class="type">BigDecimal</span> amount) {
+        <span class="kw">if</span> (amount == <span class="kw">null</span> || amount.signum() &lt;= <span class="num">0</span>)
+            <span class="kw">throw new</span> <span class="type">IllegalArgumentException</span>(<span class="str">"amount must be positive"</span>);
+    }
+
+    <span class="kw">public</span> <span class="type">String</span> getId()        { <span class="kw">return</span> id; }
+    <span class="kw">public</span> <span class="type">Customer</span> getOwner()   { <span class="kw">return</span> owner; }
+    <span class="kw">public</span> <span class="type">BigDecimal</span> getBalance() { <span class="kw">return</span> balance; }
+
+    <span class="com">/** The "type tag" used by the CSV store; each subclass returns its own. */</span>
+    <span class="kw">public abstract</span> <span class="type">String</span> type();
+
+    <span class="annot">@Override</span> <span class="kw">public boolean</span> equals(<span class="type">Object</span> o) {
+        <span class="kw">return</span> o <span class="kw">instanceof</span> <span class="type">Account</span> a &amp;&amp; id.equals(a.id);   <span class="com">// identity by id</span>
+    }
+    <span class="annot">@Override</span> <span class="kw">public int</span> hashCode()      { <span class="kw">return</span> id.hashCode(); }
+    <span class="annot">@Override</span> <span class="kw">public</span> <span class="type">String</span> toString() {
+        <span class="kw">return</span> <span class="type">String</span>.format(<span class="str">"%s[%s, %s, %.2f]"</span>, type(), id, owner.name(), balance);
+    }
+}</code></pre>
+
+      <h3>Step 3.4 — The interface (a Strategy seam)</h3>
+      <p>Not every account earns interest, so interest lives in an <strong>interface</strong> rather than the
+        base class. Only types that opt in implement it. The default method shows interface evolution
+        (<a href="index.html#interfaces">interfaces vs abstract classes</a>).</p>
+      <div class="filename">model/InterestBearing.java</div>
+      <pre><code><span class="kw">package</span> com.iebank.model;
+
+<span class="kw">import</span> java.math.BigDecimal;
+
+<span class="kw">public interface</span> <span class="type">InterestBearing</span> {
+    <span class="type">BigDecimal</span> annualRate();          <span class="com">// e.g. 0.02 for 2%</span>
+    <span class="kw">void</span> applyInterest();              <span class="com">// mutate balance by one month's interest</span>
+
+    <span class="com">/** Default helper available to all implementors. */</span>
+    <span class="kw">default</span> <span class="type">BigDecimal</span> monthlyRate() {
+        <span class="kw">return</span> annualRate().divide(<span class="kw">new</span> <span class="type">BigDecimal</span>(<span class="str">"12"</span>), <span class="num">10</span>, java.math.RoundingMode.HALF_UP);
+    }
+}</code></pre>
+
+      <h3>Step 3.5 — The subclasses (inheritance + polymorphism)</h3>
+      <p>Each subclass calls <code>super(...)</code> for the shared state (constructor chaining) and overrides
+        <code>withdraw</code> with its own rule. <code>SavingsAccount</code> also fulfils the interface.</p>
+      <div class="filename">model/CheckingAccount.java</div>
+      <pre><code><span class="kw">package</span> com.iebank.model;
+
+<span class="kw">import</span> com.iebank.exception.InsufficientFundsException;
+<span class="kw">import</span> java.math.BigDecimal;
+
+<span class="com">/** Allows the balance to go negative, down to -overdraftLimit. */</span>
+<span class="kw">public class</span> <span class="type">CheckingAccount</span> <span class="kw">extends</span> <span class="type">Account</span> {
+    <span class="kw">private final</span> <span class="type">BigDecimal</span> overdraftLimit;
+
+    <span class="kw">public</span> <span class="type">CheckingAccount</span>(<span class="type">String</span> id, <span class="type">Customer</span> owner,
+                           <span class="type">BigDecimal</span> opening, <span class="type">BigDecimal</span> overdraftLimit) {
+        <span class="kw">super</span>(id, owner, opening);            <span class="com">// constructor chaining</span>
+        <span class="kw">this</span>.overdraftLimit = overdraftLimit;
+    }
+
+    <span class="annot">@Override</span> <span class="kw">public void</span> withdraw(<span class="type">BigDecimal</span> amount) <span class="kw">throws</span> <span class="type">InsufficientFundsException</span> {
+        requirePositive(amount);
+        <span class="type">BigDecimal</span> after = balance.subtract(amount);
+        <span class="kw">if</span> (after.compareTo(overdraftLimit.negate()) &lt; <span class="num">0</span>)
+            <span class="kw">throw new</span> <span class="type">InsufficientFundsException</span>(getId(), balance, amount);
+        balance = after;
+    }
+
+    <span class="annot">@Override</span> <span class="kw">public</span> <span class="type">String</span> type() { <span class="kw">return</span> <span class="str">"CHECKING"</span>; }
+}</code></pre>
+      <div class="filename">model/SavingsAccount.java</div>
+      <pre><code><span class="kw">package</span> com.iebank.model;
+
+<span class="kw">import</span> com.iebank.exception.InsufficientFundsException;
+<span class="kw">import</span> java.math.BigDecimal;
+<span class="kw">import</span> java.math.RoundingMode;
+
+<span class="com">/** Never goes below zero; pays monthly interest. */</span>
+<span class="kw">public class</span> <span class="type">SavingsAccount</span> <span class="kw">extends</span> <span class="type">Account</span> <span class="kw">implements</span> <span class="type">InterestBearing</span> {
+    <span class="kw">private final</span> <span class="type">BigDecimal</span> rate;       <span class="com">// annual, e.g. 0.02</span>
+
+    <span class="kw">public</span> <span class="type">SavingsAccount</span>(<span class="type">String</span> id, <span class="type">Customer</span> owner,
+                          <span class="type">BigDecimal</span> opening, <span class="type">BigDecimal</span> rate) {
+        <span class="kw">super</span>(id, owner, opening);
+        <span class="kw">this</span>.rate = rate;
+    }
+
+    <span class="annot">@Override</span> <span class="kw">public void</span> withdraw(<span class="type">BigDecimal</span> amount) <span class="kw">throws</span> <span class="type">InsufficientFundsException</span> {
+        requirePositive(amount);
+        <span class="kw">if</span> (balance.compareTo(amount) &lt; <span class="num">0</span>)              <span class="com">// strictly no overdraft</span>
+            <span class="kw">throw new</span> <span class="type">InsufficientFundsException</span>(getId(), balance, amount);
+        balance = balance.subtract(amount);
+    }
+
+    <span class="annot">@Override</span> <span class="kw">public</span> <span class="type">BigDecimal</span> annualRate() { <span class="kw">return</span> rate; }
+
+    <span class="annot">@Override</span> <span class="kw">public void</span> applyInterest() {
+        <span class="type">BigDecimal</span> interest = balance.multiply(monthlyRate())
+                                  .setScale(<span class="num">2</span>, <span class="type">RoundingMode</span>.HALF_UP);
+        balance = balance.add(interest);
+    }
+
+    <span class="annot">@Override</span> <span class="kw">public</span> <span class="type">String</span> type() { <span class="kw">return</span> <span class="str">"SAVINGS"</span>; }
+}</code></pre>
+
+      <h3>Step 3.6 — The generic repository</h3>
+      <p>A small interface and a <code>HashMap</code>-backed implementation. The type parameters are
+        <code>ID</code> (the key type) and <code>T extends Account</code> (a <em>bounded</em> value type).
+        <code>findBy</code> takes a <code>Predicate&lt;? super T&gt;</code> — a <em>lower-bounded wildcard</em>
+        so a predicate written against <code>Account</code> works for any subtype.
+        See <a href="index.html#generics">generics</a> and <a href="index.html#collections">collections</a>.</p>
+      <div class="filename">repo/Repository.java</div>
+      <pre><code><span class="kw">package</span> com.iebank.repo;
+
+<span class="kw">import</span> java.util.List;
+<span class="kw">import</span> java.util.Optional;
+<span class="kw">import</span> java.util.function.Predicate;
+
+<span class="com">/** A generic store of entities keyed by ID. */</span>
+<span class="kw">public interface</span> <span class="type">Repository</span>&lt;<span class="type">ID</span>, <span class="type">T</span>&gt; {
+    <span class="kw">void</span> save(<span class="type">ID</span> id, <span class="type">T</span> entity);
+    <span class="type">Optional</span>&lt;<span class="type">T</span>&gt; findById(<span class="type">ID</span> id);
+    <span class="type">List</span>&lt;<span class="type">T</span>&gt; findAll();
+    <span class="type">List</span>&lt;<span class="type">T</span>&gt; findBy(<span class="type">Predicate</span>&lt;? <span class="kw">super</span> <span class="type">T</span>&gt; filter);
+    <span class="kw">boolean</span> deleteById(<span class="type">ID</span> id);
+    <span class="kw">int</span> size();
+}</code></pre>
+      <div class="filename">repo/InMemoryRepository.java</div>
+      <pre><code><span class="kw">package</span> com.iebank.repo;
+
+<span class="kw">import</span> java.util.*;
+<span class="kw">import</span> java.util.function.Predicate;
+
+<span class="com">/** Map-backed implementation. T is bounded to keep the store type-safe. */</span>
+<span class="kw">public class</span> <span class="type">InMemoryRepository</span>&lt;<span class="type">ID</span>, <span class="type">T</span>&gt; <span class="kw">implements</span> <span class="type">Repository</span>&lt;<span class="type">ID</span>, <span class="type">T</span>&gt; {
+    <span class="kw">private final</span> <span class="type">Map</span>&lt;<span class="type">ID</span>, <span class="type">T</span>&gt; store = <span class="kw">new</span> <span class="type">HashMap</span>&lt;&gt;();
+
+    <span class="annot">@Override</span> <span class="kw">public void</span> save(<span class="type">ID</span> id, <span class="type">T</span> entity) { store.put(id, entity); }
+
+    <span class="annot">@Override</span> <span class="kw">public</span> <span class="type">Optional</span>&lt;<span class="type">T</span>&gt; findById(<span class="type">ID</span> id) {
+        <span class="kw">return</span> <span class="type">Optional</span>.ofNullable(store.get(id));
+    }
+
+    <span class="annot">@Override</span> <span class="kw">public</span> <span class="type">List</span>&lt;<span class="type">T</span>&gt; findAll() {
+        <span class="kw">return</span> <span class="kw">new</span> <span class="type">ArrayList</span>&lt;&gt;(store.values());
+    }
+
+    <span class="annot">@Override</span> <span class="kw">public</span> <span class="type">List</span>&lt;<span class="type">T</span>&gt; findBy(<span class="type">Predicate</span>&lt;? <span class="kw">super</span> <span class="type">T</span>&gt; filter) {
+        <span class="type">List</span>&lt;<span class="type">T</span>&gt; out = <span class="kw">new</span> <span class="type">ArrayList</span>&lt;&gt;();
+        <span class="kw">for</span> (<span class="type">T</span> t : store.values())
+            <span class="kw">if</span> (filter.test(t)) out.add(t);
+        <span class="kw">return</span> out;
+    }
+
+    <span class="annot">@Override</span> <span class="kw">public boolean</span> deleteById(<span class="type">ID</span> id) { <span class="kw">return</span> store.remove(id) != <span class="kw">null</span>; }
+    <span class="annot">@Override</span> <span class="kw">public int</span> size() { <span class="kw">return</span> store.size(); }
+}</code></pre>
+
+      <h3>Step 3.7 — The service layer</h3>
+      <p>The service holds the bank's operations and is the only thing the UI/console talks to. It depends on
+        the <code>Repository</code> <em>abstraction</em> and translates "no such account" into our custom
+        exception. <code>transfer</code> shows two operations composed atomically-ish (no real tx here — see
+        Extensions).</p>
+      <div class="filename">service/BankService.java</div>
+      <pre><code><span class="kw">package</span> com.iebank.service;
+
+<span class="kw">import</span> com.iebank.exception.*;
+<span class="kw">import</span> com.iebank.model.*;
+<span class="kw">import</span> com.iebank.repo.Repository;
+
+<span class="kw">import</span> java.math.BigDecimal;
+<span class="kw">import</span> java.util.List;
+
+<span class="kw">public class</span> <span class="type">BankService</span> {
+    <span class="kw">private final</span> <span class="type">Repository</span>&lt;<span class="type">String</span>, <span class="type">Account</span>&gt; accounts;
+
+    <span class="kw">public</span> <span class="type">BankService</span>(<span class="type">Repository</span>&lt;<span class="type">String</span>, <span class="type">Account</span>&gt; accounts) {
+        <span class="kw">this</span>.accounts = accounts;          <span class="com">// injected dependency (DIP)</span>
+    }
+
+    <span class="kw">public void</span> open(<span class="type">Account</span> account) { accounts.save(account.getId(), account); }
+
+    <span class="kw">public</span> <span class="type">Account</span> get(<span class="type">String</span> id) <span class="kw">throws</span> <span class="type">AccountNotFoundException</span> {
+        <span class="kw">return</span> accounts.findById(id)
+                       .orElseThrow(() -&gt; <span class="kw">new</span> <span class="type">AccountNotFoundException</span>(id));
+    }
+
+    <span class="kw">public void</span> deposit(<span class="type">String</span> id, <span class="type">BigDecimal</span> amt) <span class="kw">throws</span> <span class="type">AccountNotFoundException</span> {
+        get(id).deposit(amt);
+    }
+
+    <span class="kw">public void</span> withdraw(<span class="type">String</span> id, <span class="type">BigDecimal</span> amt)
+            <span class="kw">throws</span> <span class="type">AccountNotFoundException</span>, <span class="type">InsufficientFundsException</span> {
+        get(id).withdraw(amt);            <span class="com">// polymorphic dispatch</span>
+    }
+
+    <span class="kw">public void</span> transfer(<span class="type">String</span> from, <span class="type">String</span> to, <span class="type">BigDecimal</span> amt)
+            <span class="kw">throws</span> <span class="type">AccountNotFoundException</span>, <span class="type">InsufficientFundsException</span> {
+        <span class="type">Account</span> src = get(from), dst = get(to);
+        src.withdraw(amt);                <span class="com">// may throw -> nothing moved</span>
+        dst.deposit(amt);
+    }
+
+    <span class="com">/** Total deposits the bank is holding. */</span>
+    <span class="kw">public</span> <span class="type">BigDecimal</span> totalAssets() {
+        <span class="kw">return</span> accounts.findAll().stream()
+                       .map(<span class="type">Account</span>::getBalance)
+                       .reduce(<span class="type">BigDecimal</span>.ZERO, <span class="type">BigDecimal</span>::add);
+    }
+
+    <span class="com">/** Run the monthly interest cycle on every interest-bearing account. */</span>
+    <span class="kw">public void</span> runInterestCycle() {
+        <span class="kw">for</span> (<span class="type">Account</span> a : accounts.findAll())
+            <span class="kw">if</span> (a <span class="kw">instanceof</span> <span class="type">InterestBearing</span> ib) ib.applyInterest();
+    }
+
+    <span class="kw">public</span> <span class="type">List</span>&lt;<span class="type">Account</span>&gt; accountsOf(<span class="type">String</span> customerId) {
+        <span class="kw">return</span> accounts.findBy(a -&gt; a.getOwner().id().equals(customerId));
+    }
+}</code></pre>
+
+      <h3>Step 3.8 — File persistence (CSV)</h3>
+      <p>A tiny store that reads/writes accounts as CSV using <code>BufferedReader</code> /
+        <code>BufferedWriter</code> in try-with-resources (auto-close). On load it rebuilds the right concrete
+        subclass from the <code>type</code> column — a hand-rolled <strong>factory</strong>. Background:
+        <a href="index.html#text-io">file I/O</a>.</p>
+      <div class="filename">persistence/CsvAccountStore.java</div>
+      <pre><code><span class="kw">package</span> com.iebank.persistence;
+
+<span class="kw">import</span> com.iebank.model.*;
+<span class="kw">import</span> java.io.*;
+<span class="kw">import</span> java.math.BigDecimal;
+<span class="kw">import</span> java.nio.file.*;
+<span class="kw">import</span> java.util.*;
+
+<span class="com">/** CSV columns: type,id,customerId,customerName,balance,param
+ *  param = overdraftLimit (CHECKING) or annual rate (SAVINGS). */</span>
+<span class="kw">public class</span> <span class="type">CsvAccountStore</span> {
+    <span class="kw">private final</span> <span class="type">Path</span> file;
+    <span class="kw">public</span> <span class="type">CsvAccountStore</span>(<span class="type">Path</span> file) { <span class="kw">this</span>.file = file; }
+
+    <span class="kw">public void</span> save(<span class="type">List</span>&lt;<span class="type">Account</span>&gt; accounts) <span class="kw">throws</span> <span class="type">IOException</span> {
+        <span class="kw">try</span> (<span class="type">BufferedWriter</span> w = <span class="type">Files</span>.newBufferedWriter(file)) {
+            <span class="kw">for</span> (<span class="type">Account</span> a : accounts) {
+                <span class="type">String</span> param = a <span class="kw">instanceof</span> <span class="type">SavingsAccount</span> s
+                        ? s.annualRate().toPlainString()
+                        : <span class="str">"500.00"</span>;   <span class="com">// demo overdraft; real code would store it</span>
+                w.write(<span class="type">String</span>.join(<span class="str">","</span>,
+                        a.type(), a.getId(), a.getOwner().id(),
+                        a.getOwner().name(),
+                        a.getBalance().toPlainString(), param));
+                w.newLine();
+            }
+        }
+    }
+
+    <span class="kw">public</span> <span class="type">List</span>&lt;<span class="type">Account</span>&gt; load() <span class="kw">throws</span> <span class="type">IOException</span> {
+        <span class="type">List</span>&lt;<span class="type">Account</span>&gt; out = <span class="kw">new</span> <span class="type">ArrayList</span>&lt;&gt;();
+        <span class="kw">if</span> (!<span class="type">Files</span>.exists(file)) <span class="kw">return</span> out;
+        <span class="kw">try</span> (<span class="type">BufferedReader</span> r = <span class="type">Files</span>.newBufferedReader(file)) {
+            <span class="type">String</span> line;
+            <span class="kw">while</span> ((line = r.readLine()) != <span class="kw">null</span>) {
+                <span class="kw">if</span> (line.isBlank()) <span class="kw">continue</span>;
+                out.add(parse(line.split(<span class="str">","</span>)));
+            }
+        }
+        <span class="kw">return</span> out;
+    }
+
+    <span class="com">/** Factory: choose the concrete subclass from the type tag. */</span>
+    <span class="kw">private</span> <span class="type">Account</span> parse(<span class="type">String</span>[] c) {
+        <span class="type">Customer</span> owner = <span class="kw">new</span> <span class="type">Customer</span>(c[<span class="num">2</span>], c[<span class="num">3</span>], c[<span class="num">2</span>] + <span class="str">"@bank.test"</span>);
+        <span class="type">BigDecimal</span> bal = <span class="kw">new</span> <span class="type">BigDecimal</span>(c[<span class="num">4</span>]);
+        <span class="kw">return switch</span> (c[<span class="num">0</span>]) {
+            <span class="kw">case</span> <span class="str">"SAVINGS"</span>  -&gt; <span class="kw">new</span> <span class="type">SavingsAccount</span>(c[<span class="num">1</span>], owner, bal, <span class="kw">new</span> <span class="type">BigDecimal</span>(c[<span class="num">5</span>]));
+            <span class="kw">case</span> <span class="str">"CHECKING"</span> -&gt; <span class="kw">new</span> <span class="type">CheckingAccount</span>(c[<span class="num">1</span>], owner, bal, <span class="kw">new</span> <span class="type">BigDecimal</span>(c[<span class="num">5</span>]));
+            <span class="kw">default</span> -&gt; <span class="kw">throw new</span> <span class="type">IllegalStateException</span>(<span class="str">"unknown type "</span> + c[<span class="num">0</span>]);
+        };
+    }
+}</code></pre>
+
+      <h3>Step 3.9 — The console demo (entry point)</h3>
+      <div class="filename">App.java</div>
+      <pre><code><span class="kw">package</span> com.iebank;
+
+<span class="kw">import</span> com.iebank.exception.*;
+<span class="kw">import</span> com.iebank.model.*;
+<span class="kw">import</span> com.iebank.repo.*;
+<span class="kw">import</span> com.iebank.service.BankService;
+<span class="kw">import</span> java.math.BigDecimal;
+
+<span class="kw">public class</span> <span class="type">App</span> {
+    <span class="kw">public static void</span> main(<span class="type">String</span>[] args) <span class="kw">throws</span> <span class="type">Exception</span> {
+        <span class="type">Repository</span>&lt;<span class="type">String</span>, <span class="type">Account</span>&gt; repo = <span class="kw">new</span> <span class="type">InMemoryRepository</span>&lt;&gt;();
+        <span class="type">BankService</span> bank = <span class="kw">new</span> <span class="type">BankService</span>(repo);
+
+        <span class="type">Customer</span> ana = <span class="kw">new</span> <span class="type">Customer</span>(<span class="str">"C1"</span>, <span class="str">"Ana Montana"</span>, <span class="str">"ana@bank.test"</span>);
+        bank.open(<span class="kw">new</span> <span class="type">CheckingAccount</span>(<span class="str">"A1"</span>, ana, <span class="kw">new</span> <span class="type">BigDecimal</span>(<span class="str">"100.00"</span>), <span class="kw">new</span> <span class="type">BigDecimal</span>(<span class="str">"200.00"</span>)));
+        bank.open(<span class="kw">new</span> <span class="type">SavingsAccount</span>(<span class="str">"A2"</span>, ana, <span class="kw">new</span> <span class="type">BigDecimal</span>(<span class="str">"1000.00"</span>), <span class="kw">new</span> <span class="type">BigDecimal</span>(<span class="str">"0.024"</span>)));
+
+        bank.deposit(<span class="str">"A1"</span>, <span class="kw">new</span> <span class="type">BigDecimal</span>(<span class="str">"50.00"</span>));
+        bank.transfer(<span class="str">"A2"</span>, <span class="str">"A1"</span>, <span class="kw">new</span> <span class="type">BigDecimal</span>(<span class="str">"300.00"</span>));
+        bank.runInterestCycle();
+
+        <span class="kw">try</span> {
+            bank.withdraw(<span class="str">"A2"</span>, <span class="kw">new</span> <span class="type">BigDecimal</span>(<span class="str">"99999.00"</span>));
+        } <span class="kw">catch</span> (<span class="type">InsufficientFundsException</span> e) {
+            <span class="type">System</span>.out.println(<span class="str">"Refused: "</span> + e.getMessage());
+        }
+
+        bank.accountsOf(<span class="str">"C1"</span>).forEach(<span class="type">System</span>.out::println);
+        <span class="type">System</span>.out.printf(<span class="str">"Total assets: %.2f%n"</span>, bank.totalAssets());
+    }
+}</code></pre>
+    </section>
+
+    <!-- ====================  4. TESTS  ==================== -->
+    <section id="tests" class="proj-section">
+      <h2><span class="step-num">04</span>Unit tests &amp; a sample run</h2>
+      <p class="section-intro">
+        Good tests are part of the grade and part of professional practice. Below is a focused JUnit 5 suite:
+        it checks the happy paths, verifies that the overdraft rule and the no-overdraft rule behave
+        differently (polymorphism in action), and uses <code>assertThrows</code> to confirm the custom
+        exceptions fire. See <a href="index.html#testing">the JUnit lesson</a>.
+      </p>
+      <div class="filename">test/java/com/iebank/service/BankServiceTest.java</div>
+      <pre><code><span class="kw">package</span> com.iebank.service;
+
+<span class="kw">import</span> com.iebank.exception.*;
+<span class="kw">import</span> com.iebank.model.*;
+<span class="kw">import</span> com.iebank.repo.*;
+<span class="kw">import</span> org.junit.jupiter.api.*;
+
+<span class="kw">import</span> java.math.BigDecimal;
+
+<span class="kw">import static</span> org.junit.jupiter.api.Assertions.*;
+
+<span class="kw">class</span> <span class="type">BankServiceTest</span> {
+    <span class="kw">private</span> <span class="type">BankService</span> bank;
+    <span class="kw">private final</span> <span class="type">Customer</span> ana = <span class="kw">new</span> <span class="type">Customer</span>(<span class="str">"C1"</span>, <span class="str">"Ana"</span>, <span class="str">"a@b.c"</span>);
+
+    <span class="annot">@BeforeEach</span> <span class="kw">void</span> setUp() {
+        bank = <span class="kw">new</span> <span class="type">BankService</span>(<span class="kw">new</span> <span class="type">InMemoryRepository</span>&lt;&gt;());
+        bank.open(<span class="kw">new</span> <span class="type">CheckingAccount</span>(<span class="str">"A1"</span>, ana, bd(<span class="str">"100"</span>), bd(<span class="str">"200"</span>)));
+        bank.open(<span class="kw">new</span> <span class="type">SavingsAccount</span>(<span class="str">"A2"</span>, ana, bd(<span class="str">"100"</span>), bd(<span class="str">"0.12"</span>)));
+    }
+
+    <span class="annot">@Test</span> <span class="kw">void</span> depositIncreasesBalance() <span class="kw">throws</span> <span class="type">Exception</span> {
+        bank.deposit(<span class="str">"A1"</span>, bd(<span class="str">"50"</span>));
+        assertEquals(<span class="num">0</span>, bank.get(<span class="str">"A1"</span>).getBalance().compareTo(bd(<span class="str">"150"</span>)));
+    }
+
+    <span class="annot">@Test</span> <span class="kw">void</span> checkingAllowsOverdraftWithinLimit() <span class="kw">throws</span> <span class="type">Exception</span> {
+        bank.withdraw(<span class="str">"A1"</span>, bd(<span class="str">"250"</span>));                  <span class="com">// 100 - 250 = -150, within -200</span>
+        assertEquals(<span class="num">0</span>, bank.get(<span class="str">"A1"</span>).getBalance().compareTo(bd(<span class="str">"-150"</span>)));
+    }
+
+    <span class="annot">@Test</span> <span class="kw">void</span> savingsRefusesOverdraft() {
+        assertThrows(<span class="type">InsufficientFundsException</span>.<span class="kw">class</span>,
+                () -&gt; bank.withdraw(<span class="str">"A2"</span>, bd(<span class="str">"101"</span>)));    <span class="com">// no overdraft allowed</span>
+    }
+
+    <span class="annot">@Test</span> <span class="kw">void</span> unknownAccountThrows() {
+        <span class="type">AccountNotFoundException</span> ex = assertThrows(
+                <span class="type">AccountNotFoundException</span>.<span class="kw">class</span>, () -&gt; bank.get(<span class="str">"NOPE"</span>));
+        assertEquals(<span class="str">"NOPE"</span>, ex.getAccountId());
+    }
+
+    <span class="annot">@Test</span> <span class="kw">void</span> transferMovesMoneyAndConservesTotal() <span class="kw">throws</span> <span class="type">Exception</span> {
+        <span class="type">BigDecimal</span> before = bank.totalAssets();
+        bank.transfer(<span class="str">"A2"</span>, <span class="str">"A1"</span>, bd(<span class="str">"40"</span>));
+        assertEquals(<span class="num">0</span>, bank.totalAssets().compareTo(before));   <span class="com">// nothing created/lost</span>
+        assertEquals(<span class="num">0</span>, bank.get(<span class="str">"A2"</span>).getBalance().compareTo(bd(<span class="str">"60"</span>)));
+    }
+
+    <span class="annot">@Test</span> <span class="kw">void</span> failedTransferLeavesSourceUntouched() {
+        assertThrows(<span class="type">InsufficientFundsException</span>.<span class="kw">class</span>,
+                () -&gt; bank.transfer(<span class="str">"A2"</span>, <span class="str">"A1"</span>, bd(<span class="str">"500"</span>)));
+        assertDoesNotThrow(() -&gt;
+                assertEquals(<span class="num">0</span>, bank.get(<span class="str">"A2"</span>).getBalance().compareTo(bd(<span class="str">"100"</span>))));
+    }
+
+    <span class="annot">@Test</span> <span class="kw">void</span> interestCycleOnlyTouchesSavings() <span class="kw">throws</span> <span class="type">Exception</span> {
+        bank.runInterestCycle();                          <span class="com">// 12% / 12 = 1% on 100</span>
+        assertEquals(<span class="num">0</span>, bank.get(<span class="str">"A2"</span>).getBalance().compareTo(bd(<span class="str">"101.00"</span>)));
+        assertEquals(<span class="num">0</span>, bank.get(<span class="str">"A1"</span>).getBalance().compareTo(bd(<span class="str">"100"</span>))); <span class="com">// checking untouched</span>
+    }
+
+    <span class="kw">private static</span> <span class="type">BigDecimal</span> bd(<span class="type">String</span> s) { <span class="kw">return</span> <span class="kw">new</span> <span class="type">BigDecimal</span>(s); }
+}</code></pre>
+
+      <h3>Running the tests</h3>
+      <pre class="term"><code><span class="prompt">$</span> mvn -q test
+<span class="out">[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS</span></code></pre>
+
+      <h3>Sample run of <code>App</code></h3>
+      <pre class="term"><code><span class="prompt">$</span> mvn -q exec:java -Dexec.mainClass=com.iebank.App
+<span class="out">Refused: Account A2: balance 716.80 cannot cover withdrawal of 99999.00
+CHECKING[A1, Ana Montana, 450.00]
+SAVINGS[A2, Ana Montana, 716.80]
+Total assets: 1166.80</span></code></pre>
+      <div class="note">
+        <h4>Reading the output</h4>
+        <p>A1 (checking) started at 100, +50 deposit, +300 transfer in = <strong>450.00</strong>. A2 (savings)
+        started at 1000, −300 transfer out = 700, then one interest cycle at 2.4 %/yr ≈ 0.2 %/mo on 700 ≈
+        +16.80 = <strong>716.80</strong>. The oversized withdrawal is rejected by the savings rule and caught,
+        so balances are unchanged. Total = 450 + 716.80 = <strong>1166.80</strong>.</p>
+      </div>
+    </section>
+
+    <!-- ====================  5. PATTERNS  ==================== -->
+    <section id="patterns" class="proj-section">
+      <h2><span class="step-num">05</span>UML &amp; design-pattern notes</h2>
+      <p class="section-intro">Three of the patterns from <a href="course.html#program">session 28</a> appear
+        naturally here — none of them was forced in.</p>
+
+      <table class="matrix">
+        <tr><th>Pattern</th><th>Category</th><th>Where</th><th>Why it helps</th></tr>
+        <tr><td>Repository</td><td>Architectural</td><td><code>Repository&lt;ID,T&gt;</code> + <code>InMemoryRepository</code></td><td>Decouples business logic from storage; swap in a DB later without touching <code>BankService</code>.</td></tr>
+        <tr><td>Factory method</td><td>Creational</td><td><code>CsvAccountStore.parse(..)</code></td><td>Centralises the decision of <em>which subclass</em> to instantiate from raw data.</td></tr>
+        <tr><td>Strategy</td><td>Behavioural</td><td><code>InterestBearing</code> interface</td><td>Interest behaviour is pluggable per account type; the service treats them uniformly.</td></tr>
+        <tr><td>Template method (lite)</td><td>Behavioural</td><td><code>Account.deposit</code> fixed, <code>withdraw</code> abstract</td><td>The base fixes the invariant skeleton; subclasses fill the varying step.</td></tr>
+      </table>
+
+      <div class="note green">
+        <h4>SOLID quick audit</h4>
+        <ul>
+          <li><strong>S</strong>ingle responsibility — model, repo, service, persistence are separate classes.</li>
+          <li><strong>O</strong>pen/closed — add a new account type by subclassing <code>Account</code>; no existing class changes.</li>
+          <li><strong>L</strong>iskov — any <code>Account</code> subtype is safely usable through the base reference.</li>
+          <li><strong>I</strong>nterface segregation — only savings opts into <code>InterestBearing</code>.</li>
+          <li><strong>D</strong>ependency inversion — <code>BankService</code> depends on the <code>Repository</code> interface.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ====================  6. OUTCOMES  ==================== -->
+    <section id="outcomes" class="proj-section">
+      <h2><span class="step-num">06</span>Mapping to learning outcomes</h2>
+      <p class="section-intro">How this single project satisfies the CP2 syllabus learning objectives and
+        which course sessions it draws on.</p>
+      <table class="matrix">
+        <tr><th>Syllabus learning objective</th><th>Evidence in this project</th><th>Sessions</th></tr>
+        <tr><td>Utilize OOP (encapsulation, inheritance, polymorphism, abstraction)</td>
+            <td>Abstract <code>Account</code>, two subclasses, dynamic <code>withdraw</code> dispatch, private state</td>
+            <td><span class="pill s">10-16</span></td></tr>
+        <tr><td>Practice Software Engineering Principles (SOLID, patterns, modular architecture)</td>
+            <td>Layered packages, DIP via repository interface, three GoF patterns</td>
+            <td><span class="pill s">17</span><span class="pill s">28</span></td></tr>
+        <tr><td>Handle exceptions effectively (custom exceptions, best practice)</td>
+            <td>Two checked exceptions carrying context; caught at the boundary</td>
+            <td><span class="pill s">21</span></td></tr>
+        <tr><td>Generics (methods/classes, bounded types, wildcards)</td>
+            <td><code>Repository&lt;ID,T extends Account&gt;</code>, <code>Predicate&lt;? super T&gt;</code></td>
+            <td><span class="pill s">25</span></td></tr>
+        <tr><td>Collections (Sets, Lists, Maps)</td>
+            <td><code>HashMap</code> store, <code>List</code> query results, streams reduce</td>
+            <td><span class="pill s">26</span></td></tr>
+        <tr><td>Build &amp; deliver (Maven, jars)</td>
+            <td><code>pom.xml</code>, <code>mvn test</code> / <code>exec:java</code></td>
+            <td><span class="pill s">20</span></td></tr>
+        <tr><td>Unit testing &amp; debugging</td>
+            <td>7-test JUnit 5 suite incl. <code>assertThrows</code></td>
+            <td><span class="pill s">21</span></td></tr>
+        <tr><td>Modularize &amp; reuse code</td>
+            <td>Methods with clear params/returns; generic repo reusable for other entities</td>
+            <td><span class="pill s">07</span></td></tr>
+      </table>
+
+      <h3>Where to study each piece in the companion app</h3>
+      <div class="crosslinks">
+        <div class="xlink"><div class="k">Lesson</div><a href="index.html#inheritance">Inheritance &amp; super</a></div>
+        <div class="xlink"><div class="k">Lesson</div><a href="index.html#polymorphism">Polymorphism</a></div>
+        <div class="xlink"><div class="k">Lesson</div><a href="index.html#interfaces">Interfaces &amp; abstract classes</a></div>
+        <div class="xlink"><div class="k">Lesson</div><a href="index.html#exceptions">Exception handling</a></div>
+        <div class="xlink"><div class="k">Lesson</div><a href="index.html#generics">Generics</a></div>
+        <div class="xlink"><div class="k">Lesson</div><a href="index.html#collections">Collections</a></div>
+        <div class="xlink"><div class="k">Lesson</div><a href="index.html#text-io">File I/O</a></div>
+        <div class="xlink"><div class="k">Lesson</div><a href="index.html#testing">JUnit 5 testing</a></div>
+        <div class="xlink"><div class="k">Practice</div><a href="index.html#quiz">Quiz mode</a></div>
+        <div class="xlink"><div class="k">Revise</div><a href="index.html#reference">Cheatsheet</a></div>
+      </div>
+    </section>
+
+    <!-- ====================  7. EXTENSIONS  ==================== -->
+    <section id="extensions" class="proj-section">
+      <h2><span class="step-num">07</span>Extensions</h2>
+      <p class="section-intro">If you want to push the project toward the final-project bar, here are three
+        natural directions, each tied to a syllabus topic.</p>
+
+      <h3>A. A JavaFX UI sketch</h3>
+      <p>Wrap the same <code>BankService</code> in a tiny JavaFX window — a <code>ListView</code> of accounts
+        and buttons for deposit/withdraw. The service and model do <em>not</em> change; only a new view layer
+        is added (separation of concerns). See <a href="index.html#javafx">the JavaFX lesson</a> /
+        <a href="course.html#program">sessions 22–23</a>.</p>
+      <div class="filename">ui/BankApp.java (sketch)</div>
+      <pre><code><span class="kw">public class</span> <span class="type">BankApp</span> <span class="kw">extends</span> <span class="type">Application</span> {
+    <span class="kw">private final</span> <span class="type">BankService</span> bank = <span class="kw">new</span> <span class="type">BankService</span>(<span class="kw">new</span> <span class="type">InMemoryRepository</span>&lt;&gt;());
+
+    <span class="annot">@Override</span> <span class="kw">public void</span> start(<span class="type">Stage</span> stage) {
+        <span class="type">ListView</span>&lt;<span class="type">String</span>&gt; list = <span class="kw">new</span> <span class="type">ListView</span>&lt;&gt;();
+        <span class="type">Button</span> refresh = <span class="kw">new</span> <span class="type">Button</span>(<span class="str">"Refresh"</span>);
+        refresh.setOnAction(e -&gt; {
+            list.getItems().setAll(
+                bank.accountsOf(<span class="str">"C1"</span>).stream().map(<span class="type">Object</span>::toString).toList());
+        });
+        stage.setScene(<span class="kw">new</span> <span class="type">Scene</span>(<span class="kw">new</span> <span class="type">VBox</span>(<span class="num">8</span>, list, refresh), <span class="num">360</span>, <span class="num">280</span>));
+        stage.setTitle(<span class="str">"IE Bank"</span>);
+        stage.show();
+    }
+    <span class="kw">public static void</span> main(<span class="type">String</span>[] a) { launch(a); }
+}</code></pre>
+
+      <h3>B. Streams &amp; richer queries</h3>
+      <p>Replace the manual loop in <code>findBy</code> with the Stream API, and add reports like "richest
+        customer" or "accounts grouped by type" using <code>Collectors.groupingBy</code>.</p>
+      <pre><code><span class="type">Map</span>&lt;<span class="type">String</span>, <span class="type">List</span>&lt;<span class="type">Account</span>&gt;&gt; byType =
+    repo.findAll().stream()
+        .collect(<span class="type">Collectors</span>.groupingBy(<span class="type">Account</span>::type));</code></pre>
+
+      <h3>C. Concurrency</h3>
+      <p>Make the store thread-safe with <code>ConcurrentHashMap</code> and guard <code>transfer</code> with
+        per-account locking (or move to an event queue) so two threads cannot corrupt a balance. This is the
+        bridge to the multi-threading objective in the course's learning outcomes.</p>
+
+      <div class="note red">
+        <h4>Known simplifications (be honest in your report)</h4>
+        <ul>
+          <li><code>transfer</code> is not a real atomic transaction — a crash between debit and credit could lose money. A production system would wrap it in a transaction or compensating action.</li>
+          <li>The CSV store hard-codes a demo overdraft limit; persisting it properly is a one-line fix left as an exercise.</li>
+          <li>No authentication / audit log — out of scope for a CP2 worked example.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ====================  8. REFERENCES  ==================== -->
+    <section id="references" class="proj-section">
+      <h2><span class="step-num">08</span>References</h2>
+      <ul>
+        <li>Y. Daniel Liang. <em>Introduction to Java Programming and Data Structures</em>, 13th ed. Pearson, 2024. ISBN 0138123536. (Course primary text — chapters on inheritance, polymorphism, abstract classes, generics, collections.)</li>
+        <li>Joshua Bloch. <em>Effective Java</em>, 3rd ed. Addison-Wesley, 2017. ISBN 0134686042. (Items on <code>equals</code>/<code>hashCode</code>, prefer interfaces, generics and bounded wildcards, exceptions.)</li>
+        <li>Marc Loy, Patrick Niemeyer, Daniel Leuck. <em>Learning Java</em>, 6th ed. O'Reilly, 2023. ISBN 9781098145538.</li>
+        <li>JUnit 5 User Guide — <span style="color:var(--ink-2)">junit.org/junit5/docs/current/user-guide</span></li>
+        <li>Java SE 17 API documentation — <code>java.math.BigDecimal</code>, <code>java.util.Map</code>, <code>java.util.function.Predicate</code>.</li>
+        <li>Course materials: <a href="course.html">Computer Programming 2 course structure</a> &middot; <a href="SYLLABUS.pdf">official syllabus (PDF)</a> &middot; <a href="index.html">interactive study companion</a>.</li>
+      </ul>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>Java Study — companion notes for Computer Programming 2 (CP2). Worked-example project page. Static site, runs entirely in the browser.</p>
+  </footer>
+</body>
+</html>
