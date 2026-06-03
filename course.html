@@ -108,6 +108,36 @@
 
     .pill-row { margin: .4rem 0 0; }
     .pill { display: inline-block; background: var(--accent-soft); color: var(--accent); font-size: .72rem; padding: .12rem .55rem; border-radius: 999px; font-weight: 600; margin: .15rem .25rem .15rem 0; }
+
+    /* per-session deepening notes (reuse existing tokens) */
+    .note { font-size: .85rem; margin: .55rem 0 0; padding: .45rem .7rem; border-radius: 4px; }
+    .note .nh { font-size: .68rem; text-transform: uppercase; letter-spacing: .07em; font-weight: 700; display: block; margin-bottom: .15rem; }
+    .note.pitfall { background: #fff6f3; border-left: 3px solid var(--accent); }
+    .note.pitfall .nh { color: var(--accent); }
+    .note.connects { background: #f1f7f4; border-left: 3px solid #4caf94; }
+    .note.connects .nh { color: #2f8d6e; }
+    .note.connects a { font-weight: 600; }
+    .takeaway { font-size: .86rem; margin: .55rem 0 0; padding: .45rem .7rem; background: var(--bg); border-left: 3px solid #c08a27; border-radius: 4px; }
+    .takeaway .nh { font-size: .68rem; text-transform: uppercase; letter-spacing: .07em; font-weight: 700; color: #9a6d12; display: block; margin-bottom: .15rem; }
+    .readings .focus { display: block; margin-top: .2rem; color: var(--ink-2); }
+
+    /* connect/prereq callout box */
+    .connect-box { background: var(--bg); border: 1px solid var(--line); border-left: 3px solid #4caf94; border-radius: 8px; padding: 1rem 1.2rem; margin: 1.3rem 0 0; }
+    .connect-box h4 { margin: 0 0 .4rem; font-family: "Inter", sans-serif; font-size: .95rem; }
+    .connect-box p { color: var(--ink-2); font-size: .92rem; margin: .35rem 0; max-width: 78ch; }
+    .study-load { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: .7rem; margin-top: .8rem; }
+    .study-load .sl { background: var(--paper); border: 1px solid var(--line); border-radius: 6px; padding: .55rem .8rem; }
+    .study-load .sl .n { font-family: "JetBrains Mono", Consolas, monospace; font-weight: 700; color: var(--accent); font-size: 1.05rem; }
+    .study-load .sl .l { font-size: .78rem; color: var(--ink-2); }
+
+    /* rubric table */
+    .rubric { width: 100%; border-collapse: collapse; margin-top: 1.1rem; font-size: .86rem; }
+    .rubric th, .rubric td { text-align: left; padding: .5rem .6rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+    .rubric th { font-family: "Inter", sans-serif; font-size: .76rem; text-transform: uppercase; letter-spacing: .05em; color: var(--ink-2); }
+    .rubric td b { color: var(--ink); }
+    .tip-box { background: var(--accent-soft); border-radius: 8px; padding: 1rem 1.2rem; margin-top: 1.3rem; }
+    .tip-box h4 { margin-top: 0; }
+    .tip-box ul { margin: .3em 0; }
   </style>
 </head>
 <body>
@@ -248,6 +278,34 @@
           <li>Acknowledging AI use does <b>not</b> affect your grade — failing to acknowledge it violates academic-honesty policy.</li>
         </ul>
       </div>
+
+      <div class="connect-box">
+        <h4>Prerequisites &amp; how this course connects</h4>
+        <p>As the second programming course in the BCSAI degree (3rd year, 1st semester), CP2 assumes you can already
+        reason about basic algorithms, variables, control flow and simple functions from <b>Computer Programming 1</b>.
+        Here that foundation is rebuilt rigorously <em>in Java</em> and then taken much further: the procedural fundamentals
+        (Modules A) become the substrate for the object-oriented model (Module B), which in turn is the prerequisite for the
+        advanced APIs — generics and collections (Module E) lean directly on the <code>equals</code>/<code>hashCode</code> and
+        type-system ideas from Modules A–B, and the design-patterns and SOLID material only makes sense once polymorphism and
+        interfaces are solid.</p>
+        <p><b>Connects forward to:</b> data-structures and algorithms courses (trees, graphs, complexity), software-engineering
+        and design courses (patterns, architecture), and any later AI/ML coursework that uses the JVM ecosystem.
+        The skills here — disciplined class design, testing, build tooling — are the same ones expected in industry internships.</p>
+      </div>
+
+      <div class="connect-box" style="border-left-color:#c08a27">
+        <h4>Weekly study-load — what 150 hours actually means</h4>
+        <p>The 6 ECTS / 150-hour total breaks down across 30 live sessions. With roughly 15 teaching weeks, that is about
+        <b>10 hours of total commitment per week</b>: time in class, plus preparation, individual study and project work.
+        Treat the per-activity figures below as a planning budget — front-load reading before each session and protect
+        weekly time for the projects, which are easy to underestimate.</p>
+        <div class="study-load">
+          <div class="sl"><div class="n">~4 h/wk</div><div class="l">Lectures &amp; live sessions (60 h total)</div></div>
+          <div class="sl"><div class="n">~3.3 h/wk</div><div class="l">Individual studying (50 h total)</div></div>
+          <div class="sl"><div class="n">~2.7 h/wk</div><div class="l">Group / project work (40 h total)</div></div>
+          <div class="sl"><div class="n">~10 h/wk</div><div class="l">Total sustainable load</div></div>
+        </div>
+      </div>
     </section>
 
     <!-- ======================== ASSESSMENT ========================== -->
@@ -310,6 +368,47 @@
         </div>
       </div>
 
+      <table class="rubric">
+        <thead><tr><th>Component</th><th>Weight</th><th>Deliverable format</th><th>What earns marks (criteria)</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><b>Intermediate Exam</b></td><td>25%</td>
+            <td>In-class written + coding exam over Modules A–B (fundamentals &amp; OOP), around the mid-point.</td>
+            <td>Correct syntax and control flow; sound class design (encapsulation, constructors, <code>this</code>); tracing program output; explaining inheritance/polymorphism. Partial credit for correct reasoning.</td>
+          </tr>
+          <tr>
+            <td><b>Final Exam</b></td><td>25%</td>
+            <td>Comprehensive written/coding exam (Session 30) over the whole programme.</td>
+            <td>Mastery across all six modules: fundamentals, the four OOP pillars, generics &amp; wildcards, collection choice with complexity, exception design, and applying SOLID/patterns to a small design.</td>
+          </tr>
+          <tr>
+            <td><b>Group Project</b></td><td>25%</td>
+            <td>Team-built Java application: source repository, runnable JAR, and a live demo presented in S29.</td>
+            <td>Design quality and modularity (clean class boundaries, SOLID); correct use of OOP, generics &amp; collections; working, robust code (exception handling); a JavaFX or comparable UI where relevant; teamwork and clear division of work.</td>
+          </tr>
+          <tr>
+            <td><b>Individual Assignments / Projects</b></td><td>15%</td>
+            <td>Individual project (introduced S19) plus in-class exercises submitted as source files.</td>
+            <td>Working, idiomatic Java; adherence to encapsulation and SOLID; readable naming and structure; meeting the brief and milestones on time.</td>
+          </tr>
+          <tr>
+            <td><b>Participation &amp; Attendance</b></td><td>10%</td>
+            <td>Ongoing engagement in live sessions, peer reviews and discussion.</td>
+            <td>Quality (not just quantity) of contribution, constructive peer feedback, and presence — subject to the 80% attendance rule below.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="tip-box">
+        <h4>Study tips — how to prepare for each component</h4>
+        <ul>
+          <li><b>For both exams:</b> practise <em>writing</em> code by hand and <em>tracing</em> output, not just reading it. Drill the high-leverage traps — integer vs floating division, <code>==</code> vs <code>.equals()</code>, overriding vs overloading, checked vs unchecked exceptions — using <a href="index.html#quiz">quiz mode</a> and the <a href="index.html#reference">cheatsheet</a>.</li>
+          <li><b>For the projects:</b> sketch your class diagram before coding; commit small and often; integrate team modules early (don't leave merging to the final week); write a short README explaining your design decisions.</li>
+          <li><b>For participation:</b> come having done the reading so you can ask and answer real questions; give specific, kind peer feedback in reviews.</li>
+          <li><b>Spacing beats cramming:</b> use the ~3.3 h/week of individual study to revisit the previous session's key idea and pre-read the next chapter — the syllabus builds cumulatively, so gaps compound.</li>
+        </ul>
+      </div>
+
       <div class="rule-box">
         <h4>Passing, attendance &amp; re-sit rules</h4>
         <ul>
@@ -354,11 +453,11 @@
             <h4>Introduction to Java</h4>
             <p class="tl-objective">Objective: understand what Java is, why it runs everywhere, and write a first program.</p>
             <ul class="tl-topics">
-              <li><b>Course objectives, structure &amp; expectations</b> — how the course, projects and grading fit together.</li>
-              <li><b>Introduction to Java</b> — a class-based, statically typed, object-oriented language; source compiles to portable bytecode.</li>
-              <li><b>History &amp; evolution of Java</b> — from Sun (1995, James Gosling) through to modern LTS releases.</li>
-              <li><b>Java vs other languages</b> — managed runtime and "write once, run anywhere" vs native/compiled or dynamically typed peers.</li>
-              <li><b>First Java program</b> — the <code>main</code> entry point and <code>System.out.println</code>.</li>
+              <li><b>Course objectives, structure &amp; expectations</b> — the course is a guided climb from procedural fundamentals to professional object-oriented design. Knowing the map up front — six modules, two exams, two projects — lets you connect each session to where it leads and budget the 150-hour workload sensibly.</li>
+              <li><b>Introduction to Java</b> — Java is a class-based, statically typed, object-oriented language whose source compiles not to machine code but to portable <em>bytecode</em>. Static typing means the compiler catches whole classes of errors (type mismatches, missing methods) before the program ever runs, which matters more as programs grow.</li>
+              <li><b>History &amp; evolution of Java</b> — created at Sun Microsystems by James Gosling and first released in 1995, Java was designed for networked, platform-independent software. It now ships on a roughly six-month release cadence with long-term-support (LTS) versions (8, 11, 17, 21) that production systems target; the language has steadily added generics, lambdas, the module system, records and pattern matching.</li>
+              <li><b>Java vs other languages</b> — unlike C/C++ which compile to native code, Java runs on a managed runtime (the JVM) with automatic garbage collection, giving "write once, run anywhere" portability at the cost of a startup/JIT warm-up. Unlike dynamically typed Python or JavaScript, Java's types are checked at compile time, trading some brevity for earlier error detection and tooling support.</li>
+              <li><b>First Java program</b> — every application starts at a <code>public static void main(String[] args)</code> entry point; <code>System.out.println</code> writes a line to standard output. The ceremony (a class wrapping <code>main</code>) is the first hint that in Java, everything lives inside a class.</li>
             </ul>
             <div class="keyidea"><span class="kih">Key idea — bytecode &amp; the JVM</span>
               <p style="margin:.3em 0 0;font-size:.9rem">Source &rarr; <code>javac</code> &rarr; platform-neutral bytecode &rarr; run by the JVM. That indirection is what makes Java portable.</p>
@@ -368,7 +467,10 @@
     }
 }</code></pre>
             </div>
-            <p class="readings"><b>Readings:</b> Liang, ch. 1 (Introduction to Computers, Programs, and Java); Loy/Niemeyer, ch. 1.</p>
+            <div class="note pitfall"><span class="nh">Common pitfall</span>The public class name must match the file name exactly (<code>Hello</code> &rarr; <code>Hello.java</code>), and Java is case-sensitive — <code>main</code> with the wrong signature compiles but the JVM won't find an entry point.</div>
+            <div class="takeaway"><span class="nh">Key takeaway</span>Java buys portability and early error detection through a compile-to-bytecode, run-on-the-JVM model — the mental model behind everything that follows.</div>
+            <p class="readings"><b>Readings:</b> Liang, ch. 1 (Introduction to Computers, Programs, and Java); Loy/Niemeyer, ch. 1.
+              <span class="focus">Focus on: the JDK/JRE/JVM relationship and the compile-then-run cycle — you'll rely on this mental model all semester.</span></p>
             <p class="xref">&rarr; Companion: <a href="index.html">Lesson 01 — Introduction to Java</a></p>
           </li>
 
@@ -377,14 +479,17 @@
             <h4>The Java toolchain &amp; IntelliJ IDEA</h4>
             <p class="tl-objective">Objective: create, compile and run Java programs with both the JDK tools and a modern IDE.</p>
             <ul class="tl-topics">
-              <li><b>Language Specification, API, JDK, JRE &amp; IDE</b> — what each provides and how they relate.</li>
-              <li><b>Creating, compiling &amp; executing</b> — <code>javac</code> produces <code>.class</code> files; <code>java</code> runs them.</li>
-              <li><b>Developing with IntelliJ IDEA</b> — projects, run configurations, and the edit-compile-run loop.</li>
+              <li><b>Language Specification, API, JDK, JRE &amp; IDE</b> — the <em>Language Specification</em> is the precise rulebook for syntax and semantics; the <em>API</em> is the vast standard library (<code>java.util</code>, <code>java.io</code>…) you build on; the <em>JDK</em> bundles the compiler and tools; the <em>JRE</em> is the runtime; the <em>IDE</em> ties them together. Knowing which layer a problem lives in saves hours of confused debugging.</li>
+              <li><b>Creating, compiling &amp; executing</b> — <code>javac Hello.java</code> produces <code>Hello.class</code> (bytecode), and <code>java Hello</code> launches the JVM on it. Doing this once on the command line demystifies what the IDE's green "Run" button actually does.</li>
+              <li><b>Developing with IntelliJ IDEA</b> — IntelliJ manages projects, run configurations, dependencies and the edit–compile–run loop, and adds code completion, refactoring and a debugger. These productivity tools matter precisely because they let you focus on design rather than mechanics.</li>
             </ul>
             <div class="keyidea"><span class="kih">Key idea — toolchain layering</span>
               <p style="margin:.3em 0 0;font-size:.9rem">JDK ⊃ JRE ⊃ JVM. You install the JDK to develop; the JRE (now usually bundled) is enough to run. The IDE wraps these tools with editing, debugging and refactoring.</p>
             </div>
-            <p class="readings"><b>Readings:</b> Loy/Niemeyer, ch. 2 (A First Application); Liang §1.8–1.11 (development tools).</p>
+            <div class="note pitfall"><span class="nh">Common pitfall</span>A "<code>java: command not found</code>" or version-mismatch error usually means <code>JAVA_HOME</code>/<code>PATH</code> points at the wrong (or no) JDK. Confirm with <code>java -version</code> and <code>javac -version</code> before blaming your code.</div>
+            <div class="note connects"><span class="nh">Connects to…</span>The build tools in <a href="#program">Session 20</a> (Maven/Gradle) automate this same compile-and-package cycle for real projects with dependencies.</div>
+            <p class="readings"><b>Readings:</b> Loy/Niemeyer, ch. 2 (A First Application); Liang §1.8–1.11 (development tools).
+              <span class="focus">Focus on: the difference between JDK and JRE, and getting a project to compile and run inside IntelliJ end-to-end.</span></p>
             <p class="xref">&rarr; Companion: <a href="index.html">Lesson 02 — Java tools, packages, classpath</a></p>
           </li>
 
@@ -393,18 +498,21 @@
             <h4>Variables, input &amp; data types</h4>
             <p class="tl-objective">Objective: read console input and declare/assign variables with the right types.</p>
             <ul class="tl-topics">
-              <li><b>Reading console input</b> — <code>Scanner</code> over <code>System.in</code>.</li>
-              <li><b>Variables &amp; constants</b> — declaration, initialisation and <code>final</code> constants.</li>
-              <li><b>Assignment statements &amp; expressions</b> — assignment is itself an expression returning a value.</li>
-              <li><b>Naming conventions</b> — camelCase for variables/methods, PascalCase for classes, UPPER_SNAKE for constants.</li>
-              <li><b>Data types</b> — the eight primitives vs reference types; default values.</li>
+              <li><b>Reading console input</b> — a <code>Scanner</code> wrapping <code>System.in</code> turns raw keyboard bytes into typed values via methods like <code>nextInt()</code> and <code>nextLine()</code>. This is how interactive programs collect data before objects and files take over later in the course.</li>
+              <li><b>Variables &amp; constants</b> — a variable names a typed storage slot; declaring it with <code>final</code> makes it a constant that can be assigned exactly once. Constants document intent (<code>final int MAX = 100</code>) and let the compiler stop accidental reassignment.</li>
+              <li><b>Assignment statements &amp; expressions</b> — in Java <code>=</code> is an operator, so an assignment is itself an expression that yields the assigned value (<code>x = y = 5</code> works). Recognising this explains idioms like <code>while ((line = reader.readLine()) != null)</code>.</li>
+              <li><b>Naming conventions</b> — camelCase for variables/methods, PascalCase for classes/interfaces, UPPER_SNAKE for constants. These aren't enforced by the compiler but are universal in professional code; following them makes your work readable to graders and teammates.</li>
+              <li><b>Data types</b> — Java has exactly eight primitives (<code>byte short int long float double char boolean</code>) that hold raw values, versus reference types that point to objects. Knowing each primitive's size and range prevents overflow surprises later.</li>
             </ul>
             <div class="keyidea"><span class="kih">Key idea — reading input</span>
               <pre><code>Scanner in = new Scanner(System.in);
 int age = in.nextInt();
 final double PI = 3.14159;</code></pre>
             </div>
-            <p class="readings"><b>Readings:</b> Liang, ch. 2 (Elementary Programming) §2.1–2.5.</p>
+            <div class="note pitfall"><span class="nh">Common pitfall</span>Mixing <code>nextInt()</code> with <code>nextLine()</code> leaves the trailing newline in the buffer, so the next <code>nextLine()</code> returns an empty string. Read and discard the leftover line, or parse whole lines.</div>
+            <div class="takeaway"><span class="nh">Key takeaway</span>Pick the narrowest correct primitive, mark anything that shouldn't change as <code>final</code>, and follow the naming conventions from day one — habits that pay off across every later module.</div>
+            <p class="readings"><b>Readings:</b> Liang, ch. 2 (Elementary Programming) §2.1–2.5.
+              <span class="focus">Focus on: the eight primitive types and their ranges, and the read–compute–print structure of a simple interactive program.</span></p>
             <p class="xref">&rarr; Companion: <a href="index.html">Lesson 03 — Elementary programming I</a> · <a href="index.html#reference">Cheatsheet: primitive types</a></p>
           </li>
 
@@ -413,19 +521,23 @@ final double PI = 3.14159;</code></pre>
             <h4>Numeric types, operators &amp; conversions</h4>
             <p class="tl-objective">Objective: evaluate numeric expressions correctly, respecting precedence and conversions.</p>
             <ul class="tl-topics">
-              <li><b>Numeric types &amp; operators</b> — <code>int</code>, <code>long</code>, <code>double</code>… and <code>+ - * / %</code>.</li>
-              <li><b>Numeric literals</b> — underscores in literals, hex/binary forms, the <code>L</code>/<code>d</code>/<code>f</code> suffixes.</li>
-              <li><b>Evaluating expressions &amp; precedence</b> — multiplicative before additive; parentheses override.</li>
-              <li><b>Augmented assignment</b> — <code>+=</code>, <code>-=</code>, <code>*=</code>, <code>/=</code>, <code>%=</code>.</li>
-              <li><b>Increment / decrement</b> — pre- vs post- (<code>++i</code> vs <code>i++</code>).</li>
-              <li><b>Type conversions</b> — implicit widening vs explicit narrowing casts.</li>
+              <li><b>Numeric types &amp; operators</b> — integer types (<code>int</code>, <code>long</code>) and floating types (<code>float</code>, <code>double</code>) support <code>+ - * / %</code>. The crucial distinction is that <code>/</code> means truncating integer division when both operands are integers, but real division as soon as one is floating — a constant source of bugs.</li>
+              <li><b>Numeric literals</b> — Java allows readable literals: underscores as digit separators (<code>1_000_000</code>), hex (<code>0xFF</code>) and binary (<code>0b1010</code>) forms, and type suffixes (<code>100L</code> for <code>long</code>, <code>3.14f</code> for <code>float</code>). An un-suffixed decimal literal is a <code>double</code>; an integer literal is an <code>int</code>.</li>
+              <li><b>Evaluating expressions &amp; precedence</b> — operators bind by precedence (unary, then multiplicative <code>* / %</code>, then additive <code>+ -</code>) and associate left-to-right; parentheses override both. When in doubt, parenthesise for clarity rather than memorising the full table.</li>
+              <li><b>Augmented assignment</b> — <code>x += 3</code> is shorthand for <code>x = x + 3</code> and quietly performs a narrowing cast, so <code>byte b = 10; b += 5;</code> compiles where <code>b = b + 5;</code> would not.</li>
+              <li><b>Increment / decrement</b> — <code>++i</code> increments then yields the new value; <code>i++</code> yields the old value then increments. The difference only matters when the result is used inside a larger expression.</li>
+              <li><b>Type conversions</b> — widening (<code>int</code>&rarr;<code>double</code>) happens implicitly because no information is lost; narrowing (<code>double</code>&rarr;<code>int</code>) needs an explicit cast <code>(int)</code> and truncates the fraction, so it can silently lose data.</li>
             </ul>
             <div class="keyidea"><span class="kih">Key idea — integer vs floating division</span>
               <pre><code>5 / 2      // → 2   (integer division truncates)
 5 / 2.0    // → 2.5 (one double operand promotes both)
-5 % 2      // → 1   (remainder)</code></pre>
+5 % 2      // → 1   (remainder)
+double avg = (a + b) / 2.0;  // force real division</code></pre>
             </div>
-            <p class="readings"><b>Readings:</b> Liang, ch. 2 §2.6–2.13 (operators, conversions, common errors).</p>
+            <div class="note pitfall"><span class="nh">Common pitfall</span><code>double</code> can't represent every decimal exactly, so <code>0.1 + 0.2 != 0.3</code>. Never test floating values with <code>==</code>; compare within a small tolerance, and use <code>BigDecimal</code> for money.</div>
+            <div class="note connects"><span class="nh">Connects to…</span>The widening/narrowing rules here are the numeric analogue of upcasting/downcasting between object types in <a href="#program">Session 15</a>.</div>
+            <p class="readings"><b>Readings:</b> Liang, ch. 2 §2.6–2.13 (operators, conversions, common errors).
+              <span class="focus">Focus on: when integer division truncates and how mixed-type expressions get promoted — then verify by tracing a few by hand.</span></p>
             <p class="xref">&rarr; Companion: <a href="index.html">Lesson 03/04</a></p>
           </li>
 
@@ -434,17 +546,21 @@ final double PI = 3.14159;</code></pre>
             <h4>Selections — boolean logic, if &amp; switch</h4>
             <p class="tl-objective">Objective: branch program flow with boolean expressions and selection statements.</p>
             <ul class="tl-topics">
-              <li><b>boolean types, values &amp; expressions</b> — relational operators produce <code>boolean</code>.</li>
-              <li><b>if / two-way if-else / nested &amp; multi-way</b> — chaining <code>else if</code> for several cases.</li>
-              <li><b>Logical operators</b> — <code>&amp;&amp;</code>, <code>||</code>, <code>!</code> and short-circuit evaluation.</li>
-              <li><b>Conditional (ternary) operator</b> — <code>cond ? a : b</code>.</li>
-              <li><b>switch statements</b> — discrete-value dispatch; mind fall-through / <code>break</code>.</li>
-              <li><b>Common errors &amp; pitfalls</b> — <code>=</code> vs <code>==</code>, dangling-else, float equality.</li>
+              <li><b>boolean types, values &amp; expressions</b> — <code>boolean</code> holds only <code>true</code>/<code>false</code>, and relational operators (<code>&lt; &lt;= == != &gt;= &gt;</code>) produce booleans. Unlike C, Java will not treat an integer as a condition, which eliminates the classic "use a number as truth" bug.</li>
+              <li><b>if / two-way if-else / nested &amp; multi-way</b> — <code>if</code> chooses one branch, <code>if-else</code> chooses between two, and chained <code>else if</code> handles several mutually exclusive cases. Always brace your blocks even when one line — it prevents bugs when you later add a second statement.</li>
+              <li><b>Logical operators</b> — <code>&amp;&amp;</code> (and), <code>||</code> (or) and <code>!</code> (not) combine conditions, and <code>&amp;&amp;</code>/<code>||</code> short-circuit: evaluation stops as soon as the result is known. This lets you safely write <code>if (s != null &amp;&amp; s.length() &gt; 0)</code>.</li>
+              <li><b>Conditional (ternary) operator</b> — <code>cond ? a : b</code> is an expression returning one of two values, handy for concise assignments like <code>int max = a &gt; b ? a : b;</code>.</li>
+              <li><b>switch statements</b> — dispatch on a discrete value (int, char, String, enum). Classic <code>switch</code> falls through until a <code>break</code>; the newer arrow form (<code>case X -&gt; …</code>) avoids fall-through entirely.</li>
+              <li><b>Common errors &amp; pitfalls</b> — <code>=</code> (assignment) vs <code>==</code> (comparison), the dangling-<code>else</code> binding to the nearest <code>if</code>, and comparing floating-point values with <code>==</code>.</li>
             </ul>
             <div class="keyidea"><span class="kih">Key idea — short-circuit evaluation</span>
               <p style="margin:.3em 0 0;font-size:.9rem"><code>a &amp;&amp; b</code> never evaluates <code>b</code> if <code>a</code> is false — letting you guard against null/zero before using a value.</p>
+              <pre><code>if (account != null &amp;&amp; account.getBalance() &gt; 0) { ... }
+String label = (n % 2 == 0) ? "even" : "odd";</code></pre>
             </div>
-            <p class="readings"><b>Readings:</b> Liang, ch. 3 (Selections).</p>
+            <div class="note pitfall"><span class="nh">Common pitfall</span>Comparing objects (especially <code>String</code>) with <code>==</code> tests reference identity, not contents. Use <code>.equals()</code> for value comparison — a trap revisited in earnest at <a href="#program">Session 12/15</a>.</div>
+            <p class="readings"><b>Readings:</b> Liang, ch. 3 (Selections).
+              <span class="focus">Focus on: short-circuit behaviour and the difference between <code>=</code> and <code>==</code>; these underlie countless exam trick questions.</span></p>
             <p class="xref">&rarr; Companion: <a href="index.html">Lesson 05 — Control flow</a> · <a href="index.html#reference">Cheatsheet: control flow</a></p>
           </li>
 
@@ -453,16 +569,22 @@ final double PI = 3.14159;</code></pre>
             <h4>Loops &amp; iteration</h4>
             <p class="tl-objective">Objective: repeat work safely with the three loop forms and pick the right one.</p>
             <ul class="tl-topics">
-              <li><b>while loop</b> — test-then-run; may execute zero times.</li>
-              <li><b>do-while loop</b> — run-then-test; always at least once.</li>
-              <li><b>for loop</b> — init/condition/update in one header; ideal for counted iteration.</li>
-              <li><b>Nested loops</b> — loops inside loops (e.g. tables, grids).</li>
-              <li><b>Loop design strategy &amp; which to use</b> — sentinel vs counter control; avoiding off-by-one and infinite loops.</li>
+              <li><b>while loop</b> — tests the condition <em>before</em> each pass, so it may run zero times. Use it when the number of iterations isn't known in advance (e.g. "read until end of input").</li>
+              <li><b>do-while loop</b> — tests <em>after</em> the body, guaranteeing at least one execution. Ideal for input-validation menus where you must prompt at least once.</li>
+              <li><b>for loop</b> — packs initialisation, condition and update into one header, making counted iteration self-documenting. The enhanced for-each form traverses arrays/collections without an index.</li>
+              <li><b>Nested loops</b> — a loop inside a loop builds 2-D structures (multiplication tables, grids, matrix work). Each extra nesting level over the same <em>n</em> data multiplies the cost.</li>
+              <li><b>Loop design strategy &amp; which to use</b> — choose counter-controlled loops when the count is known and sentinel/condition-controlled loops otherwise; <code>break</code> exits early and <code>continue</code> skips to the next pass. Guard against off-by-one errors and conditions that never become false.</li>
             </ul>
             <div class="keyidea"><span class="kih">Key idea — loop choice &amp; complexity</span>
               <p style="margin:.3em 0 0;font-size:.9rem">A single pass over <em>n</em> items is O(n); a nested loop over the same data is typically O(n²) — the first cost-model intuition for the algorithms ahead.</p>
+              <pre><code>for (int i = 0; i &lt; n; i++)          // O(n)
+    for (int j = 0; j &lt; n; j++)      // O(n²) overall
+        grid[i][j] = i * j;</code></pre>
             </div>
-            <p class="readings"><b>Readings:</b> Liang, ch. 4 (Loops).</p>
+            <div class="note pitfall"><span class="nh">Common pitfall</span>Off-by-one errors (<code>&lt;=</code> where you meant <code>&lt;</code>) and forgetting to advance the loop variable are the two most common causes of wrong output and infinite loops. Trace the first and last iteration by hand.</div>
+            <div class="note connects"><span class="nh">Connects to…</span>The O(n) vs O(n²) intuition here is the seed of the search/sort complexity discussion in <a href="#program">Session 8</a> and the hash-table O(1) payoff in <a href="#program">Session 26</a>.</div>
+            <p class="readings"><b>Readings:</b> Liang, ch. 4 (Loops).
+              <span class="focus">Focus on: choosing the right loop form, and reasoning about how nesting affects running time.</span></p>
             <p class="xref">&rarr; Companion: <a href="index.html">Lesson 05 — Control flow (loops)</a></p>
           </li>
 
@@ -471,18 +593,22 @@ final double PI = 3.14159;</code></pre>
             <h4>Methods &amp; modular code</h4>
             <p class="tl-objective">Objective: decompose programs into reusable methods and reason about scope.</p>
             <ul class="tl-topics">
-              <li><b>Declaration &amp; invocation</b> — signature, body, and the call stack.</li>
-              <li><b>Parameters &amp; return values</b> — Java passes arguments <em>by value</em> (the reference value, for objects).</li>
-              <li><b>void vs value-returning methods</b> — side-effect-only vs producing a result.</li>
-              <li><b>Modularising code</b> — single-responsibility methods for readability and reuse.</li>
-              <li><b>Overloading methods</b> — same name, different parameter lists; resolved at compile time.</li>
-              <li><b>Scope of variables</b> — locals live within their block.</li>
+              <li><b>Declaration &amp; invocation</b> — a method has a signature (name + parameter types), a return type and a body; calling it pushes a frame onto the call stack and returns control when it finishes. Methods are the unit of reuse in procedural code.</li>
+              <li><b>Parameters &amp; return values</b> — Java is strictly pass-by-value: a copy of each argument is handed to the method. For objects the copied value is the <em>reference</em>, so the method can mutate the shared object but cannot make the caller's variable point elsewhere.</li>
+              <li><b>void vs value-returning methods</b> — a <code>void</code> method exists for its side effects (printing, mutating); a value-returning method computes and hands back a result you can compose into larger expressions.</li>
+              <li><b>Modularising code</b> — splitting logic into small, single-responsibility methods makes programs readable, testable and reusable. This is the procedural rehearsal for the class-level decomposition in Module B.</li>
+              <li><b>Overloading methods</b> — several methods may share a name if their parameter lists differ; the compiler picks one based on the argument types at the call site (static dispatch). Return type alone cannot distinguish overloads.</li>
+              <li><b>Scope of variables</b> — a local variable lives only within the block where it's declared and must be assigned before use; parameters are locals initialised from the arguments.</li>
             </ul>
             <div class="keyidea"><span class="kih">Key idea — overloading is compile-time</span>
               <pre><code>int max(int a, int b) { ... }
-double max(double a, double b) { ... }  // overload, chosen by arg types</code></pre>
+double max(double a, double b) { ... }  // overload, chosen by arg types
+// pass-by-value: reassigning a parameter never affects the caller</code></pre>
             </div>
-            <p class="readings"><b>Readings:</b> Liang, ch. 6 (Methods).</p>
+            <div class="note pitfall"><span class="nh">Common pitfall</span>"Pass-by-value" confuses many: a method <em>can</em> change an object's fields through the reference, but assigning a new object to the parameter is invisible to the caller. Test this once to internalise it.</div>
+            <div class="note connects"><span class="nh">Connects to…</span>Overloading here is contrasted with <em>overriding</em> in <a href="#program">Session 14</a> — same-name methods, but one is resolved at compile time and the other at runtime.</div>
+            <p class="readings"><b>Readings:</b> Liang, ch. 6 (Methods).
+              <span class="focus">Focus on: the pass-by-value semantics and how the call stack grows and unwinds — essential for understanding recursion and debugging.</span></p>
             <p class="xref">&rarr; Companion: <a href="index.html">Lesson on methods</a></p>
           </li>
 
@@ -491,18 +617,24 @@ double max(double a, double b) { ... }  // overload, chosen by arg types</code><
             <h4>Arrays — 1D &amp; multidimensional</h4>
             <p class="tl-objective">Objective: store and process fixed-size sequences, and search/sort them.</p>
             <ul class="tl-topics">
-              <li><b>Array basics</b> — fixed length, zero-based, contiguous; <code>length</code> field.</li>
-              <li><b>Processing arrays &amp; foreach</b> — the enhanced <code>for</code> for read-only traversal.</li>
-              <li><b>Copying arrays</b> — assignment copies the reference; use <code>Arrays.copyOf</code> / <code>System.arraycopy</code> for a real copy.</li>
-              <li><b>Passing arrays to methods</b> — the array is shared (reference value passed).</li>
-              <li><b>Variable-length argument lists</b> — varargs <code>(int... nums)</code>.</li>
-              <li><b>Searching &amp; sorting</b> — linear O(n) vs binary O(log n) search; basic sorts.</li>
-              <li><b>Multidimensional arrays</b> — arrays of arrays (and jagged arrays).</li>
+              <li><b>Array basics</b> — an array is a fixed-length, zero-indexed, contiguous block of same-typed elements; its size is fixed at creation and read via the <code>length</code> field (not a method). Indices run <code>0..length-1</code>.</li>
+              <li><b>Processing arrays &amp; foreach</b> — a classic <code>for</code> with an index lets you read and write; the enhanced for-each (<code>for (int x : arr)</code>) is cleaner for read-only traversal but gives no index.</li>
+              <li><b>Copying arrays</b> — assigning one array variable to another copies only the reference, so both point at the same data. For an independent copy use <code>Arrays.copyOf</code>, <code>clone()</code> or <code>System.arraycopy</code>.</li>
+              <li><b>Passing arrays to methods</b> — because the reference value is passed, a method can modify the caller's array in place — useful for in-place sorts, dangerous if unintended.</li>
+              <li><b>Variable-length argument lists</b> — varargs (<code>int... nums</code>) let a method accept any number of arguments, received as an array; only one varargs parameter is allowed and it must come last.</li>
+              <li><b>Searching &amp; sorting</b> — linear search scans every element (O(n)); binary search halves the range each step (O(log n)) but requires sorted data. Library helpers <code>Arrays.sort</code> and <code>Arrays.binarySearch</code> implement these efficiently.</li>
+              <li><b>Multidimensional arrays</b> — Java has no true 2-D arrays, only arrays of arrays, which means rows can have different lengths (jagged arrays). Access is <code>grid[row][col]</code>.</li>
             </ul>
             <div class="keyidea"><span class="kih">Key idea — search complexity</span>
               <p style="margin:.3em 0 0;font-size:.9rem">Linear search is O(n) on any array; binary search is O(log n) but requires the array to be <b>sorted</b> first.</p>
+              <pre><code>int[] a = {5, 2, 9, 1};
+Arrays.sort(a);                       // {1, 2, 5, 9}
+int i = Arrays.binarySearch(a, 5);    // → 2  (needs sorted input)</code></pre>
             </div>
-            <p class="readings"><b>Readings:</b> Liang, ch. 7 (Single-Dimensional Arrays) &amp; ch. 8 (Multidimensional Arrays).</p>
+            <div class="note pitfall"><span class="nh">Common pitfall</span>Reading <code>arr[arr.length]</code> throws <code>ArrayIndexOutOfBoundsException</code> — the last valid index is <code>length-1</code>. And calling <code>binarySearch</code> on an unsorted array returns a meaningless result, not an error.</div>
+            <div class="note connects"><span class="nh">Connects to…</span>Arrays' fixed size motivates the resizable <code>ArrayList</code> in <a href="#program">Session 15</a> and the whole collections framework in <a href="#program">Sessions 25–26</a>.</div>
+            <p class="readings"><b>Readings:</b> Liang, ch. 7 (Single-Dimensional Arrays) &amp; ch. 8 (Multidimensional Arrays).
+              <span class="focus">Focus on: reference vs deep copying of arrays, and the precondition (sorted data) that makes binary search valid.</span></p>
             <p class="xref">&rarr; Companion: <a href="index.html">Lesson 06 — Arrays (1D and 2D)</a></p>
           </li>
 
@@ -511,13 +643,15 @@ double max(double a, double b) { ... }  // overload, chosen by arg types</code><
             <h4>Quiz 1 &amp; fundamentals recap</h4>
             <p class="tl-objective">Objective: consolidate and self-assess the procedural fundamentals before OOP.</p>
             <ul class="tl-topics">
-              <li><b>Quiz on fundamental Java topics</b> — loops, methods and arrays under timed conditions.</li>
-              <li><b>Summary of fundamentals</b> — review of the toolchain, types, control flow, methods and arrays.</li>
+              <li><b>Quiz on fundamental Java topics</b> — a timed check on the toolchain, types, control flow, loops, methods and arrays. Treat it as a low-stakes rehearsal for exam conditions: practise writing and tracing code by hand, not just recognising it.</li>
+              <li><b>Summary of fundamentals</b> — a guided recap that knits the procedural pieces together and flags the recurring traps (integer division, <code>==</code> vs <code>.equals()</code>, off-by-one, pass-by-value) before the object-oriented model raises the abstraction level.</li>
             </ul>
             <div class="keyidea"><span class="kih">Key idea — checkpoint</span>
               <p style="margin:.3em 0 0;font-size:.9rem">This checkpoint feeds the 25% intermediate exam. Rehearse with the companion's mixed quiz.</p>
             </div>
-            <p class="readings"><b>Readings:</b> review Liang chs. 1–8.</p>
+            <div class="takeaway"><span class="nh">Key takeaway</span>If anything in Modules A feels shaky, fix it now — every later module assumes fluent control flow, methods and arrays.</div>
+            <p class="readings"><b>Readings:</b> review Liang chs. 1–8.
+              <span class="focus">Focus on: re-deriving the worked examples yourself rather than re-reading; redo any exercise you previously needed help with.</span></p>
             <p class="xref">&rarr; Companion: <a href="index.html#quiz">Quiz mode — 12 mixed questions</a></p>
           </li>
         </ol>
@@ -546,13 +680,13 @@ double max(double a, double b) { ... }  // overload, chosen by arg types</code><
             <h4>Defining classes &amp; objects</h4>
             <p class="tl-objective">Objective: define a class, construct objects, and manage instance vs static members.</p>
             <ul class="tl-topics">
-              <li><b>Defining classes &amp; objects</b> — a class is a blueprint; objects are instances on the heap.</li>
-              <li><b>Constructors</b> — initialise new objects; the no-arg default disappears once you declare one.</li>
-              <li><b>Accessing objects via reference variables</b> — variables hold references, not the object itself.</li>
-              <li><b>Object data &amp; methods</b> — fields (state) and methods (behaviour).</li>
-              <li><b>Passing objects to methods</b> — the reference value is passed, so mutations are visible to the caller.</li>
-              <li><b>this keyword</b> — refers to the current instance; disambiguates fields from parameters.</li>
-              <li><b>Static variables, constants &amp; methods</b> — belong to the class, shared across all instances.</li>
+              <li><b>Defining classes &amp; objects</b> — a class is a blueprint describing state and behaviour; <code>new</code> creates an object (instance) on the heap from that blueprint. The shift from "a program is a list of steps" to "a program is a society of collaborating objects" is the conceptual core of the whole course.</li>
+              <li><b>Constructors</b> — special methods (no return type, same name as the class) that initialise a new object's fields. Java supplies a no-arg default <em>only</em> until you declare any constructor of your own, after which you must add it back if you still need it.</li>
+              <li><b>Accessing objects via reference variables</b> — a variable of a class type stores a reference to an object, not the object itself; many references can point at the same object, and <code>null</code> means "points at nothing".</li>
+              <li><b>Object data &amp; methods</b> — fields hold an object's state, methods define its behaviour, and good design keeps the two together so an object manages its own data.</li>
+              <li><b>Passing objects to methods</b> — the reference value is copied, so the method shares the same object and any field mutations it makes are visible to the caller.</li>
+              <li><b>this keyword</b> — inside an instance method <code>this</code> denotes the current object; it disambiguates a field from a same-named parameter (<code>this.x = x</code>).</li>
+              <li><b>Static variables, constants &amp; methods</b> — declared <code>static</code>, these belong to the class itself and are shared by all instances; use them for counters, factory methods and true constants (<code>static final</code>).</li>
             </ul>
             <div class="keyidea"><span class="kih">Key idea — instance vs static</span>
               <pre><code>class Counter {
@@ -561,7 +695,10 @@ double max(double a, double b) { ... }  // overload, chosen by arg types</code><
     Counter() { id = ++total; }
 }</code></pre>
             </div>
-            <p class="readings"><b>Readings:</b> Liang, ch. 9 (Objects and Classes).</p>
+            <div class="note pitfall"><span class="nh">Common pitfall</span>Calling a method on a <code>null</code> reference throws <code>NullPointerException</code> — the most common Java runtime error. Initialise references before use and check for <code>null</code> at boundaries.</div>
+            <div class="takeaway"><span class="nh">Key takeaway</span>Keep data and the methods that operate on it inside the same class; an object should be responsible for its own consistency, which sets up encapsulation in Session 13.</div>
+            <p class="readings"><b>Readings:</b> Liang, ch. 9 (Objects and Classes).
+              <span class="focus">Focus on: how constructors initialise state, and the instance-vs-static distinction — a frequent exam discriminator.</span></p>
             <p class="xref">&rarr; Companion: <a href="index.html">Lesson 10–11 — Classes and objects</a></p>
           </li>
 
@@ -570,17 +707,20 @@ double max(double a, double b) { ... }  // overload, chosen by arg types</code><
             <h4>Visibility, immutability &amp; reference types</h4>
             <p class="tl-objective">Objective: control access and understand the deep difference between value and reference variables.</p>
             <ul class="tl-topics">
-              <li><b>Visibility modifiers</b> — <code>public</code>, <code>protected</code>, package-private, <code>private</code>.</li>
-              <li><b>Immutable objects &amp; classes</b> — no mutators + final fields = thread-safe, cache-friendly objects.</li>
-              <li><b>Scope of variables</b> — fields vs locals vs parameters.</li>
-              <li><b>this keyword</b> — also used to chain constructors via <code>this(...)</code>.</li>
-              <li><b>Primitive vs reference variables</b> — a primitive holds a value; a reference holds an address.</li>
+              <li><b>Visibility modifiers</b> — four levels control access: <code>private</code> (same class only), package-private (no modifier — same package), <code>protected</code> (package + subclasses) and <code>public</code> (everywhere). The guideline is to keep everything as private as possible and widen only deliberately.</li>
+              <li><b>Immutable objects &amp; classes</b> — an object with no mutators and all-<code>final</code> fields can never change after construction, which makes it automatically thread-safe, freely shareable and safe to cache. <code>String</code> and the wrapper types are the canonical examples.</li>
+              <li><b>Scope of variables</b> — fields exist for the object's lifetime, locals only within their block, and parameters only within the method; a local can shadow a field, which is when <code>this.</code> becomes necessary.</li>
+              <li><b>this keyword</b> — besides referring to the current object, <code>this(...)</code> in a constructor calls another constructor of the same class, letting you funnel initialisation through one place.</li>
+              <li><b>Primitive vs reference variables</b> — a primitive variable stores the actual value; a reference variable stores an address. This single distinction explains copying, equality and the <code>NullPointerException</code> family of bugs.</li>
             </ul>
             <div class="keyidea"><span class="kih">Key idea — copying a reference ≠ copying the object</span>
               <pre><code>int[] a = {1,2}; int[] b = a;  // same array
 b[0] = 9;                       // a[0] is now 9 too</code></pre>
             </div>
-            <p class="readings"><b>Readings:</b> Liang, ch. 9 §9.9–9.13; Bloch, <i>Effective Java</i> Item 17 (minimise mutability).</p>
+            <div class="note pitfall"><span class="nh">Common pitfall</span>Two references to the same mutable object create "spooky action at a distance": changing it through one variable surprises code holding the other. Immutability (or defensive copies) removes the hazard.</div>
+            <div class="note connects"><span class="nh">Connects to…</span>The reference-vs-value distinction is exactly why <code>==</code> and <code>.equals()</code> differ (<a href="#program">Session 15</a>) and why <code>protected</code> matters for inheritance (<a href="#program">Session 14</a>).</div>
+            <p class="readings"><b>Readings:</b> Liang, ch. 9 §9.9–9.13; Bloch, <i>Effective Java</i> Item 17 (minimise mutability).
+              <span class="focus">Focus on: Bloch's argument for immutability and the access-level table — both recur throughout the OOP and design modules.</span></p>
             <p class="xref">&rarr; Companion: <a href="index.html">Lesson 10–11 — visibility, overloading</a></p>
           </li>
 
@@ -589,15 +729,21 @@ b[0] = 9;                       // a[0] is now 9 too</code></pre>
             <h4>Thinking in objects</h4>
             <p class="tl-objective">Objective: model a problem domain as collaborating objects with clear relationships.</p>
             <ul class="tl-topics">
-              <li><b>Thinking in objects</b> — identify responsibilities and behaviours, not just data.</li>
-              <li><b>Class relationships</b> — association, aggregation and composition (has-a) vs inheritance (is-a).</li>
-              <li><b>The String class</b> — immutable text; <code>==</code> vs <code>.equals()</code>; the string pool.</li>
-              <li><b>Case study</b> — designing a small domain model end to end.</li>
+              <li><b>Thinking in objects</b> — good OO design starts from responsibilities and behaviours ("what can this thing do, and what is it accountable for?") rather than from data layout. The aim is objects that encapsulate their own state and expose meaningful operations.</li>
+              <li><b>Class relationships</b> — distinguish association (uses-a), aggregation/composition (has-a, with composition implying ownership and lifecycle) from inheritance (is-a). Choosing has-a over is-a is the design lever explored fully in Session 17.</li>
+              <li><b>The String class</b> — strings are immutable objects backed by an interned pool, so literals may be shared. This is why <code>==</code> sometimes appears to work on strings but is unreliable: always compare contents with <code>.equals()</code>.</li>
+              <li><b>Case study</b> — a worked end-to-end domain model (identifying classes, fields, methods and relationships) turns the abstract guidance into a concrete design you can imitate in the projects.</li>
             </ul>
             <div class="keyidea"><span class="kih">Key idea — String immutability</span>
               <p style="margin:.3em 0 0;font-size:.9rem">Strings never change in place; "modifying" one creates a new object. Use <code>StringBuilder</code> for heavy concatenation.</p>
+              <pre><code>String a = "hi", b = "hi";   // same pooled object
+a == b;          // true here, but DON'T rely on it
+a.equals(b);     // true — the correct way to compare</code></pre>
             </div>
-            <p class="readings"><b>Readings:</b> Liang, ch. 10 (Object-Oriented Thinking); Bloch Item 51 (favour composition).</p>
+            <div class="note pitfall"><span class="nh">Common pitfall</span>Building a string inside a loop with <code>+=</code> creates a new object every iteration — O(n²) work. Use a <code>StringBuilder</code> and call <code>toString()</code> once at the end.</div>
+            <div class="note connects"><span class="nh">Connects to…</span>The has-a vs is-a choice here is formalised as "composition over inheritance" in <a href="#program">Session 17</a>, and <code>.equals()</code> gets its full contract in <a href="#program">Session 15</a>.</div>
+            <p class="readings"><b>Readings:</b> Liang, ch. 10 (Object-Oriented Thinking); Bloch Item 51 (favour composition).
+              <span class="focus">Focus on: how to decompose a problem into classes and relationships — practise on a domain of your own before the project.</span></p>
             <p class="xref">&rarr; Companion: <a href="index.html">Lesson 12 — Object-oriented thinking</a></p>
           </li>
 
@@ -606,18 +752,21 @@ b[0] = 9;                       // a[0] is now 9 too</code></pre>
             <h4>Encapsulation</h4>
             <p class="tl-objective">Objective: protect invariants by hiding state behind a controlled interface.</p>
             <ul class="tl-topics">
-              <li><b>Getters &amp; setters</b> — expose read/write access while validating in setters.</li>
-              <li><b>Encapsulation principles</b> — private fields + public methods; the object guards its own consistency.</li>
-              <li><b>Immutable classes</b> — final class, final fields, defensive copies, no mutators.</li>
+              <li><b>Getters &amp; setters</b> — accessor methods mediate read/write access to private fields, letting a setter validate input or a getter compute a derived value without changing the class's public contract. They are the seam that makes later refactoring safe.</li>
+              <li><b>Encapsulation principles</b> — make fields <code>private</code> and expose behaviour through public methods so the object alone enforces its invariants; callers depend on <em>what</em> it does, not <em>how</em> it stores data. This is the practical face of "information hiding".</li>
+              <li><b>Immutable classes</b> — combine a <code>final</code> class, all-<code>final</code> private fields, no setters and defensive copies of any mutable inputs/outputs to guarantee the object can never be observed in an inconsistent state.</li>
             </ul>
             <div class="keyidea"><span class="kih">Key idea — validate at the boundary</span>
               <pre><code>private int age;
 public void setAge(int a) {
-    if (a < 0) throw new IllegalArgumentException();
-    this.age = a;
+    if (a < 0) throw new IllegalArgumentException("age &lt; 0");
+    this.age = a;          // invariant: age is never negative
 }</code></pre>
             </div>
-            <p class="readings"><b>Readings:</b> Liang, ch. 9 §9.10; Bloch Items 15–16 (minimise accessibility, prefer accessors).</p>
+            <div class="note pitfall"><span class="nh">Common pitfall</span>A getter that returns a reference to a mutable field (e.g. a <code>List</code> or array) leaks your internals — callers can mutate it behind your back. Return an unmodifiable view or a copy.</div>
+            <div class="note connects"><span class="nh">Connects to…</span>Encapsulation is the "E" behind clean APIs, and directly enables the Single-Responsibility and Open/Closed principles in <a href="#program">Session 17</a>; setters that validate prevent the bad state that <a href="#program">Session 21</a>'s exceptions would otherwise report.</div>
+            <p class="readings"><b>Readings:</b> Liang, ch. 9 §9.10; Bloch Items 15–16 (minimise accessibility, prefer accessors).
+              <span class="focus">Focus on: why public fields are almost always wrong, and how validating setters protect class invariants.</span></p>
             <p class="xref">&rarr; Companion: <a href="index.html">Lesson 13 — Encapsulation</a></p>
           </li>
 
@@ -626,12 +775,12 @@ public void setAge(int a) {
             <h4>Inheritance</h4>
             <p class="tl-objective">Objective: reuse and specialise behaviour through subclassing without breaking the base.</p>
             <ul class="tl-topics">
-              <li><b>Superclasses &amp; subclasses</b> — <code>extends</code> establishes an is-a relationship.</li>
-              <li><b>The super keyword</b> — call the parent constructor or an overridden parent method.</li>
-              <li><b>Constructor chaining</b> — a subclass constructor always invokes a superclass constructor first.</li>
-              <li><b>Overriding methods</b> — redefine inherited behaviour with the same signature.</li>
-              <li><b>Overriding vs overloading</b> — runtime dispatch vs compile-time selection.</li>
-              <li><b>Object class &amp; toString()</b> — every class inherits from <code>Object</code>; override <code>toString()</code> for readable output.</li>
+              <li><b>Superclasses &amp; subclasses</b> — <code>extends</code> creates an is-a relationship: a subclass inherits the superclass's accessible members and may add or specialise behaviour. Use it only when the subclass truly <em>is</em> a kind of the superclass.</li>
+              <li><b>The super keyword</b> — <code>super(...)</code> invokes a chosen superclass constructor, and <code>super.method()</code> calls the parent's version of an overridden method, letting a subclass extend rather than replace behaviour.</li>
+              <li><b>Constructor chaining</b> — every subclass constructor implicitly (or explicitly via <code>super(...)</code>) calls a superclass constructor first, so objects are built base-up. If the superclass has no no-arg constructor, you must call one explicitly.</li>
+              <li><b>Overriding methods</b> — a subclass redefines an inherited method with the same signature; annotate it <code>@Override</code> so the compiler verifies you really are overriding and not accidentally overloading.</li>
+              <li><b>Overriding vs overloading</b> — overriding is resolved at <em>runtime</em> by the object's actual type (dynamic dispatch); overloading is resolved at <em>compile time</em> by the argument types. Conflating the two is a classic exam trap.</li>
+              <li><b>Object class &amp; toString()</b> — every class ultimately extends <code>Object</code>, inheriting <code>toString()</code>, <code>equals()</code> and <code>hashCode()</code>; overriding <code>toString()</code> gives readable debug output and is almost always worth doing.</li>
             </ul>
             <div class="keyidea"><span class="kih">Key idea — @Override + super()</span>
               <pre><code>class Dog extends Animal {
@@ -639,7 +788,10 @@ public void setAge(int a) {
     @Override public String speak() { return "Woof"; }
 }</code></pre>
             </div>
-            <p class="readings"><b>Readings:</b> Liang, ch. 11 (Inheritance and Polymorphism) §11.1–11.6; Bloch Item 19 (design for inheritance or prohibit it).</p>
+            <div class="note pitfall"><span class="nh">Common pitfall</span>Without <code>@Override</code>, a typo in the signature silently creates an <em>overload</em> that is never called polymorphically — the program compiles but misbehaves. Always annotate intended overrides.</div>
+            <div class="note connects"><span class="nh">Connects to…</span>Overriding is the mechanism that makes the polymorphism of <a href="#program">Session 15</a> work, and Bloch's "design for inheritance or prohibit it" anticipates the composition-vs-inheritance debate of <a href="#program">Session 17</a>.</div>
+            <p class="readings"><b>Readings:</b> Liang, ch. 11 (Inheritance and Polymorphism) §11.1–11.6; Bloch Item 19 (design for inheritance or prohibit it).
+              <span class="focus">Focus on: constructor chaining order and the precise difference between overriding and overloading.</span></p>
             <p class="xref">&rarr; Companion: <a href="index.html">Lesson 14 — Inheritance</a></p>
           </li>
 
@@ -648,18 +800,22 @@ public void setAge(int a) {
             <h4>Polymorphism &amp; dynamic binding</h4>
             <p class="tl-objective">Objective: write code against base types and let the runtime pick the right implementation.</p>
             <ul class="tl-topics">
-              <li><b>Introduction to polymorphism</b> — one interface, many runtime forms.</li>
-              <li><b>Dynamic binding</b> — the JVM dispatches on the object's actual type, not the reference type.</li>
-              <li><b>Casting objects</b> — upcasting is implicit; downcasting needs an explicit cast (and care).</li>
-              <li><b>Object.equals()</b> — value equality; must respect the equals/hashCode contract.</li>
-              <li><b>The ArrayList class</b> — a resizable, generic list (first taste of collections).</li>
-              <li><b>The instanceof operator</b> — safe type checks before downcasting (incl. pattern form).</li>
+              <li><b>Introduction to polymorphism</b> — a single reference type can hold objects of many subtypes, each responding to the same call in its own way. This lets you write code against a general type and add new variants without touching existing logic.</li>
+              <li><b>Dynamic binding</b> — for overridden methods the JVM dispatches on the object's <em>actual</em> runtime type, not the declared reference type, so <code>Animal a = new Dog(); a.speak();</code> runs <code>Dog</code>'s version.</li>
+              <li><b>Casting objects</b> — upcasting a subtype to a supertype is implicit and always safe; downcasting needs an explicit cast and can throw <code>ClassCastException</code> if the object isn't really that type, so guard it with <code>instanceof</code>.</li>
+              <li><b>Object.equals()</b> — defines logical (value) equality and must obey the reflexive/symmetric/transitive/consistent contract; whenever you override <code>equals</code> you must also override <code>hashCode</code> consistently.</li>
+              <li><b>The ArrayList class</b> — a resizable, generic list (<code>ArrayList&lt;String&gt;</code>) and your first real collection: it grows automatically, unlike a fixed array, previewing the framework in Module E.</li>
+              <li><b>The instanceof operator</b> — tests an object's runtime type before a downcast; the pattern form <code>if (o instanceof Dog d)</code> tests and binds in one step.</li>
             </ul>
             <div class="keyidea"><span class="kih">Key idea — dynamic dispatch</span>
               <pre><code>Animal a = new Dog();
-a.speak();   // "Woof" — resolved at runtime, not compile time</code></pre>
+a.speak();   // "Woof" — resolved at runtime, not compile time
+if (a instanceof Dog d) d.fetch();   // safe downcast via pattern</code></pre>
             </div>
-            <p class="readings"><b>Readings:</b> Liang, ch. 11 §11.7–11.14; Bloch Items 10–11 (equals/hashCode).</p>
+            <div class="note pitfall"><span class="nh">Common pitfall</span>Overriding <code>equals</code> but not <code>hashCode</code> (or vice-versa) breaks <code>HashSet</code>/<code>HashMap</code>: equal objects land in different buckets and "disappear". Always override both together.</div>
+            <div class="note connects"><span class="nh">Connects to…</span>The equals/hashCode contract here is precisely what hash-based collections in <a href="#program">Session 26</a> rely on; polymorphism is the foundation of the Strategy and Observer patterns in <a href="#program">Session 28</a>.</div>
+            <p class="readings"><b>Readings:</b> Liang, ch. 11 §11.7–11.14; Bloch Items 10–11 (equals/hashCode).
+              <span class="focus">Focus on: why dynamic binding picks the subclass method, and the rules for a correct equals/hashCode pair.</span></p>
             <p class="xref">&rarr; Companion: <a href="index.html">Lesson 15 — Polymorphism &amp; dynamic binding</a></p>
           </li>
 
@@ -668,20 +824,24 @@ a.speak();   // "Woof" — resolved at runtime, not compile time</code></pre>
             <h4>Abstraction — abstract classes &amp; interfaces</h4>
             <p class="tl-objective">Objective: define contracts and partial implementations, and choose the right abstraction.</p>
             <ul class="tl-topics">
-              <li><b>Abstract classes</b> — can't be instantiated; may mix concrete and abstract methods.</li>
-              <li><b>Why abstract methods</b> — force subclasses to supply behaviour.</li>
-              <li><b>Case study</b> — a shape/geometry hierarchy.</li>
-              <li><b>Defining &amp; implementing interfaces</b> — pure contracts; a class can implement many.</li>
-              <li><b>Interfaces vs abstract classes</b> — multiple inheritance of type vs shared state/behaviour.</li>
-              <li><b>Multiple interfaces &amp; ambiguity</b> — resolving clashing default methods.</li>
+              <li><b>Abstract classes</b> — declared <code>abstract</code>, they cannot be instantiated and may mix concrete methods (shared implementation) with abstract ones (left to subclasses). Use them when subclasses share both state and partial behaviour.</li>
+              <li><b>Why abstract methods</b> — an abstract method declares a contract without a body, forcing every concrete subclass to supply its own implementation; this guarantees that, say, every <code>Shape</code> can compute its <code>area()</code>.</li>
+              <li><b>Case study</b> — a shape/geometry hierarchy (Shape &rarr; Circle, Rectangle…) shows abstraction and polymorphism working together: store shapes in one collection and total their areas without knowing the concrete types.</li>
+              <li><b>Defining &amp; implementing interfaces</b> — an interface is a pure contract (since Java 8 it may also carry <code>default</code> and <code>static</code> methods); a class can <code>implement</code> many interfaces, gaining multiple inheritance of <em>type</em>.</li>
+              <li><b>Interfaces vs abstract classes</b> — pick an interface for a capability many unrelated classes can have (e.g. <code>Comparable</code>); pick an abstract class when subclasses share state and a common partial implementation. A class extends one class but implements many interfaces.</li>
+              <li><b>Multiple interfaces &amp; ambiguity</b> — if two interfaces supply clashing <code>default</code> methods, the implementing class must override the method and may delegate with <code>Interface.super.method()</code>.</li>
             </ul>
             <div class="keyidea"><span class="kih">Key idea — program to an interface</span>
               <pre><code>interface Shape { double area(); }
 class Circle implements Shape {
     double r; public double area() { return Math.PI*r*r; }
-}</code></pre>
+}
+List&lt;Shape&gt; shapes = List.of(new Circle());  // depend on the type, not the class</code></pre>
             </div>
-            <p class="readings"><b>Readings:</b> Liang, ch. 13 (Abstract Classes and Interfaces); Bloch Items 20–22.</p>
+            <div class="note pitfall"><span class="nh">Common pitfall</span>Reaching for inheritance ("a Circle <em>is an</em> abstract Shape") when a capability interface would be cleaner leads to rigid hierarchies. Prefer the smallest interface that expresses the contract.</div>
+            <div class="note connects"><span class="nh">Connects to…</span>"Program to an interface" is the dependency-inversion and interface-segregation thinking of <a href="#program">Session 17</a>, and interfaces are how the design patterns of <a href="#program">Session 28</a> stay swappable.</div>
+            <p class="readings"><b>Readings:</b> Liang, ch. 13 (Abstract Classes and Interfaces); Bloch Items 20–22 (prefer interfaces to abstract classes).
+              <span class="focus">Focus on: the decision rule for interface vs abstract class, and why coding against interfaces keeps designs flexible.</span></p>
             <p class="xref">&rarr; Companion: <a href="index.html">Lesson 16 — Interfaces and abstract classes</a></p>
           </li>
 
@@ -690,15 +850,19 @@ class Circle implements Shape {
             <h4>OO design principles — SOLID &amp; beyond</h4>
             <p class="tl-objective">Objective: judge and improve a design using established principles, not just taste.</p>
             <ul class="tl-topics">
-              <li><b>SOLID overview</b> — Single-responsibility, Open/closed, Liskov substitution, Interface segregation, Dependency inversion.</li>
-              <li><b>Composition vs inheritance</b> — prefer has-a over is-a to avoid fragile hierarchies.</li>
-              <li><b>Common OO design pitfalls</b> — god classes, deep hierarchies, leaky abstractions.</li>
-              <li><b>Shallow vs deep modules</b> — a small interface hiding substantial functionality (Ousterhout).</li>
+              <li><b>SOLID overview</b> — five principles for maintainable OO design: <b>S</b>ingle-responsibility (one reason to change), <b>O</b>pen/closed (extend without modifying), <b>L</b>iskov substitution (subtypes must be usable as their base), <b>I</b>nterface segregation (many small interfaces beat one fat one) and <b>D</b>ependency inversion (depend on abstractions, not concretions). They turn "good design" from taste into checkable criteria.</li>
+              <li><b>Composition vs inheritance</b> — prefer assembling behaviour from has-a parts over deep is-a hierarchies; composition is more flexible, avoids the fragile-base-class problem, and lets you change collaborators at runtime.</li>
+              <li><b>Common OO design pitfalls</b> — god classes that do everything, hierarchies too deep to reason about, and leaky abstractions whose internals show through the interface. Each violates one or more SOLID principles.</li>
+              <li><b>Shallow vs deep modules</b> — Ousterhout's lens: a <em>deep</em> module hides a lot of functionality behind a small interface (high benefit, low cost), while a <em>shallow</em> one exposes nearly as much complexity as it hides. Aim for depth.</li>
             </ul>
             <div class="keyidea"><span class="kih">Key idea — deep modules</span>
               <p style="margin:.3em 0 0;font-size:.9rem">The best modules expose a <b>narrow</b> interface over a <b>deep</b> implementation — maximising functionality hidden behind minimal surface area.</p>
             </div>
-            <p class="readings"><b>Readings:</b> Bloch, <i>Effective Java</i> (composition, interface design); SOLID primers; Ousterhout on module depth.</p>
+            <div class="note pitfall"><span class="nh">Common pitfall</span>SOLID is a guide, not dogma — over-applying it (an interface and factory for every class) produces needless ceremony. Reach for a principle when it removes real pain, not reflexively.</div>
+            <div class="note connects"><span class="nh">Connects to…</span>Open/closed and dependency inversion are exactly what the design patterns of <a href="#program">Session 28</a> implement; these principles are also a grading criterion for both projects.</div>
+            <div class="takeaway"><span class="nh">Key takeaway</span>You can now critique a design with shared vocabulary — name the principle a piece of code violates and the refactor follows.</div>
+            <p class="readings"><b>Readings:</b> Bloch, <i>Effective Java</i> (composition Item 18, interface design); SOLID primers; Ousterhout, <i>A Philosophy of Software Design</i> (module depth).
+              <span class="focus">Focus on: applying each SOLID letter to your own project design, and recognising the composition-over-inheritance trade-off.</span></p>
             <p class="xref">&rarr; Companion: <a href="index.html">Lessons 12–16</a> (applied to your designs)</p>
           </li>
 
@@ -707,13 +871,15 @@ class Circle implements Shape {
             <h4>OOP quiz &amp; recap</h4>
             <p class="tl-objective">Objective: consolidate the full OOP model before moving to advanced APIs.</p>
             <ul class="tl-topics">
-              <li><b>Quiz covering all OOP topics</b> — encapsulation, inheritance, polymorphism, abstraction, design.</li>
-              <li><b>Summary of fundamental OOP concepts</b> — connecting the four pillars to SOLID.</li>
+              <li><b>Quiz covering all OOP topics</b> — a consolidating assessment over classes, encapsulation, inheritance, polymorphism, abstraction and design. Expect both code-tracing ("what does this print?") and design-judgement ("which principle does this violate?") questions.</li>
+              <li><b>Summary of fundamental OOP concepts</b> — ties the four pillars to SOLID: encapsulation underpins single-responsibility, inheritance/polymorphism enable open/closed and Liskov, abstraction enables interface-segregation and dependency-inversion.</li>
             </ul>
             <div class="keyidea"><span class="kih">Key idea — checkpoint</span>
               <p style="margin:.3em 0 0;font-size:.9rem">A strong OOP foundation underpins the group/individual projects and both exams.</p>
             </div>
-            <p class="readings"><b>Readings:</b> review Liang chs. 9–13.</p>
+            <div class="takeaway"><span class="nh">Key takeaway</span>Be able to <em>name</em> the pillar or principle at work in any snippet — that fluency is what both exams and project reviews reward.</div>
+            <p class="readings"><b>Readings:</b> review Liang chs. 9–13.
+              <span class="focus">Focus on: overriding-vs-overloading, equals/hashCode, and interface-vs-abstract-class decisions — the highest-yield revision targets.</span></p>
             <p class="xref">&rarr; Companion: <a href="index.html#quiz">Quiz mode</a></p>
           </li>
         </ol>
@@ -741,14 +907,16 @@ class Circle implements Shape {
             <h4>Individual project kickoff</h4>
             <p class="tl-objective">Objective: understand the individual project's scope, expectations and timeline.</p>
             <ul class="tl-topics">
-              <li><b>Introduction to the individual project</b> — what to build and why.</li>
-              <li><b>Expectations &amp; guidelines</b> — quality bar, idiomatic Java, encapsulation/SOLID.</li>
-              <li><b>Timeline &amp; deliverable</b> — milestones feeding the 15% individual mark.</li>
+              <li><b>Introduction to the individual project</b> — choose an application meaningful enough to exercise classes, collections and error handling, but scoped to finish solo. The brief is your contract; read it for required features and constraints.</li>
+              <li><b>Expectations &amp; guidelines</b> — the quality bar is idiomatic, well-encapsulated Java that applies SOLID, with readable naming and a short design rationale. Working code that's well-structured beats more features built sloppily.</li>
+              <li><b>Timeline &amp; deliverable</b> — milestones (design &rarr; core feature &rarr; polish &rarr; submission) feed the 15% individual mark; submit source plus a brief README describing how to build and run it.</li>
             </ul>
             <div class="keyidea"><span class="kih">Key idea — design before code</span>
               <p style="margin:.3em 0 0;font-size:.9rem">Sketch classes and responsibilities first; the OOP module gives you the vocabulary to do so.</p>
             </div>
-            <p class="readings"><b>Readings:</b> Bloch, <i>Effective Java</i> (general advice); project brief.</p>
+            <div class="takeaway"><span class="nh">Key takeaway</span>Start small and working, then grow — a running skeleton you extend beats a grand design you never finish.</div>
+            <p class="readings"><b>Readings:</b> Bloch, <i>Effective Java</i> (general advice on API and class design); the project brief.
+              <span class="focus">Focus on: turning the brief into a one-page class sketch before you write any code.</span></p>
           </li>
 
           <li class="tl-item" data-n="20">
@@ -756,16 +924,19 @@ class Circle implements Shape {
             <h4>Build tooling &amp; packaging</h4>
             <p class="tl-objective">Objective: turn source into a versioned, distributable artifact.</p>
             <ul class="tl-topics">
-              <li><b>Building with Maven/Gradle</b> — declarative builds, dependency management, lifecycle phases.</li>
-              <li><b>Creating .jar files</b> — packaging compiled classes (+ a manifest with the main class).</li>
-              <li><b>Package management with Maven Central</b> — pulling and publishing libraries.</li>
-              <li><b>Delivering Java projects</b> — reproducible builds and runnable artifacts.</li>
+              <li><b>Building with Maven/Gradle</b> — these tools replace manual <code>javac</code> commands with a declarative build: you state dependencies and the tool resolves, compiles, tests and packages through a defined lifecycle (<code>compile</code> &rarr; <code>test</code> &rarr; <code>package</code>). This makes builds reproducible across machines.</li>
+              <li><b>Creating .jar files</b> — a JAR bundles compiled <code>.class</code> files (and resources) into one archive; adding a manifest entry naming the <code>Main-Class</code> makes it directly runnable with <code>java -jar</code>.</li>
+              <li><b>Package management with Maven Central</b> — declaring a dependency (group:artifact:version) pulls the library and its transitive dependencies automatically from the central repository, so you never check JARs into source control.</li>
+              <li><b>Delivering Java projects</b> — a clean, reproducible build plus a runnable artifact and a README is what "delivering" means in practice — and what graders and teammates expect to receive.</li>
             </ul>
             <div class="keyidea"><span class="kih">Key idea — a runnable JAR</span>
               <pre><code>mvn package          # → target/app-1.0.jar
 java -jar app-1.0.jar  # runs the Main-Class from the manifest</code></pre>
             </div>
-            <p class="readings"><b>Readings:</b> Loy/Niemeyer (packaging &amp; deployment); Maven/Gradle docs.</p>
+            <div class="note pitfall"><span class="nh">Common pitfall</span><code>java -jar</code> failing with "no main manifest attribute" means the manifest lacks a <code>Main-Class</code>, and "<code>ClassNotFoundException</code>" at runtime usually means dependencies weren't bundled — use a shade/fat-jar plugin to include them.</div>
+            <div class="note connects"><span class="nh">Connects to…</span>This is the automated, dependency-aware version of the manual compile-and-run from <a href="#program">Session 2</a>, and it's how you package both the individual (<a href="#program">S19</a>) and group (<a href="#program">S24</a>) projects for delivery.</div>
+            <p class="readings"><b>Readings:</b> Loy/Niemeyer (packaging &amp; deployment); Maven/Gradle docs.
+              <span class="focus">Focus on: the build lifecycle phases and how a manifest's Main-Class makes a JAR runnable.</span></p>
           </li>
 
           <li class="tl-item" data-n="21">
@@ -773,18 +944,23 @@ java -jar app-1.0.jar  # runs the Main-Class from the manifest</code></pre>
             <h4>Exception handling</h4>
             <p class="tl-objective">Objective: build resilient code that signals and recovers from failures cleanly.</p>
             <ul class="tl-topics">
-              <li><b>Exception-handling overview</b> — separating error handling from normal logic.</li>
-              <li><b>Exception types</b> — checked vs unchecked (<code>RuntimeException</code>) vs <code>Error</code>.</li>
-              <li><b>Declaring, throwing &amp; catching</b> — <code>throws</code>, <code>throw</code>, <code>try/catch/finally</code>.</li>
-              <li><b>Custom exceptions</b> — domain-specific types extending <code>Exception</code>/<code>RuntimeException</code>.</li>
-              <li><b>Best practices</b> — fail fast, don't swallow exceptions, prefer try-with-resources.</li>
+              <li><b>Exception-handling overview</b> — exceptions let you separate the normal "happy path" from error handling, so the main logic stays readable while failures propagate up to code able to deal with them.</li>
+              <li><b>Exception types</b> — <em>checked</em> exceptions (extend <code>Exception</code>) must be declared or handled and model recoverable conditions; <em>unchecked</em> ones (<code>RuntimeException</code>) signal programming bugs; <code>Error</code> represents JVM-level failures you shouldn't catch.</li>
+              <li><b>Declaring, throwing &amp; catching</b> — <code>throw</code> raises an exception, <code>throws</code> declares it on a method, and <code>try/catch/finally</code> handles it; <code>finally</code> always runs, for cleanup.</li>
+              <li><b>Custom exceptions</b> — defining domain-specific types (e.g. <code>InsufficientFundsException</code>) makes failures self-documenting and lets callers catch precisely what they can handle.</li>
+              <li><b>Best practices</b> — fail fast, never silently swallow an exception, catch the most specific type, throw exceptions appropriate to the abstraction, and prefer try-with-resources so resources close automatically.</li>
             </ul>
             <div class="keyidea"><span class="kih">Key idea — try-with-resources</span>
               <pre><code>try (Scanner s = new Scanner(file)) {
     // s is closed automatically, even on exception
+} catch (FileNotFoundException e) {
+    System.err.println("Missing file: " + e.getMessage());
 }</code></pre>
             </div>
-            <p class="readings"><b>Readings:</b> Liang, ch. 12 (Exception Handling and Text I/O); Bloch Items 69–77.</p>
+            <div class="note pitfall"><span class="nh">Common pitfall</span>An empty <code>catch</code> block (swallowing the exception) hides bugs and produces baffling behaviour later. At minimum log it; usually rethrow or handle it meaningfully.</div>
+            <div class="note connects"><span class="nh">Connects to…</span>Validating setters in <a href="#program">Session 13</a> typically <em>throw</em> <code>IllegalArgumentException</code>; robust exception handling is an explicit grading criterion for both projects.</div>
+            <p class="readings"><b>Readings:</b> Liang, ch. 12 (Exception Handling and Text I/O); Bloch Items 69–77 (use exceptions for exceptional conditions, favour standard exceptions, fail fast).
+              <span class="focus">Focus on: the checked-vs-unchecked decision and why try-with-resources beats manual <code>finally</code> cleanup.</span></p>
             <p class="xref">&rarr; Companion: <a href="index.html">Lesson 18 — Exception handling</a></p>
           </li>
         </ol>
@@ -811,19 +987,23 @@ java -jar app-1.0.jar  # runs the Main-Class from the manifest</code></pre>
             <h4>JavaFX basics</h4>
             <p class="tl-objective">Objective: assemble a window from a scene graph of panes and shapes.</p>
             <ul class="tl-topics">
-              <li><b>Introduction to JavaFX</b> — the modern Java GUI toolkit (Stage &rarr; Scene &rarr; nodes).</li>
-              <li><b>JavaFX vs Swing &amp; AWT</b> — why JavaFX superseded the older toolkits.</li>
-              <li><b>Panes, groups, UI controls &amp; shapes</b> — layout containers and the node hierarchy.</li>
-              <li><b>Property binding</b> — keep UI and model in sync automatically.</li>
-              <li><b>Color &amp; Font classes</b> — styling primitives.</li>
-              <li><b>Image &amp; ImageView</b> — displaying images.</li>
+              <li><b>Introduction to JavaFX</b> — JavaFX models a GUI as a tree: a <code>Stage</code> (window) holds a <code>Scene</code>, which holds a scene graph of nodes (controls, shapes, layout panes). Understanding this containment hierarchy is the key to building any window.</li>
+              <li><b>JavaFX vs Swing &amp; AWT</b> — JavaFX superseded the older AWT/Swing toolkits with a modern scene graph, CSS styling, property binding and FXML, giving cleaner separation of UI and logic.</li>
+              <li><b>Panes, groups, UI controls &amp; shapes</b> — layout panes (<code>VBox</code>, <code>HBox</code>, <code>BorderPane</code>, <code>GridPane</code>) arrange child nodes automatically, so you describe structure rather than pixel coordinates.</li>
+              <li><b>Property binding</b> — JavaFX properties can be bound so the UI updates automatically when the model changes (and vice-versa), eliminating manual "refresh" code and a whole class of sync bugs.</li>
+              <li><b>Color &amp; Font classes</b> — typed styling primitives for fills, strokes and text, complemented by CSS for larger styling concerns.</li>
+              <li><b>Image &amp; ImageView</b> — load and display images, with <code>ImageView</code> handling sizing and fitting within the scene graph.</li>
             </ul>
             <div class="keyidea"><span class="kih">Key idea — Stage &rarr; Scene &rarr; node graph</span>
               <pre><code>Button b = new Button("Click");
-b.setOnAction(e -> System.out.println("hi"));
-stage.setScene(new Scene(new StackPane(b), 300, 200));</code></pre>
+b.setOnAction(e -> System.out.println("hi"));   // lambda event handler
+stage.setScene(new Scene(new StackPane(b), 300, 200));
+stage.show();</code></pre>
             </div>
-            <p class="readings"><b>Readings:</b> Liang, chs. 14–16 (JavaFX basics, events, UI controls &amp; multimedia).</p>
+            <div class="note pitfall"><span class="nh">Common pitfall</span>JavaFX is single-threaded: never block or update the UI from a background thread directly — long work belongs on a <code>Task</code>/background thread, with UI updates marshalled back via <code>Platform.runLater</code>.</div>
+            <div class="note connects"><span class="nh">Connects to…</span>Event handlers are lambdas implementing a functional interface — the same interface-and-polymorphism ideas from <a href="#program">Sessions 15–16</a> applied to the UI.</div>
+            <p class="readings"><b>Readings:</b> Liang, chs. 14–16 (JavaFX basics, events, UI controls &amp; multimedia).
+              <span class="focus">Focus on: the Stage/Scene/node hierarchy and how event handlers wire user actions to your code.</span></p>
             <p class="xref">&rarr; Companion: <a href="index.html">Lesson 20 — JavaFX, compilation, packaging</a></p>
           </li>
 
@@ -832,16 +1012,21 @@ stage.setScene(new Scene(new StackPane(b), 300, 200));</code></pre>
             <h4>JavaFX controls &amp; multimedia</h4>
             <p class="tl-objective">Objective: build a complete interactive UI with the standard controls and media.</p>
             <ul class="tl-topics">
-              <li><b>Label &amp; Labeled</b> — text/graphic display nodes.</li>
-              <li><b>Button, CheckBox, RadioButton</b> — command and selection controls.</li>
-              <li><b>TextField, ComboBox</b> — text and choice input.</li>
-              <li><b>ListView, ScrollBar, Slider</b> — collections and ranged input.</li>
-              <li><b>Video &amp; audio</b> — the media API.</li>
+              <li><b>Label &amp; Labeled</b> — display-only nodes for text and graphics; <code>Labeled</code> is the shared superclass that buttons and labels both extend (inheritance in the standard library).</li>
+              <li><b>Button, CheckBox, RadioButton</b> — command and selection controls; radio buttons grouped in a <code>ToggleGroup</code> enforce single-choice selection.</li>
+              <li><b>TextField, ComboBox</b> — free-text and constrained-choice input, the building blocks of forms.</li>
+              <li><b>ListView, ScrollBar, Slider</b> — present collections of items and capture ranged/continuous input; <code>ListView</code> is typically backed by an <code>ObservableList</code> so it updates as the data changes.</li>
+              <li><b>Video &amp; audio</b> — the media API (<code>Media</code>, <code>MediaPlayer</code>, <code>MediaView</code>) plays sound and video inside the scene graph.</li>
             </ul>
             <div class="keyidea"><span class="kih">Key idea — event-driven UIs</span>
               <p style="margin:.3em 0 0;font-size:.9rem">Controls fire events; you register handlers (often lambdas). The UI is reactive, not procedural.</p>
+              <pre><code>ListView&lt;String&gt; list = new ListView&lt;&gt;(items);   // items: ObservableList
+list.getSelectionModel().selectedItemProperty()
+    .addListener((obs, old, sel) -&gt; show(sel));</code></pre>
             </div>
-            <p class="readings"><b>Readings:</b> Liang, ch. 16 (JavaFX UI Controls and Multimedia).</p>
+            <div class="note connects"><span class="nh">Connects to…</span><code>ObservableList</code> bridges JavaFX to the collections framework of <a href="#program">Sessions 25–26</a>; the controls here are what you'll wire into the group project's UI.</div>
+            <p class="readings"><b>Readings:</b> Liang, ch. 16 (JavaFX UI Controls and Multimedia).
+              <span class="focus">Focus on: binding a control to a data model so the UI reflects state changes without manual refresh code.</span></p>
             <p class="xref">&rarr; Companion: <a href="index.html">Lesson 20 — JavaFX</a></p>
           </li>
 
@@ -850,14 +1035,16 @@ stage.setScene(new Scene(new StackPane(b), 300, 200));</code></pre>
             <h4>Final project kickoff</h4>
             <p class="tl-objective">Objective: define the final (group) project's idea, scope and timeline.</p>
             <ul class="tl-topics">
-              <li><b>Introduction to the final project idea</b> — choosing a meaningful application.</li>
-              <li><b>Expectations &amp; guidelines</b> — design quality, modularity, OOP and collections.</li>
-              <li><b>Timeline &amp; deliverable</b> — milestones feeding the 25% group mark; presented in S29.</li>
+              <li><b>Introduction to the final project idea</b> — pick an application substantial enough to demonstrate OOP design, collections and a UI, yet realistic for a team to finish. Agree the scope and a minimal viable version early.</li>
+              <li><b>Expectations &amp; guidelines</b> — graded on design quality and modularity (SOLID, deep modules), correct use of OOP/generics/collections, robustness (exception handling), and teamwork; the demo should explain <em>why</em> the design is shaped as it is.</li>
+              <li><b>Timeline &amp; deliverable</b> — milestones (S24 kickoff &rarr; S27 progress check &rarr; S29 presentation) feed the 25% group mark; deliver a repository, a runnable build and a short design document.</li>
             </ul>
             <div class="keyidea"><span class="kih">Key idea — modular from day one</span>
               <p style="margin:.3em 0 0;font-size:.9rem">Split work along clean module boundaries so the team can build in parallel — apply SOLID and deep modules.</p>
             </div>
-            <p class="readings"><b>Readings:</b> Bloch, <i>Effective Java</i> (API design); project brief.</p>
+            <div class="note pitfall"><span class="nh">Common pitfall</span>"We'll integrate at the end" is how teams lose the final week to merge conflicts and interface mismatches. Agree interfaces up front and integrate continuously.</div>
+            <p class="readings"><b>Readings:</b> Bloch, <i>Effective Java</i> (API and class design); the project brief.
+              <span class="focus">Focus on: defining clean module interfaces between team members so work can proceed in parallel.</span></p>
           </li>
         </ol>
       </div>
@@ -883,17 +1070,20 @@ stage.setScene(new Scene(new StackPane(b), 300, 200));</code></pre>
             <h4>Generics</h4>
             <p class="tl-objective">Objective: write reusable, type-safe code parameterised over types.</p>
             <ul class="tl-topics">
-              <li><b>Motivations &amp; benefits</b> — compile-time type safety, fewer casts.</li>
-              <li><b>Generic methods &amp; classes</b> — <code>&lt;T&gt;</code> type parameters.</li>
-              <li><b>Type parameters &amp; wildcards</b> — <code>?</code>, <code>? extends T</code>, <code>? super T</code> (PECS).</li>
-              <li><b>Bounded types</b> — constrain a parameter, e.g. <code>&lt;T extends Comparable&lt;T&gt;&gt;</code>.</li>
-              <li><b>Raw types &amp; type erasure</b> — generics exist at compile time; the runtime sees raw types.</li>
+              <li><b>Motivations &amp; benefits</b> — generics let a class or method work over a parameterised type while keeping full compile-time type safety, so the compiler catches mistakes and you avoid error-prone casts. <code>List&lt;String&gt;</code> can never accidentally hold an <code>Integer</code>.</li>
+              <li><b>Generic methods &amp; classes</b> — a type parameter <code>&lt;T&gt;</code> stands in for a type chosen by the caller; the same code then serves <code>Box&lt;String&gt;</code>, <code>Box&lt;Integer&gt;</code> and so on without duplication.</li>
+              <li><b>Type parameters &amp; wildcards</b> — <code>?</code> is an unknown type; <code>? extends T</code> accepts T or any subtype (read from it), and <code>? super T</code> accepts T or any supertype (write to it). The PECS rule — <em>Producer Extends, Consumer Super</em> — tells you which to use.</li>
+              <li><b>Bounded types</b> — constrain a parameter so you can call methods on it, e.g. <code>&lt;T extends Comparable&lt;T&gt;&gt;</code> guarantees every T can be compared, enabling a generic <code>max</code>.</li>
+              <li><b>Raw types &amp; type erasure</b> — generic type information exists only at compile time; the runtime erases it to raw types. This explains why you can't write <code>new T[]</code> or test <code>x instanceof List&lt;String&gt;</code> — and why mixing in raw types defeats the safety generics provide.</li>
             </ul>
             <div class="keyidea"><span class="kih">Key idea — PECS &amp; erasure</span>
               <pre><code>&lt;T extends Comparable&lt;T&gt;&gt; T max(List&lt;? extends T&gt; xs) { ... }
 // "Producer extends, Consumer super"; types are erased at runtime</code></pre>
             </div>
-            <p class="readings"><b>Readings:</b> Liang, ch. 19 (Generics); Bloch Items 26–33 (generics).</p>
+            <div class="note pitfall"><span class="nh">Common pitfall</span>Falling back to a raw <code>List</code> (no type argument) silences the compiler's checks and reintroduces the cast bugs generics were meant to prevent. Always parameterise; use <code>List&lt;?&gt;</code> if the element type is genuinely unknown.</div>
+            <div class="note connects"><span class="nh">Connects to…</span>Bounded types rest on the <code>Comparable</code> interface from <a href="#program">Session 16</a>, and generics are what make the collections of <a href="#program">Session 26</a> type-safe (<code>Map&lt;String,User&gt;</code>).</div>
+            <p class="readings"><b>Readings:</b> Liang, ch. 19 (Generics); Bloch Items 26–33 (don't use raw types, prefer generic methods, use bounded wildcards).
+              <span class="focus">Focus on: the PECS rule for wildcards and why type erasure forbids certain operations.</span></p>
             <p class="xref">&rarr; Companion: <a href="index.html">Lesson 17 — Collections, generics</a></p>
           </li>
 
@@ -902,15 +1092,21 @@ stage.setScene(new Scene(new StackPane(b), 300, 200));</code></pre>
             <h4>Sets &amp; maps (hash tables)</h4>
             <p class="tl-objective">Objective: pick the right collection and understand its performance characteristics.</p>
             <ul class="tl-topics">
-              <li><b>Sets &amp; HashSets</b> — unordered, no duplicates; backed by a hash table.</li>
-              <li><b>Sets vs lists</b> — membership/uniqueness vs ordered, indexed sequences.</li>
-              <li><b>Maps in Java</b> — key&rarr;value associations (<code>HashMap</code>, <code>TreeMap</code>).</li>
-              <li><b>Singleton &amp; unmodifiable collections/maps</b> — immutable views and factory methods.</li>
+              <li><b>Sets &amp; HashSets</b> — a <code>Set</code> models a collection with no duplicates; <code>HashSet</code> implements it over a hash table for average O(1) membership tests, while <code>TreeSet</code> keeps elements sorted at O(log n) and <code>LinkedHashSet</code> preserves insertion order.</li>
+              <li><b>Sets vs lists</b> — use a <code>List</code> when order and duplicates matter and you index by position; use a <code>Set</code> when you only care about membership and uniqueness. Choosing the right one is both a correctness and a performance decision.</li>
+              <li><b>Maps in Java</b> — a <code>Map</code> associates unique keys with values; <code>HashMap</code> gives average O(1) <code>get</code>/<code>put</code>, <code>TreeMap</code> keeps keys sorted (O(log n)), and <code>LinkedHashMap</code> remembers insertion order. Maps are the workhorse for lookups and counting.</li>
+              <li><b>Singleton &amp; unmodifiable collections/maps</b> — factory methods like <code>List.of</code>, <code>Set.of</code>, <code>Map.of</code> and <code>Collections.unmodifiableList</code> produce immutable collections, ideal for safe sharing and defensive returns.</li>
             </ul>
             <div class="keyidea"><span class="kih">Key idea — hashing buys O(1)</span>
-              <p style="margin:.3em 0 0;font-size:.9rem"><code>HashSet</code>/<code>HashMap</code> give average O(1) add/contains/get — provided <code>equals</code> and <code>hashCode</code> are consistent. <code>TreeMap</code> is O(log n) but sorted.</p>
+              <pre><code>Map&lt;String,Integer&gt; counts = new HashMap&lt;&gt;();
+for (String w : words)
+    counts.merge(w, 1, Integer::sum);   // word-frequency in O(n)
+// average O(1) get/put — IF equals &amp; hashCode are consistent</code></pre>
             </div>
-            <p class="readings"><b>Readings:</b> Liang, chs. 20–21 (Lists, Stacks, Queues; Sets and Maps); Bloch Items 10–11.</p>
+            <div class="note pitfall"><span class="nh">Common pitfall</span>Using a mutable object as a <code>HashMap</code> key (or one with a broken <code>hashCode</code>) makes entries "vanish" after the key changes. Use immutable keys and keep <code>equals</code>/<code>hashCode</code> in sync.</div>
+            <div class="note connects"><span class="nh">Connects to…</span>The O(1) payoff here is the destination of the complexity thread begun with loops (<a href="#program">S6</a>) and arrays (<a href="#program">S8</a>); it works only because of the equals/hashCode contract from <a href="#program">Session 15</a>.</div>
+            <p class="readings"><b>Readings:</b> Liang, chs. 20–21 (Lists, Stacks, Queues; Sets and Maps); Bloch Items 10–11 (equals/hashCode).
+              <span class="focus">Focus on: choosing Hash vs Tree vs Linked variants by their ordering and complexity trade-offs.</span></p>
             <p class="xref">&rarr; Companion: <a href="index.html">Lesson 17 — Collections</a> · <a href="index.html#reference">Cheatsheet: collections</a></p>
           </li>
 
@@ -919,13 +1115,15 @@ stage.setScene(new Scene(new StackPane(b), 300, 200));</code></pre>
             <h4>Final project progress</h4>
             <p class="tl-objective">Objective: assess progress and iterate on the final project with feedback.</p>
             <ul class="tl-topics">
-              <li><b>Assess progress of the final project</b> — checkpoint against the timeline.</li>
-              <li><b>Work on the final project</b> — supervised build time and peer review.</li>
+              <li><b>Assess progress of the final project</b> — a checkpoint against the timeline set in S24: what's done, what's at risk, and whether the scope still fits the remaining weeks. Cut features early rather than ship a broken whole.</li>
+              <li><b>Work on the final project</b> — supervised build time with instructor and peer feedback, the moment to surface integration problems and design questions while there's still time to fix them.</li>
             </ul>
             <div class="keyidea"><span class="kih">Key idea — integrate early</span>
               <p style="margin:.3em 0 0;font-size:.9rem">Merge team modules often; surface interface mismatches before the final week.</p>
             </div>
-            <p class="readings"><b>Readings:</b> bring your project; review relevant Liang/Bloch chapters as needed.</p>
+            <div class="takeaway"><span class="nh">Key takeaway</span>Bring a <em>running</em> build to this session, not a folder of half-finished files — feedback on something that works is worth far more.</div>
+            <p class="readings"><b>Readings:</b> bring your project; revisit the SOLID/design material (<a href="#program">S17</a>) and collections (<a href="#program">S26</a>) as your design needs.
+              <span class="focus">Focus on: turning feedback into a prioritised to-do list for the final stretch.</span></p>
           </li>
 
           <li class="tl-item" data-n="28">
@@ -933,16 +1131,23 @@ stage.setScene(new Scene(new StackPane(b), 300, 200));</code></pre>
             <h4>Design patterns</h4>
             <p class="tl-objective">Objective: recognise recurring design problems and apply proven solutions.</p>
             <ul class="tl-topics">
-              <li><b>Introduction to design patterns</b> — reusable, named solutions to common problems.</li>
-              <li><b>Creational patterns</b> — object creation: Singleton, Factory, Builder.</li>
-              <li><b>Structural patterns</b> — composition of objects: Adapter, Decorator, Composite.</li>
-              <li><b>Behavioral patterns</b> — communication: Strategy, Observer, Iterator.</li>
+              <li><b>Introduction to design patterns</b> — patterns are named, reusable solutions to recurring design problems, distilled by the "Gang of Four". They give teams a shared vocabulary ("let's use a Factory here") and encode the SOLID principles in concrete form.</li>
+              <li><b>Creational patterns</b> — control object creation: <em>Singleton</em> (one shared instance), <em>Factory</em> (decouple callers from concrete classes), <em>Builder</em> (assemble complex objects step-by-step, Bloch Item 2).</li>
+              <li><b>Structural patterns</b> — compose objects into larger structures: <em>Adapter</em> (make incompatible interfaces work together), <em>Decorator</em> (add behaviour without subclassing), <em>Composite</em> (treat trees of objects uniformly).</li>
+              <li><b>Behavioral patterns</b> — manage communication and responsibility: <em>Strategy</em> (swap algorithms behind an interface), <em>Observer</em> (notify dependents of changes — what JavaFX binding does internally), <em>Iterator</em> (traverse a collection without exposing its structure).</li>
             </ul>
             <div class="keyidea"><span class="kih">Key idea — Strategy via an interface</span>
               <pre><code>interface SortStrategy { void sort(int[] a); }
-// swap algorithms at runtime without touching the caller</code></pre>
+class Sorter {
+    private SortStrategy strategy;
+    void setStrategy(SortStrategy s) { this.strategy = s; }
+    void run(int[] a) { strategy.sort(a); }   // swap algorithms at runtime
+}</code></pre>
             </div>
-            <p class="readings"><b>Readings:</b> Bloch, <i>Effective Java</i> (Builder Item 2, etc.); GoF pattern primers.</p>
+            <div class="note pitfall"><span class="nh">Common pitfall</span>Patterns are a means, not a goal — forcing a pattern where a plain method would do ("patternitis") adds complexity without benefit. Apply one when it solves a problem you actually have.</div>
+            <div class="note connects"><span class="nh">Connects to…</span>Strategy and Observer are pure polymorphism (<a href="#program">S15</a>) plus interfaces (<a href="#program">S16</a>); patterns are the open/closed and dependency-inversion principles of <a href="#program">S17</a> made concrete.</div>
+            <p class="readings"><b>Readings:</b> Bloch, <i>Effective Java</i> (Builder Item 2, static factories Item 1); GoF pattern primers.
+              <span class="focus">Focus on: recognising the problem each pattern solves, so you reach for the right one in the project rather than memorising UML.</span></p>
           </li>
         </ol>
       </div>
@@ -967,14 +1172,15 @@ stage.setScene(new Scene(new StackPane(b), 300, 200));</code></pre>
             <h4>Final presentations &amp; course review</h4>
             <p class="tl-objective">Objective: showcase the final application and reflect on the course.</p>
             <ul class="tl-topics">
-              <li><b>Students present final projects</b> — demo + design rationale.</li>
-              <li><b>Feedback &amp; evaluation</b> — instructor and peer feedback (feeds the 25% group mark).</li>
-              <li><b>Course review</b> — synthesis of the whole syllabus ahead of the exam.</li>
+              <li><b>Students present final projects</b> — a live demo plus the design rationale: walk through the class structure and the key decisions, not just the running features. Rehearse the demo so it survives the inevitable hiccup.</li>
+              <li><b>Feedback &amp; evaluation</b> — instructor and peer feedback feed the 25% group mark; engaging seriously with others' projects is also part of the participation grade.</li>
+              <li><b>Course review</b> — a synthesis that connects the six modules back into one story (fundamentals &rarr; OOP &rarr; advanced APIs &rarr; design) ahead of the final exam.</li>
             </ul>
             <div class="keyidea"><span class="kih">Key idea — explain your design</span>
               <p style="margin:.3em 0 0;font-size:.9rem">A great demo explains <em>why</em> the design is structured as it is — tie it back to OOP and SOLID.</p>
             </div>
-            <p class="readings"><b>Readings:</b> review all modules.</p>
+            <p class="readings"><b>Readings:</b> review all modules.
+              <span class="focus">Focus on: a 3-sentence "why we designed it this way" for your project, grounded in OOP pillars and SOLID.</span></p>
           </li>
 
           <li class="tl-item is-quiz" data-n="30">
@@ -982,12 +1188,14 @@ stage.setScene(new Scene(new StackPane(b), 300, 200));</code></pre>
             <h4>Final exam</h4>
             <p class="tl-objective">Objective: demonstrate comprehensive mastery of the programme.</p>
             <ul class="tl-topics">
-              <li><b>Final exam</b> — comprehensive assessment over the full course (25% of the grade).</li>
+              <li><b>Final exam</b> — a comprehensive written/coding assessment over the whole programme (25% of the grade), mixing code-tracing, short implementation tasks and design-judgement questions. Note that a June/July re-sit, if needed, is a single comprehensive exam where continuous evaluation no longer counts and the maximum grade is capped at 8.0.</li>
             </ul>
             <div class="keyidea"><span class="kih">Key idea — comprehensive review</span>
               <p style="margin:.3em 0 0;font-size:.9rem">Cover fundamentals, the four OOP pillars, generics, collections, exceptions and design. The companion's <a href="index.html#quiz">quiz mode</a> and <a href="index.html#reference">cheatsheet</a> make efficient revision tools.</p>
             </div>
-            <p class="readings"><b>Readings:</b> all chapters — Liang chs. 1–21; Bloch &amp; Loy/Niemeyer for depth.</p>
+            <div class="takeaway"><span class="nh">Key takeaway</span>Revise actively: re-solve past exercises and trace code by hand. Prioritise the recurring discriminators — integer division, <code>==</code> vs <code>.equals()</code>, overriding vs overloading, checked vs unchecked, and collection/complexity choice.</div>
+            <p class="readings"><b>Readings:</b> all chapters — Liang chs. 1–21; Bloch &amp; Loy/Niemeyer for depth.
+              <span class="focus">Focus on: a spaced review across the whole semester, not a single cram — the material is cumulative.</span></p>
             <p class="xref">&rarr; Companion: <a href="index.html#quiz">Quiz mode</a> · <a href="index.html#reference">Cheatsheet</a></p>
           </li>
         </ol>
@@ -1003,14 +1211,23 @@ stage.setScene(new Scene(new StackPane(b), 300, 200));</code></pre>
         <dt>JVM</dt><dd>Java Virtual Machine — executes platform-neutral bytecode; the basis of Java's portability.</dd>
         <dt>JDK / JRE</dt><dd>JDK = JRE + dev tools (javac, jar); JRE = JVM + standard library to run apps.</dd>
         <dt>Bytecode</dt><dd>The intermediate <code>.class</code> form produced by <code>javac</code> and run by the JVM.</dd>
+        <dt>API / standard library</dt><dd>The packaged classes Java ships with (<code>java.util</code>, <code>java.io</code>…) that you build upon.</dd>
         <dt>Primitive type</dt><dd>One of the eight built-in value types (int, double, boolean, char…); not objects.</dd>
         <dt>Reference type</dt><dd>A variable holding a reference (address) to an object on the heap, not the object itself.</dd>
+        <dt>final</dt><dd>Marks a variable assignable once, a method un-overridable, or a class un-extendable.</dd>
+        <dt>Type conversion / cast</dt><dd>Widening (implicit, lossless) vs narrowing (explicit <code>(int)</code>, may lose data).</dd>
+        <dt>Short-circuit</dt><dd><code>&amp;&amp;</code>/<code>||</code> stop evaluating once the result is determined — useful for null guards.</dd>
+        <dt>NullPointerException</dt><dd>Thrown when a method or field is accessed through a <code>null</code> reference — Java's most common runtime error.</dd>
         <dt>Class</dt><dd>A blueprint defining the state (fields) and behaviour (methods) of objects.</dd>
         <dt>Object / instance</dt><dd>A concrete realisation of a class, created with <code>new</code>.</dd>
         <dt>Constructor</dt><dd>A special method that initialises a new object; can be overloaded and chained.</dd>
         <dt>this</dt><dd>Reference to the current object; disambiguates fields and chains constructors.</dd>
         <dt>static</dt><dd>A member belonging to the class itself, shared by all instances.</dd>
+        <dt>Pass-by-value</dt><dd>Java copies each argument; for objects it copies the reference, so the same object is shared.</dd>
+        <dt>Heap / stack</dt><dd>Objects live on the heap; local variables and call frames live on the stack.</dd>
         <dt>Encapsulation</dt><dd>Hiding internal state behind a controlled interface to protect invariants.</dd>
+        <dt>Invariant</dt><dd>A condition a class guarantees always holds (e.g. age ≥ 0), enforced in constructors/setters.</dd>
+        <dt>Getter / setter</dt><dd>Accessor methods mediating read/write access to private fields, allowing validation.</dd>
         <dt>Immutability</dt><dd>An object whose state can't change after construction — simpler and thread-safe.</dd>
         <dt>Inheritance</dt><dd>An is-a relationship where a subclass reuses/specialises a superclass via <code>extends</code>.</dd>
         <dt>super</dt><dd>Refers to the superclass; invokes its constructor or overridden methods.</dd>
@@ -1018,23 +1235,37 @@ stage.setScene(new Scene(new StackPane(b), 300, 200));</code></pre>
         <dt>Overloading</dt><dd>Multiple methods, same name, different parameters; resolved at compile time.</dd>
         <dt>Polymorphism</dt><dd>One reference type, many runtime forms, via dynamic dispatch.</dd>
         <dt>Dynamic binding</dt><dd>The JVM selects the method implementation based on the object's actual type.</dd>
+        <dt>Constructor chaining</dt><dd>A subclass constructor always calls a superclass constructor (via <code>super(...)</code>) first.</dd>
+        <dt>Upcasting / downcasting</dt><dd>Upcast to a supertype is implicit and safe; downcast needs a cast and may throw <code>ClassCastException</code>.</dd>
         <dt>Abstract class</dt><dd>A class that can't be instantiated; may declare abstract methods for subclasses.</dd>
         <dt>Interface</dt><dd>A pure contract of methods a class promises to implement; supports multiple inheritance of type.</dd>
+        <dt>Default method</dt><dd>An interface method with a body (since Java 8); enables adding behaviour without breaking implementers.</dd>
+        <dt>toString()</dt><dd>The <code>Object</code> method overridden to give an object a readable text representation.</dd>
         <dt>instanceof</dt><dd>Tests an object's runtime type before a safe downcast.</dd>
         <dt>equals / hashCode</dt><dd>Value-equality and hashing contract; must stay consistent for hash collections.</dd>
         <dt>Generics</dt><dd>Type parameters (<code>&lt;T&gt;</code>) giving compile-time type safety and fewer casts.</dd>
         <dt>Wildcard (PECS)</dt><dd><code>? extends</code> for producers, <code>? super</code> for consumers.</dd>
         <dt>Type erasure</dt><dd>Generic type info exists at compile time only; the runtime sees raw types.</dd>
+        <dt>Bounded type</dt><dd>A constrained type parameter, e.g. <code>&lt;T extends Comparable&lt;T&gt;&gt;</code>, enabling calls on T.</dd>
+        <dt>Raw type</dt><dd>A generic used without a type argument (<code>List</code>); legal but defeats type safety — avoid.</dd>
         <dt>Collection</dt><dd>Framework of reusable data structures: List, Set, Queue, Map.</dd>
+        <dt>List / Set / Map</dt><dd>Ordered indexed sequence / unique-element collection / key→value association.</dd>
         <dt>HashMap / HashSet</dt><dd>Hash-table-backed structures with average O(1) lookup.</dd>
+        <dt>TreeMap / TreeSet</dt><dd>Sorted, balanced-tree-backed structures with O(log n) operations.</dd>
+        <dt>Iterator</dt><dd>An object that traverses a collection's elements without exposing its internal structure.</dd>
         <dt>Big-O</dt><dd>Asymptotic cost notation — e.g. O(1), O(log n), O(n), O(n²).</dd>
         <dt>Exception</dt><dd>An object representing an error; checked exceptions must be declared or caught.</dd>
+        <dt>Checked vs unchecked</dt><dd>Checked (extends <code>Exception</code>) must be handled/declared; unchecked (<code>RuntimeException</code>) signals bugs.</dd>
         <dt>try-with-resources</dt><dd>Auto-closes resources declared in the <code>try</code> header.</dd>
         <dt>SOLID</dt><dd>Five OO design principles for maintainable, flexible software.</dd>
         <dt>Composition</dt><dd>A has-a relationship; often preferred over inheritance for flexibility.</dd>
+        <dt>Deep module</dt><dd>A narrow interface hiding substantial functionality — Ousterhout's mark of good design.</dd>
         <dt>Design pattern</dt><dd>A named, reusable solution to a recurring design problem (Singleton, Strategy…).</dd>
         <dt>JavaFX</dt><dd>The modern Java GUI toolkit: Stage &rarr; Scene &rarr; scene-graph nodes, with property binding.</dd>
+        <dt>Property binding</dt><dd>Linking a UI property to a model value so changes propagate automatically.</dd>
         <dt>Maven / Gradle</dt><dd>Build tools that manage dependencies and package apps into JARs.</dd>
+        <dt>JAR / manifest</dt><dd>An archive of compiled classes; a manifest <code>Main-Class</code> makes it runnable with <code>java -jar</code>.</dd>
+        <dt>Lambda</dt><dd>A concise anonymous function implementing a single-method (functional) interface, e.g. an event handler.</dd>
       </dl>
     </section>
 
