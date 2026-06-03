@@ -1,0 +1,1073 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Course Structure — Computer Programming 2 (Java)</title>
+  <meta name="description" content="Full syllabus-driven course structure for Computer Programming 2 (CP2) — Java, OOP and data structures. BCSAI, IE University. 30 sessions, 6 ECTS." />
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    /* ===== course.html — page-specific layer, reuses tokens from styles.css ===== */
+    #course-main { max-width: var(--max); margin: 0 auto; padding: 2.4rem 2rem 1rem; }
+    .course-hero { background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 2rem 2.2rem; margin-bottom: 1.6rem; }
+    .course-hero h1 { margin-top: 0; font-size: 2.3rem; }
+    .course-hero .lede { color: var(--ink-2); font-size: 1.06rem; max-width: 70ch; }
+    .crumb { font-size: .82rem; color: var(--ink-2); margin-bottom: .8rem; }
+    .crumb a { color: var(--ink-2); }
+
+    /* meta grid */
+    .meta-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: .8rem; margin: 1.4rem 0 .2rem; }
+    .meta-cell { background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: .7rem .9rem; }
+    .meta-cell .k { font-size: .7rem; text-transform: uppercase; letter-spacing: .07em; color: var(--ink-2); }
+    .meta-cell .v { font-weight: 600; margin-top: .1rem; }
+
+    /* section scaffolding */
+    section.course-section { background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 1.8rem 2.1rem; margin: 1.4rem 0; scroll-margin-top: 70px; }
+    section.course-section > h2 { margin-top: .1em; }
+    .section-intro { color: var(--ink-2); max-width: 74ch; }
+
+    /* on-page nav */
+    #course-nav { position: sticky; top: 0; z-index: 20; background: rgba(255,255,255,.95); backdrop-filter: blur(6px); border-bottom: 1px solid var(--line); }
+    #course-nav .inner { max-width: var(--max); margin: 0 auto; display: flex; gap: 1.1rem; flex-wrap: wrap; align-items: center; padding: .7rem 2rem; }
+    #course-nav a { color: var(--ink-2); font-size: .9rem; padding: .15rem 0; border-bottom: 2px solid transparent; }
+    #course-nav a:hover { color: var(--ink); text-decoration: none; border-color: var(--accent); }
+    #course-nav .brand { margin-right: auto; }
+
+    /* objectives split */
+    .obj-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 760px) { .obj-cols { grid-template-columns: 1fr; } }
+    .obj-card { background: var(--bg); border: 1px solid var(--line); border-left: 3px solid #4caf94; border-radius: 6px; padding: .7rem 1rem; }
+    .obj-card h4 { margin: .1em 0 .3em; font-family: "Inter", sans-serif; font-size: .9rem; }
+    .obj-card p { margin: 0; font-size: .9rem; color: var(--ink-2); }
+
+    /* percentage bars */
+    .pbar-row { display: grid; grid-template-columns: 220px 1fr 56px; align-items: center; gap: .8rem; margin: .5rem 0; }
+    @media (max-width: 620px) { .pbar-row { grid-template-columns: 1fr; gap: .2rem; } }
+    .pbar-label { font-size: .92rem; }
+    .pbar-track { background: var(--line); height: 12px; border-radius: 999px; overflow: hidden; }
+    .pbar-fill { height: 100%; background: var(--accent); border-radius: 999px; }
+    .pbar-fill.alt { background: #4caf94; }
+    .pbar-fill.alt2 { background: #7fb2e0; }
+    .pbar-pct { font-family: "JetBrains Mono", Consolas, monospace; font-size: .85rem; text-align: right; color: var(--ink-2); }
+
+    /* assessment component cards */
+    .assess-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem; margin-top: 1.2rem; }
+    .assess-card { background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 1rem 1.1rem; }
+    .assess-card .pct { font-family: "Source Serif Pro", serif; font-size: 1.7rem; color: var(--accent); line-height: 1; }
+    .assess-card h4 { margin: .3em 0 .35em; }
+    .assess-card p { font-size: .86rem; color: var(--ink-2); margin: .2em 0; }
+    .assess-card .how { font-size: .82rem; }
+
+    .rule-box { background: var(--accent-soft); border-radius: 8px; padding: 1rem 1.2rem; margin-top: 1.3rem; }
+    .rule-box h4 { margin-top: 0; }
+    .rule-box ul { margin: .3em 0; }
+
+    /* module + timeline */
+    .module { margin: 1.6rem 0; }
+    .module-head { display: flex; align-items: baseline; gap: .7rem; flex-wrap: wrap; border-bottom: 2px solid var(--accent); padding-bottom: .4rem; }
+    .module-head .mod-num { font-family: "JetBrains Mono", Consolas, monospace; font-size: .8rem; background: var(--ink); color: var(--accent-soft); padding: .15rem .5rem; border-radius: 6px; }
+    .module-head h3 { margin: 0; color: var(--ink); font-size: 1.25rem; }
+    .module-head .span { font-size: .82rem; color: var(--ink-2); margin-left: auto; }
+    .mod-overview { color: var(--ink-2); margin: .7rem 0; }
+    .mod-outcomes { background: var(--bg); border-radius: 8px; padding: .7rem 1rem .7rem 1rem; border-left: 3px solid #4caf94; }
+    .mod-outcomes h5 { margin: .1em 0 .3em; font-size: .8rem; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-2); font-family: "Inter", sans-serif; }
+    .mod-outcomes ul { margin: .2em 0; }
+
+    .timeline { list-style: none; padding: 0; margin: 1.1rem 0 0; }
+    .tl-item { position: relative; padding: 0 0 1.2rem 2.4rem; border-left: 2px solid var(--line); margin-left: .6rem; }
+    .tl-item:last-child { border-left-color: transparent; }
+    .tl-item::before { content: attr(data-n); position: absolute; left: -.95rem; top: 0; width: 1.8rem; height: 1.8rem; background: var(--paper); border: 2px solid var(--accent); color: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: "JetBrains Mono", Consolas, monospace; font-size: .72rem; font-weight: 700; }
+    .tl-item.is-quiz::before { border-color: #7fb2e0; color: #3c7bbf; }
+    .tl-item.is-project::before { border-color: #c08a27; color: #9a6d12; }
+    .tl-item h4 { margin: .1em 0 .2em; font-size: 1.05rem; }
+    .tl-item .tl-meta { font-size: .76rem; text-transform: uppercase; letter-spacing: .05em; color: var(--ink-2); margin-bottom: .4rem; }
+    .tl-objective { font-style: italic; color: var(--ink-2); margin: .2em 0 .6em; }
+    .tl-topics { margin: .3em 0; padding-left: 1.1rem; }
+    .tl-topics li { margin: .25em 0; font-size: .93rem; }
+    .tl-topics li b { color: var(--ink); font-style: normal; }
+    .keyidea { background: var(--paper); border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 4px; padding: .6rem .9rem; margin: .7rem 0; }
+    .keyidea .kih { font-size: .72rem; text-transform: uppercase; letter-spacing: .07em; color: var(--accent); font-weight: 700; }
+    .keyidea pre { margin: .5rem 0 .2rem; font-size: .82rem; padding: .7rem .9rem; }
+    .readings { font-size: .85rem; color: var(--ink-2); margin: .5rem 0 0; }
+    .readings b { color: var(--ink); }
+    .xref { font-size: .82rem; margin-top: .5rem; }
+    .xref a { font-weight: 600; }
+
+    /* glossary */
+    .glossary { display: grid; grid-template-columns: 1fr 1fr; gap: .2rem 1.6rem; }
+    @media (max-width: 760px) { .glossary { grid-template-columns: 1fr; } }
+    .glossary dt { font-weight: 700; margin-top: .7rem; font-family: "JetBrains Mono", Consolas, monospace; font-size: .9rem; color: var(--accent); }
+    .glossary dd { margin: .1em 0 .2em; font-size: .9rem; color: var(--ink-2); }
+
+    /* bibliography */
+    .biblio { list-style: none; padding: 0; }
+    .biblio li { background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: .8rem 1rem; margin: .6rem 0; }
+    .biblio .cite { font-weight: 600; }
+    .biblio .note { font-size: .86rem; color: var(--ink-2); margin: .2em 0; }
+    .biblio .where { font-size: .78rem; color: var(--accent); font-family: "JetBrains Mono", Consolas, monospace; }
+
+    .pill-row { margin: .4rem 0 0; }
+    .pill { display: inline-block; background: var(--accent-soft); color: var(--accent); font-size: .72rem; padding: .12rem .55rem; border-radius: 999px; font-weight: 600; margin: .15rem .25rem .15rem 0; }
+  </style>
+</head>
+<body>
+
+  <!-- Site top bar (matches index.html) -->
+  <header id="topbar">
+    <a href="index.html" class="brand">
+      <span class="logo">{ }</span>
+      <span>Java Study</span>
+    </a>
+    <nav>
+      <a href="course.html" class="active">Course outline</a>
+      <a href="index.html">Lessons</a>
+      <a href="index.html#quiz">Quiz</a>
+      <a href="index.html#reference">Cheatsheet</a>
+      <a href="SYLLABUS.pdf">Syllabus PDF</a>
+    </nav>
+  </header>
+
+  <!-- On-page section nav -->
+  <nav id="course-nav">
+    <div class="inner">
+      <span class="brand" style="font-weight:700;color:var(--ink)">Computer Programming 2</span>
+      <a href="#overview">Overview</a>
+      <a href="#objectives">Objectives</a>
+      <a href="#methodology">Methodology</a>
+      <a href="#assessment">Assessment</a>
+      <a href="#program">Program</a>
+      <a href="#glossary">Key concepts</a>
+      <a href="#bibliography">Bibliography</a>
+    </div>
+  </nav>
+
+  <main id="course-main">
+
+    <!-- ============================ HERO ============================ -->
+    <div class="course-hero">
+      <div class="crumb"><a href="index.html">Java Study</a> &rsaquo; Course structure</div>
+      <span class="tag">Course structure · CP2-CSAI.3.M.A</span>
+      <h1>Computer Programming 2 — Java, OOP &amp; Data Structures</h1>
+      <p class="lede">A syllabus-driven map of the full 30-session course: the language fundamentals,
+      the object-oriented core, generics and collections, JavaFX, exception handling and software-design
+      principles — with the concepts, complexities and code ideas behind each session, and links into
+      the <a href="index.html">interactive study companion</a> (lessons, <a href="index.html#quiz">quiz mode</a>
+      and the <a href="index.html#reference">cheatsheet</a>).</p>
+
+      <div class="meta-grid">
+        <div class="meta-cell"><div class="k">Code</div><div class="v">CP2-CSAI.3.M.A</div></div>
+        <div class="meta-cell"><div class="k">Area</div><div class="v">Computer Science</div></div>
+        <div class="meta-cell"><div class="k">Credits</div><div class="v">6.0 ECTS</div></div>
+        <div class="meta-cell"><div class="k">Sessions</div><div class="v">30 (live, in-person)</div></div>
+        <div class="meta-cell"><div class="k">Year / Semester</div><div class="v">3rd year · 1st semester</div></div>
+        <div class="meta-cell"><div class="k">Academic year</div><div class="v">2025–26</div></div>
+        <div class="meta-cell"><div class="k">Category</div><div class="v">Compulsory</div></div>
+        <div class="meta-cell"><div class="k">Language</div><div class="v">English</div></div>
+        <div class="meta-cell"><div class="k">Programme</div><div class="v">BCSAI — Computer Science &amp; AI</div></div>
+        <div class="meta-cell"><div class="k">Professor</div><div class="v">Dr. Anas Abbood</div></div>
+        <div class="meta-cell"><div class="k">Contact</div><div class="v">aabbood@faculty.ie.edu</div></div>
+        <div class="meta-cell"><div class="k">Office hours</div><div class="v">Fri 10:00–11:20 / by appt.</div></div>
+      </div>
+    </div>
+
+    <!-- ========================== OVERVIEW ========================== -->
+    <section id="overview" class="course-section">
+      <h2>Subject description</h2>
+      <p class="section-intro">This course deepens programming skill using <b>Java</b>, focusing on
+      object-oriented design, advanced data structures, and efficient algorithm implementation. It offers
+      a comprehensive progression from core language fundamentals — variables, operators, control flow,
+      methods and arrays — through the full object-oriented model (encapsulation, inheritance, polymorphism,
+      abstraction) and on to generics, collections, JavaFX GUIs, robust exception handling and professional
+      software-engineering practices (SOLID, design patterns, build tooling).</p>
+      <p class="section-intro">Through a blend of theory and hands-on practice, and via both individual and
+      team-based projects, students build a final application that demonstrates the ability to design and
+      implement maintainable, modular Java software using professional tools (IntelliJ IDEA, Maven/Gradle).
+      The pace is tentative and may adapt to group performance; the structure below mirrors the official
+      syllabus session-by-session.</p>
+      <div class="pill-row">
+        <span class="pill">Object-oriented design</span>
+        <span class="pill">Data structures</span>
+        <span class="pill">Algorithm efficiency</span>
+        <span class="pill">Generics &amp; collections</span>
+        <span class="pill">JavaFX</span>
+        <span class="pill">Exception handling</span>
+        <span class="pill">SOLID &amp; patterns</span>
+        <span class="pill">Build &amp; packaging</span>
+      </div>
+    </section>
+
+    <!-- ========================= OBJECTIVES ========================= -->
+    <section id="objectives" class="course-section">
+      <h2>Learning objectives</h2>
+      <p class="section-intro">By the end of the course, students will be able to:</p>
+      <div class="obj-cols">
+        <div class="obj-card"><h4>Understand Java's core concepts</h4><p>Explain Java's history and ecosystem (JDK / JRE / JVM) and distinguish it from other languages.</p></div>
+        <div class="obj-card"><h4>Write and run Java programs</h4><p>Develop, compile and execute applications with modern tools — IntelliJ IDEA, Maven and Gradle.</p></div>
+        <div class="obj-card"><h4>Apply fundamental techniques</h4><p>Use variables, operators, control flow (if-else, switch) and loops to write working programs.</p></div>
+        <div class="obj-card"><h4>Utilise OOP</h4><p>Design and implement classes using encapsulation, inheritance, polymorphism and abstraction.</p></div>
+        <div class="obj-card"><h4>Modularise and reuse code</h4><p>Define and invoke methods, overload functions, and reason about scope and parameter passing.</p></div>
+        <div class="obj-card"><h4>Handle exceptions effectively</h4><p>Build robust error handling with try-catch, custom exceptions and best practices.</p></div>
+        <div class="obj-card"><h4>Build interactive apps with JavaFX</h4><p>Create GUI applications using JavaFX UI controls, multimedia and event-driven programming.</p></div>
+        <div class="obj-card"><h4>Practise software-engineering principles</h4><p>Apply SOLID, design patterns and modular architecture for maintainable software.</p></div>
+        <div class="obj-card"><h4>Implement advanced data structures</h4><p>Work with collection-backed structures — lists, sets, maps and hash tables — and reason about scalability.</p></div>
+        <div class="obj-card"><h4>Test, debug &amp; profile</h4><p>Apply unit testing, debugging and a performance-aware mindset to optimise algorithms.</p></div>
+      </div>
+    </section>
+
+    <!-- ======================== METHODOLOGY ========================= -->
+    <section id="methodology" class="course-section">
+      <h2>Teaching methodology</h2>
+      <p class="section-intro">IE University's approach emphasises active, collaborative and applied learning:
+      live in-person sessions, hands-on activities, peer reviews and instructor feedback. The expected
+      student workload totals <b>150 hours</b> across three activity types. The use of generative AI is
+      <b>encouraged but must be acknowledged</b> — treat GenAI output as wrong until you can verify it, and
+      remain critical of its effect on your own learning.</p>
+
+      <div class="pbar-row">
+        <div class="pbar-label">Lectures <span style="color:var(--ink-2)">· 60 h</span></div>
+        <div class="pbar-track"><div class="pbar-fill" style="width:40%"></div></div>
+        <div class="pbar-pct">40.0%</div>
+      </div>
+      <div class="pbar-row">
+        <div class="pbar-label">Individual studying <span style="color:var(--ink-2)">· 50 h</span></div>
+        <div class="pbar-track"><div class="pbar-fill alt2" style="width:33.3%"></div></div>
+        <div class="pbar-pct">33.3%</div>
+      </div>
+      <div class="pbar-row">
+        <div class="pbar-label">Group work <span style="color:var(--ink-2)">· 40 h</span></div>
+        <div class="pbar-track"><div class="pbar-fill alt" style="width:26.7%"></div></div>
+        <div class="pbar-pct">26.7%</div>
+      </div>
+
+      <div class="rule-box">
+        <h4>GenAI policy (summary)</h4>
+        <ul>
+          <li>Minimum-effort prompts give low-quality results — refining prompts is real work.</li>
+          <li>Don't take GenAI output at face value; cross-check it. You own any errors or omissions.</li>
+          <li>LLMs help most when you are already expert enough to be critical of the output.</li>
+          <li>Acknowledging AI use does <b>not</b> affect your grade — failing to acknowledge it violates academic-honesty policy.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ======================== ASSESSMENT ========================== -->
+    <section id="assessment" class="course-section">
+      <h2>Assessment</h2>
+      <p class="section-intro">Continuous evaluation combines two exams, individual and group project work,
+      and participation. The weights below sum to 100%.</p>
+
+      <div class="pbar-row">
+        <div class="pbar-label">Final Exam</div>
+        <div class="pbar-track"><div class="pbar-fill" style="width:25%"></div></div>
+        <div class="pbar-pct">25%</div>
+      </div>
+      <div class="pbar-row">
+        <div class="pbar-label">Intermediate Exam</div>
+        <div class="pbar-track"><div class="pbar-fill" style="width:25%"></div></div>
+        <div class="pbar-pct">25%</div>
+      </div>
+      <div class="pbar-row">
+        <div class="pbar-label">Group Project</div>
+        <div class="pbar-track"><div class="pbar-fill alt" style="width:25%"></div></div>
+        <div class="pbar-pct">25%</div>
+      </div>
+      <div class="pbar-row">
+        <div class="pbar-label">Individual Assignments / Projects</div>
+        <div class="pbar-track"><div class="pbar-fill alt2" style="width:15%"></div></div>
+        <div class="pbar-pct">15%</div>
+      </div>
+      <div class="pbar-row">
+        <div class="pbar-label">Class Participation &amp; Attendance</div>
+        <div class="pbar-track"><div class="pbar-fill alt2" style="width:10%"></div></div>
+        <div class="pbar-pct">10%</div>
+      </div>
+
+      <div class="assess-grid">
+        <div class="assess-card">
+          <div class="pct">25%</div><h4>Final Exam</h4>
+          <p class="how"><b>Deliverable:</b> comprehensive written/coding exam (Session 30).</p>
+          <p class="how"><b>Evaluated on:</b> the full programme — language fundamentals, OOP, generics, collections, exceptions and design.</p>
+        </div>
+        <div class="assess-card">
+          <div class="pct">25%</div><h4>Intermediate Exam</h4>
+          <p class="how"><b>Deliverable:</b> mid-course exam over fundamentals and early OOP.</p>
+          <p class="how"><b>Evaluated on:</b> correctness, fluency with syntax/control flow, and class design. Prep with <a href="index.html#quiz">quiz mode</a>.</p>
+        </div>
+        <div class="assess-card">
+          <div class="pct">25%</div><h4>Group Project</h4>
+          <p class="how"><b>Deliverable:</b> team-built Java application, introduced S24 and presented S29.</p>
+          <p class="how"><b>Evaluated on:</b> design quality, modularity, use of OOP &amp; collections, and teamwork.</p>
+        </div>
+        <div class="assess-card">
+          <div class="pct">15%</div><h4>Individual Assignments / Projects</h4>
+          <p class="how"><b>Deliverable:</b> individual project (introduced S19) plus in-class exercises.</p>
+          <p class="how"><b>Evaluated on:</b> working code, idiomatic Java, and adherence to encapsulation/SOLID.</p>
+        </div>
+        <div class="assess-card">
+          <div class="pct">10%</div><h4>Participation &amp; Attendance</h4>
+          <p class="how"><b>Deliverable:</b> active engagement in live sessions, peer reviews and discussion.</p>
+          <p class="how"><b>Evaluated on:</b> contribution quality and presence (see attendance rule).</p>
+        </div>
+      </div>
+
+      <div class="rule-box">
+        <h4>Passing, attendance &amp; re-sit rules</h4>
+        <ul>
+          <li><b>Four chances</b> to pass any course, across two consecutive academic years (ordinary + extraordinary calls).</li>
+          <li><b>80% attendance</b> is mandatory; below it you fail both calls this year and must re-enrol next year.</li>
+          <li>Fail the ordinary call (and meet attendance) &rarr; re-sit in June/July, on-campus, no date/format changes.</li>
+          <li>The June/July re-sit is a single comprehensive exam: continuous evaluation is ignored, pass mark is <b>5</b>, and the <b>maximum grade is 8.0</b> ("notable").</li>
+          <li>Retakers (3rd call, re-enrolled) must confirm criteria with the professor; maximum retake grade is 10.0.</li>
+          <li>Grade appeals require attending the post-exam review session first. Failing &gt;18 ECTS after re-sits means leaving the programme.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ========================== PROGRAM =========================== -->
+    <section id="program" class="course-section">
+      <h2>Programme — 30 sessions in 6 modules</h2>
+      <p class="section-intro">The material below is tentative per the syllabus; all listed topics will be
+      attempted, with pace adapting to the group. Sessions are grouped into thematic modules. Each session
+      carries its objective, per-topic notes, a key idea, and the matching readings — and, where the
+      interactive companion covers it, a cross-link into the relevant lesson, the quiz, or the cheatsheet.</p>
+
+      <!-- ===== MODULE A — Foundations ===== -->
+      <div class="module">
+        <div class="module-head">
+          <span class="mod-num">MOD A</span>
+          <h3>Java foundations &amp; elementary programming</h3>
+          <span class="span">Sessions 1–9</span>
+        </div>
+        <p class="mod-overview">From "what is Java" to fluent procedural programming: the JVM model and toolchain,
+        primitive data, expressions, control flow, loops, methods and arrays — closing with the first quiz that
+        consolidates the fundamentals.</p>
+        <div class="mod-outcomes"><h5>Module learning outcomes</h5><ul>
+          <li>Explain the JDK/JRE/JVM model and compile &amp; run a program from the command line and an IDE.</li>
+          <li>Use primitive types, operators, precedence and type conversion correctly.</li>
+          <li>Express logic with if/switch and the three loop forms, choosing the right one.</li>
+          <li>Decompose problems into methods (overloading, scope, parameter passing) and process 1D/2D arrays.</li>
+        </ul></div>
+
+        <ol class="timeline">
+          <li class="tl-item" data-n="01">
+            <div class="tl-meta">Module A · Course Overview &amp; Introduction to Java</div>
+            <h4>Introduction to Java</h4>
+            <p class="tl-objective">Objective: understand what Java is, why it runs everywhere, and write a first program.</p>
+            <ul class="tl-topics">
+              <li><b>Course objectives, structure &amp; expectations</b> — how the course, projects and grading fit together.</li>
+              <li><b>Introduction to Java</b> — a class-based, statically typed, object-oriented language; source compiles to portable bytecode.</li>
+              <li><b>History &amp; evolution of Java</b> — from Sun (1995, James Gosling) through to modern LTS releases.</li>
+              <li><b>Java vs other languages</b> — managed runtime and "write once, run anywhere" vs native/compiled or dynamically typed peers.</li>
+              <li><b>First Java program</b> — the <code>main</code> entry point and <code>System.out.println</code>.</li>
+            </ul>
+            <div class="keyidea"><span class="kih">Key idea — bytecode &amp; the JVM</span>
+              <p style="margin:.3em 0 0;font-size:.9rem">Source &rarr; <code>javac</code> &rarr; platform-neutral bytecode &rarr; run by the JVM. That indirection is what makes Java portable.</p>
+              <pre><code>public class Hello {
+    public static void main(String[] args) {
+        System.out.println("Hello, world!");
+    }
+}</code></pre>
+            </div>
+            <p class="readings"><b>Readings:</b> Liang, ch. 1 (Introduction to Computers, Programs, and Java); Loy/Niemeyer, ch. 1.</p>
+            <p class="xref">&rarr; Companion: <a href="index.html">Lesson 01 — Introduction to Java</a></p>
+          </li>
+
+          <li class="tl-item" data-n="02">
+            <div class="tl-meta">Module A · Java tools &amp; environments</div>
+            <h4>The Java toolchain &amp; IntelliJ IDEA</h4>
+            <p class="tl-objective">Objective: create, compile and run Java programs with both the JDK tools and a modern IDE.</p>
+            <ul class="tl-topics">
+              <li><b>Language Specification, API, JDK, JRE &amp; IDE</b> — what each provides and how they relate.</li>
+              <li><b>Creating, compiling &amp; executing</b> — <code>javac</code> produces <code>.class</code> files; <code>java</code> runs them.</li>
+              <li><b>Developing with IntelliJ IDEA</b> — projects, run configurations, and the edit-compile-run loop.</li>
+            </ul>
+            <div class="keyidea"><span class="kih">Key idea — toolchain layering</span>
+              <p style="margin:.3em 0 0;font-size:.9rem">JDK ⊃ JRE ⊃ JVM. You install the JDK to develop; the JRE (now usually bundled) is enough to run. The IDE wraps these tools with editing, debugging and refactoring.</p>
+            </div>
+            <p class="readings"><b>Readings:</b> Loy/Niemeyer, ch. 2 (A First Application); Liang §1.8–1.11 (development tools).</p>
+            <p class="xref">&rarr; Companion: <a href="index.html">Lesson 02 — Java tools, packages, classpath</a></p>
+          </li>
+
+          <li class="tl-item" data-n="03">
+            <div class="tl-meta">Module A · Elementary Programming in Java</div>
+            <h4>Variables, input &amp; data types</h4>
+            <p class="tl-objective">Objective: read console input and declare/assign variables with the right types.</p>
+            <ul class="tl-topics">
+              <li><b>Reading console input</b> — <code>Scanner</code> over <code>System.in</code>.</li>
+              <li><b>Variables &amp; constants</b> — declaration, initialisation and <code>final</code> constants.</li>
+              <li><b>Assignment statements &amp; expressions</b> — assignment is itself an expression returning a value.</li>
+              <li><b>Naming conventions</b> — camelCase for variables/methods, PascalCase for classes, UPPER_SNAKE for constants.</li>
+              <li><b>Data types</b> — the eight primitives vs reference types; default values.</li>
+            </ul>
+            <div class="keyidea"><span class="kih">Key idea — reading input</span>
+              <pre><code>Scanner in = new Scanner(System.in);
+int age = in.nextInt();
+final double PI = 3.14159;</code></pre>
+            </div>
+            <p class="readings"><b>Readings:</b> Liang, ch. 2 (Elementary Programming) §2.1–2.5.</p>
+            <p class="xref">&rarr; Companion: <a href="index.html">Lesson 03 — Elementary programming I</a> · <a href="index.html#reference">Cheatsheet: primitive types</a></p>
+          </li>
+
+          <li class="tl-item" data-n="04">
+            <div class="tl-meta">Module A · Elementary Programming in Java</div>
+            <h4>Numeric types, operators &amp; conversions</h4>
+            <p class="tl-objective">Objective: evaluate numeric expressions correctly, respecting precedence and conversions.</p>
+            <ul class="tl-topics">
+              <li><b>Numeric types &amp; operators</b> — <code>int</code>, <code>long</code>, <code>double</code>… and <code>+ - * / %</code>.</li>
+              <li><b>Numeric literals</b> — underscores in literals, hex/binary forms, the <code>L</code>/<code>d</code>/<code>f</code> suffixes.</li>
+              <li><b>Evaluating expressions &amp; precedence</b> — multiplicative before additive; parentheses override.</li>
+              <li><b>Augmented assignment</b> — <code>+=</code>, <code>-=</code>, <code>*=</code>, <code>/=</code>, <code>%=</code>.</li>
+              <li><b>Increment / decrement</b> — pre- vs post- (<code>++i</code> vs <code>i++</code>).</li>
+              <li><b>Type conversions</b> — implicit widening vs explicit narrowing casts.</li>
+            </ul>
+            <div class="keyidea"><span class="kih">Key idea — integer vs floating division</span>
+              <pre><code>5 / 2      // → 2   (integer division truncates)
+5 / 2.0    // → 2.5 (one double operand promotes both)
+5 % 2      // → 1   (remainder)</code></pre>
+            </div>
+            <p class="readings"><b>Readings:</b> Liang, ch. 2 §2.6–2.13 (operators, conversions, common errors).</p>
+            <p class="xref">&rarr; Companion: <a href="index.html">Lesson 03/04</a></p>
+          </li>
+
+          <li class="tl-item" data-n="05">
+            <div class="tl-meta">Module A · Elementary Programming in Java</div>
+            <h4>Selections — boolean logic, if &amp; switch</h4>
+            <p class="tl-objective">Objective: branch program flow with boolean expressions and selection statements.</p>
+            <ul class="tl-topics">
+              <li><b>boolean types, values &amp; expressions</b> — relational operators produce <code>boolean</code>.</li>
+              <li><b>if / two-way if-else / nested &amp; multi-way</b> — chaining <code>else if</code> for several cases.</li>
+              <li><b>Logical operators</b> — <code>&amp;&amp;</code>, <code>||</code>, <code>!</code> and short-circuit evaluation.</li>
+              <li><b>Conditional (ternary) operator</b> — <code>cond ? a : b</code>.</li>
+              <li><b>switch statements</b> — discrete-value dispatch; mind fall-through / <code>break</code>.</li>
+              <li><b>Common errors &amp; pitfalls</b> — <code>=</code> vs <code>==</code>, dangling-else, float equality.</li>
+            </ul>
+            <div class="keyidea"><span class="kih">Key idea — short-circuit evaluation</span>
+              <p style="margin:.3em 0 0;font-size:.9rem"><code>a &amp;&amp; b</code> never evaluates <code>b</code> if <code>a</code> is false — letting you guard against null/zero before using a value.</p>
+            </div>
+            <p class="readings"><b>Readings:</b> Liang, ch. 3 (Selections).</p>
+            <p class="xref">&rarr; Companion: <a href="index.html">Lesson 05 — Control flow</a> · <a href="index.html#reference">Cheatsheet: control flow</a></p>
+          </li>
+
+          <li class="tl-item" data-n="06">
+            <div class="tl-meta">Module A · Loops in Java</div>
+            <h4>Loops &amp; iteration</h4>
+            <p class="tl-objective">Objective: repeat work safely with the three loop forms and pick the right one.</p>
+            <ul class="tl-topics">
+              <li><b>while loop</b> — test-then-run; may execute zero times.</li>
+              <li><b>do-while loop</b> — run-then-test; always at least once.</li>
+              <li><b>for loop</b> — init/condition/update in one header; ideal for counted iteration.</li>
+              <li><b>Nested loops</b> — loops inside loops (e.g. tables, grids).</li>
+              <li><b>Loop design strategy &amp; which to use</b> — sentinel vs counter control; avoiding off-by-one and infinite loops.</li>
+            </ul>
+            <div class="keyidea"><span class="kih">Key idea — loop choice &amp; complexity</span>
+              <p style="margin:.3em 0 0;font-size:.9rem">A single pass over <em>n</em> items is O(n); a nested loop over the same data is typically O(n²) — the first cost-model intuition for the algorithms ahead.</p>
+            </div>
+            <p class="readings"><b>Readings:</b> Liang, ch. 4 (Loops).</p>
+            <p class="xref">&rarr; Companion: <a href="index.html">Lesson 05 — Control flow (loops)</a></p>
+          </li>
+
+          <li class="tl-item" data-n="07">
+            <div class="tl-meta">Module A · Methods in Java</div>
+            <h4>Methods &amp; modular code</h4>
+            <p class="tl-objective">Objective: decompose programs into reusable methods and reason about scope.</p>
+            <ul class="tl-topics">
+              <li><b>Declaration &amp; invocation</b> — signature, body, and the call stack.</li>
+              <li><b>Parameters &amp; return values</b> — Java passes arguments <em>by value</em> (the reference value, for objects).</li>
+              <li><b>void vs value-returning methods</b> — side-effect-only vs producing a result.</li>
+              <li><b>Modularising code</b> — single-responsibility methods for readability and reuse.</li>
+              <li><b>Overloading methods</b> — same name, different parameter lists; resolved at compile time.</li>
+              <li><b>Scope of variables</b> — locals live within their block.</li>
+            </ul>
+            <div class="keyidea"><span class="kih">Key idea — overloading is compile-time</span>
+              <pre><code>int max(int a, int b) { ... }
+double max(double a, double b) { ... }  // overload, chosen by arg types</code></pre>
+            </div>
+            <p class="readings"><b>Readings:</b> Liang, ch. 6 (Methods).</p>
+            <p class="xref">&rarr; Companion: <a href="index.html">Lesson on methods</a></p>
+          </li>
+
+          <li class="tl-item" data-n="08">
+            <div class="tl-meta">Module A · Arrays in Java</div>
+            <h4>Arrays — 1D &amp; multidimensional</h4>
+            <p class="tl-objective">Objective: store and process fixed-size sequences, and search/sort them.</p>
+            <ul class="tl-topics">
+              <li><b>Array basics</b> — fixed length, zero-based, contiguous; <code>length</code> field.</li>
+              <li><b>Processing arrays &amp; foreach</b> — the enhanced <code>for</code> for read-only traversal.</li>
+              <li><b>Copying arrays</b> — assignment copies the reference; use <code>Arrays.copyOf</code> / <code>System.arraycopy</code> for a real copy.</li>
+              <li><b>Passing arrays to methods</b> — the array is shared (reference value passed).</li>
+              <li><b>Variable-length argument lists</b> — varargs <code>(int... nums)</code>.</li>
+              <li><b>Searching &amp; sorting</b> — linear O(n) vs binary O(log n) search; basic sorts.</li>
+              <li><b>Multidimensional arrays</b> — arrays of arrays (and jagged arrays).</li>
+            </ul>
+            <div class="keyidea"><span class="kih">Key idea — search complexity</span>
+              <p style="margin:.3em 0 0;font-size:.9rem">Linear search is O(n) on any array; binary search is O(log n) but requires the array to be <b>sorted</b> first.</p>
+            </div>
+            <p class="readings"><b>Readings:</b> Liang, ch. 7 (Single-Dimensional Arrays) &amp; ch. 8 (Multidimensional Arrays).</p>
+            <p class="xref">&rarr; Companion: <a href="index.html">Lesson 06 — Arrays (1D and 2D)</a></p>
+          </li>
+
+          <li class="tl-item is-quiz" data-n="09">
+            <div class="tl-meta">Module A · Quiz 1 — checkpoint</div>
+            <h4>Quiz 1 &amp; fundamentals recap</h4>
+            <p class="tl-objective">Objective: consolidate and self-assess the procedural fundamentals before OOP.</p>
+            <ul class="tl-topics">
+              <li><b>Quiz on fundamental Java topics</b> — loops, methods and arrays under timed conditions.</li>
+              <li><b>Summary of fundamentals</b> — review of the toolchain, types, control flow, methods and arrays.</li>
+            </ul>
+            <div class="keyidea"><span class="kih">Key idea — checkpoint</span>
+              <p style="margin:.3em 0 0;font-size:.9rem">This checkpoint feeds the 25% intermediate exam. Rehearse with the companion's mixed quiz.</p>
+            </div>
+            <p class="readings"><b>Readings:</b> review Liang chs. 1–8.</p>
+            <p class="xref">&rarr; Companion: <a href="index.html#quiz">Quiz mode — 12 mixed questions</a></p>
+          </li>
+        </ol>
+      </div>
+
+      <!-- ===== MODULE B — OOP core ===== -->
+      <div class="module">
+        <div class="module-head">
+          <span class="mod-num">MOD B</span>
+          <h3>Object-oriented programming core</h3>
+          <span class="span">Sessions 10–18</span>
+        </div>
+        <p class="mod-overview">The heart of the course: defining classes and objects, then the four OOP pillars —
+        encapsulation, inheritance, polymorphism and abstraction — plus the design principles (SOLID,
+        composition vs inheritance) that keep object models maintainable. Closes with a consolidating OOP quiz.</p>
+        <div class="mod-outcomes"><h5>Module learning outcomes</h5><ul>
+          <li>Design classes with constructors, instance/static members and the <code>this</code> reference.</li>
+          <li>Apply encapsulation (private fields, accessors, immutability) and distinguish primitive vs reference semantics.</li>
+          <li>Build inheritance hierarchies (<code>super</code>, constructor chaining, overriding) and use dynamic binding.</li>
+          <li>Choose between abstract classes and interfaces, and apply SOLID and composition-over-inheritance.</li>
+        </ul></div>
+
+        <ol class="timeline">
+          <li class="tl-item" data-n="10">
+            <div class="tl-meta">Module B · Objects and classes — 1</div>
+            <h4>Defining classes &amp; objects</h4>
+            <p class="tl-objective">Objective: define a class, construct objects, and manage instance vs static members.</p>
+            <ul class="tl-topics">
+              <li><b>Defining classes &amp; objects</b> — a class is a blueprint; objects are instances on the heap.</li>
+              <li><b>Constructors</b> — initialise new objects; the no-arg default disappears once you declare one.</li>
+              <li><b>Accessing objects via reference variables</b> — variables hold references, not the object itself.</li>
+              <li><b>Object data &amp; methods</b> — fields (state) and methods (behaviour).</li>
+              <li><b>Passing objects to methods</b> — the reference value is passed, so mutations are visible to the caller.</li>
+              <li><b>this keyword</b> — refers to the current instance; disambiguates fields from parameters.</li>
+              <li><b>Static variables, constants &amp; methods</b> — belong to the class, shared across all instances.</li>
+            </ul>
+            <div class="keyidea"><span class="kih">Key idea — instance vs static</span>
+              <pre><code>class Counter {
+    static int total = 0;   // shared by all instances
+    int id;                 // one per object
+    Counter() { id = ++total; }
+}</code></pre>
+            </div>
+            <p class="readings"><b>Readings:</b> Liang, ch. 9 (Objects and Classes).</p>
+            <p class="xref">&rarr; Companion: <a href="index.html">Lesson 10–11 — Classes and objects</a></p>
+          </li>
+
+          <li class="tl-item" data-n="11">
+            <div class="tl-meta">Module B · Objects and classes — 2</div>
+            <h4>Visibility, immutability &amp; reference types</h4>
+            <p class="tl-objective">Objective: control access and understand the deep difference between value and reference variables.</p>
+            <ul class="tl-topics">
+              <li><b>Visibility modifiers</b> — <code>public</code>, <code>protected</code>, package-private, <code>private</code>.</li>
+              <li><b>Immutable objects &amp; classes</b> — no mutators + final fields = thread-safe, cache-friendly objects.</li>
+              <li><b>Scope of variables</b> — fields vs locals vs parameters.</li>
+              <li><b>this keyword</b> — also used to chain constructors via <code>this(...)</code>.</li>
+              <li><b>Primitive vs reference variables</b> — a primitive holds a value; a reference holds an address.</li>
+            </ul>
+            <div class="keyidea"><span class="kih">Key idea — copying a reference ≠ copying the object</span>
+              <pre><code>int[] a = {1,2}; int[] b = a;  // same array
+b[0] = 9;                       // a[0] is now 9 too</code></pre>
+            </div>
+            <p class="readings"><b>Readings:</b> Liang, ch. 9 §9.9–9.13; Bloch, <i>Effective Java</i> Item 17 (minimise mutability).</p>
+            <p class="xref">&rarr; Companion: <a href="index.html">Lesson 10–11 — visibility, overloading</a></p>
+          </li>
+
+          <li class="tl-item" data-n="12">
+            <div class="tl-meta">Module B · Object-Oriented Thinking</div>
+            <h4>Thinking in objects</h4>
+            <p class="tl-objective">Objective: model a problem domain as collaborating objects with clear relationships.</p>
+            <ul class="tl-topics">
+              <li><b>Thinking in objects</b> — identify responsibilities and behaviours, not just data.</li>
+              <li><b>Class relationships</b> — association, aggregation and composition (has-a) vs inheritance (is-a).</li>
+              <li><b>The String class</b> — immutable text; <code>==</code> vs <code>.equals()</code>; the string pool.</li>
+              <li><b>Case study</b> — designing a small domain model end to end.</li>
+            </ul>
+            <div class="keyidea"><span class="kih">Key idea — String immutability</span>
+              <p style="margin:.3em 0 0;font-size:.9rem">Strings never change in place; "modifying" one creates a new object. Use <code>StringBuilder</code> for heavy concatenation.</p>
+            </div>
+            <p class="readings"><b>Readings:</b> Liang, ch. 10 (Object-Oriented Thinking); Bloch Item 51 (favour composition).</p>
+            <p class="xref">&rarr; Companion: <a href="index.html">Lesson 12 — Object-oriented thinking</a></p>
+          </li>
+
+          <li class="tl-item" data-n="13">
+            <div class="tl-meta">Module B · Encapsulation in Java</div>
+            <h4>Encapsulation</h4>
+            <p class="tl-objective">Objective: protect invariants by hiding state behind a controlled interface.</p>
+            <ul class="tl-topics">
+              <li><b>Getters &amp; setters</b> — expose read/write access while validating in setters.</li>
+              <li><b>Encapsulation principles</b> — private fields + public methods; the object guards its own consistency.</li>
+              <li><b>Immutable classes</b> — final class, final fields, defensive copies, no mutators.</li>
+            </ul>
+            <div class="keyidea"><span class="kih">Key idea — validate at the boundary</span>
+              <pre><code>private int age;
+public void setAge(int a) {
+    if (a < 0) throw new IllegalArgumentException();
+    this.age = a;
+}</code></pre>
+            </div>
+            <p class="readings"><b>Readings:</b> Liang, ch. 9 §9.10; Bloch Items 15–16 (minimise accessibility, prefer accessors).</p>
+            <p class="xref">&rarr; Companion: <a href="index.html">Lesson 13 — Encapsulation</a></p>
+          </li>
+
+          <li class="tl-item" data-n="14">
+            <div class="tl-meta">Module B · Inheritance in Java</div>
+            <h4>Inheritance</h4>
+            <p class="tl-objective">Objective: reuse and specialise behaviour through subclassing without breaking the base.</p>
+            <ul class="tl-topics">
+              <li><b>Superclasses &amp; subclasses</b> — <code>extends</code> establishes an is-a relationship.</li>
+              <li><b>The super keyword</b> — call the parent constructor or an overridden parent method.</li>
+              <li><b>Constructor chaining</b> — a subclass constructor always invokes a superclass constructor first.</li>
+              <li><b>Overriding methods</b> — redefine inherited behaviour with the same signature.</li>
+              <li><b>Overriding vs overloading</b> — runtime dispatch vs compile-time selection.</li>
+              <li><b>Object class &amp; toString()</b> — every class inherits from <code>Object</code>; override <code>toString()</code> for readable output.</li>
+            </ul>
+            <div class="keyidea"><span class="kih">Key idea — @Override + super()</span>
+              <pre><code>class Dog extends Animal {
+    Dog(String n) { super(n); }
+    @Override public String speak() { return "Woof"; }
+}</code></pre>
+            </div>
+            <p class="readings"><b>Readings:</b> Liang, ch. 11 (Inheritance and Polymorphism) §11.1–11.6; Bloch Item 19 (design for inheritance or prohibit it).</p>
+            <p class="xref">&rarr; Companion: <a href="index.html">Lesson 14 — Inheritance</a></p>
+          </li>
+
+          <li class="tl-item" data-n="15">
+            <div class="tl-meta">Module B · Polymorphism in Java</div>
+            <h4>Polymorphism &amp; dynamic binding</h4>
+            <p class="tl-objective">Objective: write code against base types and let the runtime pick the right implementation.</p>
+            <ul class="tl-topics">
+              <li><b>Introduction to polymorphism</b> — one interface, many runtime forms.</li>
+              <li><b>Dynamic binding</b> — the JVM dispatches on the object's actual type, not the reference type.</li>
+              <li><b>Casting objects</b> — upcasting is implicit; downcasting needs an explicit cast (and care).</li>
+              <li><b>Object.equals()</b> — value equality; must respect the equals/hashCode contract.</li>
+              <li><b>The ArrayList class</b> — a resizable, generic list (first taste of collections).</li>
+              <li><b>The instanceof operator</b> — safe type checks before downcasting (incl. pattern form).</li>
+            </ul>
+            <div class="keyidea"><span class="kih">Key idea — dynamic dispatch</span>
+              <pre><code>Animal a = new Dog();
+a.speak();   // "Woof" — resolved at runtime, not compile time</code></pre>
+            </div>
+            <p class="readings"><b>Readings:</b> Liang, ch. 11 §11.7–11.14; Bloch Items 10–11 (equals/hashCode).</p>
+            <p class="xref">&rarr; Companion: <a href="index.html">Lesson 15 — Polymorphism &amp; dynamic binding</a></p>
+          </li>
+
+          <li class="tl-item" data-n="16">
+            <div class="tl-meta">Module B · Abstract classes and Interfaces</div>
+            <h4>Abstraction — abstract classes &amp; interfaces</h4>
+            <p class="tl-objective">Objective: define contracts and partial implementations, and choose the right abstraction.</p>
+            <ul class="tl-topics">
+              <li><b>Abstract classes</b> — can't be instantiated; may mix concrete and abstract methods.</li>
+              <li><b>Why abstract methods</b> — force subclasses to supply behaviour.</li>
+              <li><b>Case study</b> — a shape/geometry hierarchy.</li>
+              <li><b>Defining &amp; implementing interfaces</b> — pure contracts; a class can implement many.</li>
+              <li><b>Interfaces vs abstract classes</b> — multiple inheritance of type vs shared state/behaviour.</li>
+              <li><b>Multiple interfaces &amp; ambiguity</b> — resolving clashing default methods.</li>
+            </ul>
+            <div class="keyidea"><span class="kih">Key idea — program to an interface</span>
+              <pre><code>interface Shape { double area(); }
+class Circle implements Shape {
+    double r; public double area() { return Math.PI*r*r; }
+}</code></pre>
+            </div>
+            <p class="readings"><b>Readings:</b> Liang, ch. 13 (Abstract Classes and Interfaces); Bloch Items 20–22.</p>
+            <p class="xref">&rarr; Companion: <a href="index.html">Lesson 16 — Interfaces and abstract classes</a></p>
+          </li>
+
+          <li class="tl-item" data-n="17">
+            <div class="tl-meta">Module B · Object-Oriented Design Principles</div>
+            <h4>OO design principles — SOLID &amp; beyond</h4>
+            <p class="tl-objective">Objective: judge and improve a design using established principles, not just taste.</p>
+            <ul class="tl-topics">
+              <li><b>SOLID overview</b> — Single-responsibility, Open/closed, Liskov substitution, Interface segregation, Dependency inversion.</li>
+              <li><b>Composition vs inheritance</b> — prefer has-a over is-a to avoid fragile hierarchies.</li>
+              <li><b>Common OO design pitfalls</b> — god classes, deep hierarchies, leaky abstractions.</li>
+              <li><b>Shallow vs deep modules</b> — a small interface hiding substantial functionality (Ousterhout).</li>
+            </ul>
+            <div class="keyidea"><span class="kih">Key idea — deep modules</span>
+              <p style="margin:.3em 0 0;font-size:.9rem">The best modules expose a <b>narrow</b> interface over a <b>deep</b> implementation — maximising functionality hidden behind minimal surface area.</p>
+            </div>
+            <p class="readings"><b>Readings:</b> Bloch, <i>Effective Java</i> (composition, interface design); SOLID primers; Ousterhout on module depth.</p>
+            <p class="xref">&rarr; Companion: <a href="index.html">Lessons 12–16</a> (applied to your designs)</p>
+          </li>
+
+          <li class="tl-item is-quiz" data-n="18">
+            <div class="tl-meta">Module B · Quiz on Object-Oriented Programming</div>
+            <h4>OOP quiz &amp; recap</h4>
+            <p class="tl-objective">Objective: consolidate the full OOP model before moving to advanced APIs.</p>
+            <ul class="tl-topics">
+              <li><b>Quiz covering all OOP topics</b> — encapsulation, inheritance, polymorphism, abstraction, design.</li>
+              <li><b>Summary of fundamental OOP concepts</b> — connecting the four pillars to SOLID.</li>
+            </ul>
+            <div class="keyidea"><span class="kih">Key idea — checkpoint</span>
+              <p style="margin:.3em 0 0;font-size:.9rem">A strong OOP foundation underpins the group/individual projects and both exams.</p>
+            </div>
+            <p class="readings"><b>Readings:</b> review Liang chs. 9–13.</p>
+            <p class="xref">&rarr; Companion: <a href="index.html#quiz">Quiz mode</a></p>
+          </li>
+        </ol>
+      </div>
+
+      <!-- ===== MODULE C — Projects, build, errors ===== -->
+      <div class="module">
+        <div class="module-head">
+          <span class="mod-num">MOD C</span>
+          <h3>Projects, build tooling &amp; exception handling</h3>
+          <span class="span">Sessions 19–21</span>
+        </div>
+        <p class="mod-overview">From code to a shippable artifact: the individual project kicks off, build tooling
+        (Maven/Gradle, JARs) turns sources into deliverables, and robust exception handling makes applications
+        resilient.</p>
+        <div class="mod-outcomes"><h5>Module learning outcomes</h5><ul>
+          <li>Scope and plan an individual project with clear deliverables and timeline.</li>
+          <li>Build and package a Java application with Maven/Gradle into a runnable JAR.</li>
+          <li>Design robust error handling with checked/unchecked exceptions and custom types.</li>
+        </ul></div>
+
+        <ol class="timeline">
+          <li class="tl-item is-project" data-n="19">
+            <div class="tl-meta">Module C · Individual Project Workshop</div>
+            <h4>Individual project kickoff</h4>
+            <p class="tl-objective">Objective: understand the individual project's scope, expectations and timeline.</p>
+            <ul class="tl-topics">
+              <li><b>Introduction to the individual project</b> — what to build and why.</li>
+              <li><b>Expectations &amp; guidelines</b> — quality bar, idiomatic Java, encapsulation/SOLID.</li>
+              <li><b>Timeline &amp; deliverable</b> — milestones feeding the 15% individual mark.</li>
+            </ul>
+            <div class="keyidea"><span class="kih">Key idea — design before code</span>
+              <p style="margin:.3em 0 0;font-size:.9rem">Sketch classes and responsibilities first; the OOP module gives you the vocabulary to do so.</p>
+            </div>
+            <p class="readings"><b>Readings:</b> Bloch, <i>Effective Java</i> (general advice); project brief.</p>
+          </li>
+
+          <li class="tl-item" data-n="20">
+            <div class="tl-meta">Module C · Compilation and Packaging</div>
+            <h4>Build tooling &amp; packaging</h4>
+            <p class="tl-objective">Objective: turn source into a versioned, distributable artifact.</p>
+            <ul class="tl-topics">
+              <li><b>Building with Maven/Gradle</b> — declarative builds, dependency management, lifecycle phases.</li>
+              <li><b>Creating .jar files</b> — packaging compiled classes (+ a manifest with the main class).</li>
+              <li><b>Package management with Maven Central</b> — pulling and publishing libraries.</li>
+              <li><b>Delivering Java projects</b> — reproducible builds and runnable artifacts.</li>
+            </ul>
+            <div class="keyidea"><span class="kih">Key idea — a runnable JAR</span>
+              <pre><code>mvn package          # → target/app-1.0.jar
+java -jar app-1.0.jar  # runs the Main-Class from the manifest</code></pre>
+            </div>
+            <p class="readings"><b>Readings:</b> Loy/Niemeyer (packaging &amp; deployment); Maven/Gradle docs.</p>
+          </li>
+
+          <li class="tl-item" data-n="21">
+            <div class="tl-meta">Module C · Error Handling in Java</div>
+            <h4>Exception handling</h4>
+            <p class="tl-objective">Objective: build resilient code that signals and recovers from failures cleanly.</p>
+            <ul class="tl-topics">
+              <li><b>Exception-handling overview</b> — separating error handling from normal logic.</li>
+              <li><b>Exception types</b> — checked vs unchecked (<code>RuntimeException</code>) vs <code>Error</code>.</li>
+              <li><b>Declaring, throwing &amp; catching</b> — <code>throws</code>, <code>throw</code>, <code>try/catch/finally</code>.</li>
+              <li><b>Custom exceptions</b> — domain-specific types extending <code>Exception</code>/<code>RuntimeException</code>.</li>
+              <li><b>Best practices</b> — fail fast, don't swallow exceptions, prefer try-with-resources.</li>
+            </ul>
+            <div class="keyidea"><span class="kih">Key idea — try-with-resources</span>
+              <pre><code>try (Scanner s = new Scanner(file)) {
+    // s is closed automatically, even on exception
+}</code></pre>
+            </div>
+            <p class="readings"><b>Readings:</b> Liang, ch. 12 (Exception Handling and Text I/O); Bloch Items 69–77.</p>
+            <p class="xref">&rarr; Companion: <a href="index.html">Lesson 18 — Exception handling</a></p>
+          </li>
+        </ol>
+      </div>
+
+      <!-- ===== MODULE D — JavaFX ===== -->
+      <div class="module">
+        <div class="module-head">
+          <span class="mod-num">MOD D</span>
+          <h3>JavaFX &amp; interactive applications</h3>
+          <span class="span">Sessions 22–24</span>
+        </div>
+        <p class="mod-overview">Building graphical, event-driven applications: the JavaFX scene graph and layout
+        panes, UI controls and multimedia, and property binding — wrapped around the launch of the final project.</p>
+        <div class="mod-outcomes"><h5>Module learning outcomes</h5><ul>
+          <li>Structure a JavaFX app with stages, scenes, panes and the scene graph.</li>
+          <li>Wire UI controls and multimedia with event handlers and property binding.</li>
+          <li>Scope and plan the final project's idea, timeline and deliverable.</li>
+        </ul></div>
+
+        <ol class="timeline">
+          <li class="tl-item" data-n="22">
+            <div class="tl-meta">Module D · JavaFX Basics</div>
+            <h4>JavaFX basics</h4>
+            <p class="tl-objective">Objective: assemble a window from a scene graph of panes and shapes.</p>
+            <ul class="tl-topics">
+              <li><b>Introduction to JavaFX</b> — the modern Java GUI toolkit (Stage &rarr; Scene &rarr; nodes).</li>
+              <li><b>JavaFX vs Swing &amp; AWT</b> — why JavaFX superseded the older toolkits.</li>
+              <li><b>Panes, groups, UI controls &amp; shapes</b> — layout containers and the node hierarchy.</li>
+              <li><b>Property binding</b> — keep UI and model in sync automatically.</li>
+              <li><b>Color &amp; Font classes</b> — styling primitives.</li>
+              <li><b>Image &amp; ImageView</b> — displaying images.</li>
+            </ul>
+            <div class="keyidea"><span class="kih">Key idea — Stage &rarr; Scene &rarr; node graph</span>
+              <pre><code>Button b = new Button("Click");
+b.setOnAction(e -> System.out.println("hi"));
+stage.setScene(new Scene(new StackPane(b), 300, 200));</code></pre>
+            </div>
+            <p class="readings"><b>Readings:</b> Liang, chs. 14–16 (JavaFX basics, events, UI controls &amp; multimedia).</p>
+            <p class="xref">&rarr; Companion: <a href="index.html">Lesson 20 — JavaFX, compilation, packaging</a></p>
+          </li>
+
+          <li class="tl-item" data-n="23">
+            <div class="tl-meta">Module D · JavaFX UI Controls and Multimedia</div>
+            <h4>JavaFX controls &amp; multimedia</h4>
+            <p class="tl-objective">Objective: build a complete interactive UI with the standard controls and media.</p>
+            <ul class="tl-topics">
+              <li><b>Label &amp; Labeled</b> — text/graphic display nodes.</li>
+              <li><b>Button, CheckBox, RadioButton</b> — command and selection controls.</li>
+              <li><b>TextField, ComboBox</b> — text and choice input.</li>
+              <li><b>ListView, ScrollBar, Slider</b> — collections and ranged input.</li>
+              <li><b>Video &amp; audio</b> — the media API.</li>
+            </ul>
+            <div class="keyidea"><span class="kih">Key idea — event-driven UIs</span>
+              <p style="margin:.3em 0 0;font-size:.9rem">Controls fire events; you register handlers (often lambdas). The UI is reactive, not procedural.</p>
+            </div>
+            <p class="readings"><b>Readings:</b> Liang, ch. 16 (JavaFX UI Controls and Multimedia).</p>
+            <p class="xref">&rarr; Companion: <a href="index.html">Lesson 20 — JavaFX</a></p>
+          </li>
+
+          <li class="tl-item is-project" data-n="24">
+            <div class="tl-meta">Module D · Final Project Workshop — 1</div>
+            <h4>Final project kickoff</h4>
+            <p class="tl-objective">Objective: define the final (group) project's idea, scope and timeline.</p>
+            <ul class="tl-topics">
+              <li><b>Introduction to the final project idea</b> — choosing a meaningful application.</li>
+              <li><b>Expectations &amp; guidelines</b> — design quality, modularity, OOP and collections.</li>
+              <li><b>Timeline &amp; deliverable</b> — milestones feeding the 25% group mark; presented in S29.</li>
+            </ul>
+            <div class="keyidea"><span class="kih">Key idea — modular from day one</span>
+              <p style="margin:.3em 0 0;font-size:.9rem">Split work along clean module boundaries so the team can build in parallel — apply SOLID and deep modules.</p>
+            </div>
+            <p class="readings"><b>Readings:</b> Bloch, <i>Effective Java</i> (API design); project brief.</p>
+          </li>
+        </ol>
+      </div>
+
+      <!-- ===== MODULE E — Generics, collections, patterns ===== -->
+      <div class="module">
+        <div class="module-head">
+          <span class="mod-num">MOD E</span>
+          <h3>Generics, collections &amp; design patterns</h3>
+          <span class="span">Sessions 25–28</span>
+        </div>
+        <p class="mod-overview">The advanced toolkit: type-safe generics, the collections framework (sets and maps
+        / hash tables), and reusable design patterns — interleaved with final-project work time.</p>
+        <div class="mod-outcomes"><h5>Module learning outcomes</h5><ul>
+          <li>Write type-safe generic methods and classes using bounds and wildcards.</li>
+          <li>Choose the right collection (List/Set/Map) and reason about hash-table performance.</li>
+          <li>Recognise and apply creational, structural and behavioural design patterns.</li>
+        </ul></div>
+
+        <ol class="timeline">
+          <li class="tl-item" data-n="25">
+            <div class="tl-meta">Module E · Generics in Java</div>
+            <h4>Generics</h4>
+            <p class="tl-objective">Objective: write reusable, type-safe code parameterised over types.</p>
+            <ul class="tl-topics">
+              <li><b>Motivations &amp; benefits</b> — compile-time type safety, fewer casts.</li>
+              <li><b>Generic methods &amp; classes</b> — <code>&lt;T&gt;</code> type parameters.</li>
+              <li><b>Type parameters &amp; wildcards</b> — <code>?</code>, <code>? extends T</code>, <code>? super T</code> (PECS).</li>
+              <li><b>Bounded types</b> — constrain a parameter, e.g. <code>&lt;T extends Comparable&lt;T&gt;&gt;</code>.</li>
+              <li><b>Raw types &amp; type erasure</b> — generics exist at compile time; the runtime sees raw types.</li>
+            </ul>
+            <div class="keyidea"><span class="kih">Key idea — PECS &amp; erasure</span>
+              <pre><code>&lt;T extends Comparable&lt;T&gt;&gt; T max(List&lt;? extends T&gt; xs) { ... }
+// "Producer extends, Consumer super"; types are erased at runtime</code></pre>
+            </div>
+            <p class="readings"><b>Readings:</b> Liang, ch. 19 (Generics); Bloch Items 26–33 (generics).</p>
+            <p class="xref">&rarr; Companion: <a href="index.html">Lesson 17 — Collections, generics</a></p>
+          </li>
+
+          <li class="tl-item" data-n="26">
+            <div class="tl-meta">Module E · Sets and Maps in Java</div>
+            <h4>Sets &amp; maps (hash tables)</h4>
+            <p class="tl-objective">Objective: pick the right collection and understand its performance characteristics.</p>
+            <ul class="tl-topics">
+              <li><b>Sets &amp; HashSets</b> — unordered, no duplicates; backed by a hash table.</li>
+              <li><b>Sets vs lists</b> — membership/uniqueness vs ordered, indexed sequences.</li>
+              <li><b>Maps in Java</b> — key&rarr;value associations (<code>HashMap</code>, <code>TreeMap</code>).</li>
+              <li><b>Singleton &amp; unmodifiable collections/maps</b> — immutable views and factory methods.</li>
+            </ul>
+            <div class="keyidea"><span class="kih">Key idea — hashing buys O(1)</span>
+              <p style="margin:.3em 0 0;font-size:.9rem"><code>HashSet</code>/<code>HashMap</code> give average O(1) add/contains/get — provided <code>equals</code> and <code>hashCode</code> are consistent. <code>TreeMap</code> is O(log n) but sorted.</p>
+            </div>
+            <p class="readings"><b>Readings:</b> Liang, chs. 20–21 (Lists, Stacks, Queues; Sets and Maps); Bloch Items 10–11.</p>
+            <p class="xref">&rarr; Companion: <a href="index.html">Lesson 17 — Collections</a> · <a href="index.html#reference">Cheatsheet: collections</a></p>
+          </li>
+
+          <li class="tl-item is-project" data-n="27">
+            <div class="tl-meta">Module E · Final Project Workshop — 2</div>
+            <h4>Final project progress</h4>
+            <p class="tl-objective">Objective: assess progress and iterate on the final project with feedback.</p>
+            <ul class="tl-topics">
+              <li><b>Assess progress of the final project</b> — checkpoint against the timeline.</li>
+              <li><b>Work on the final project</b> — supervised build time and peer review.</li>
+            </ul>
+            <div class="keyidea"><span class="kih">Key idea — integrate early</span>
+              <p style="margin:.3em 0 0;font-size:.9rem">Merge team modules often; surface interface mismatches before the final week.</p>
+            </div>
+            <p class="readings"><b>Readings:</b> bring your project; review relevant Liang/Bloch chapters as needed.</p>
+          </li>
+
+          <li class="tl-item" data-n="28">
+            <div class="tl-meta">Module E · Design Patterns</div>
+            <h4>Design patterns</h4>
+            <p class="tl-objective">Objective: recognise recurring design problems and apply proven solutions.</p>
+            <ul class="tl-topics">
+              <li><b>Introduction to design patterns</b> — reusable, named solutions to common problems.</li>
+              <li><b>Creational patterns</b> — object creation: Singleton, Factory, Builder.</li>
+              <li><b>Structural patterns</b> — composition of objects: Adapter, Decorator, Composite.</li>
+              <li><b>Behavioral patterns</b> — communication: Strategy, Observer, Iterator.</li>
+            </ul>
+            <div class="keyidea"><span class="kih">Key idea — Strategy via an interface</span>
+              <pre><code>interface SortStrategy { void sort(int[] a); }
+// swap algorithms at runtime without touching the caller</code></pre>
+            </div>
+            <p class="readings"><b>Readings:</b> Bloch, <i>Effective Java</i> (Builder Item 2, etc.); GoF pattern primers.</p>
+          </li>
+        </ol>
+      </div>
+
+      <!-- ===== MODULE F — Presentation & exam ===== -->
+      <div class="module">
+        <div class="module-head">
+          <span class="mod-num">MOD F</span>
+          <h3>Final presentation &amp; exam</h3>
+          <span class="span">Sessions 29–30</span>
+        </div>
+        <p class="mod-overview">The course closes with project presentations, feedback and review, then the
+        comprehensive final exam.</p>
+        <div class="mod-outcomes"><h5>Module learning outcomes</h5><ul>
+          <li>Present and defend a working Java application to peers and instructor.</li>
+          <li>Demonstrate mastery of the full programme under exam conditions.</li>
+        </ul></div>
+
+        <ol class="timeline">
+          <li class="tl-item is-project" data-n="29">
+            <div class="tl-meta">Module F · Final Project Presentation</div>
+            <h4>Final presentations &amp; course review</h4>
+            <p class="tl-objective">Objective: showcase the final application and reflect on the course.</p>
+            <ul class="tl-topics">
+              <li><b>Students present final projects</b> — demo + design rationale.</li>
+              <li><b>Feedback &amp; evaluation</b> — instructor and peer feedback (feeds the 25% group mark).</li>
+              <li><b>Course review</b> — synthesis of the whole syllabus ahead of the exam.</li>
+            </ul>
+            <div class="keyidea"><span class="kih">Key idea — explain your design</span>
+              <p style="margin:.3em 0 0;font-size:.9rem">A great demo explains <em>why</em> the design is structured as it is — tie it back to OOP and SOLID.</p>
+            </div>
+            <p class="readings"><b>Readings:</b> review all modules.</p>
+          </li>
+
+          <li class="tl-item is-quiz" data-n="30">
+            <div class="tl-meta">Module F · Final Exam</div>
+            <h4>Final exam</h4>
+            <p class="tl-objective">Objective: demonstrate comprehensive mastery of the programme.</p>
+            <ul class="tl-topics">
+              <li><b>Final exam</b> — comprehensive assessment over the full course (25% of the grade).</li>
+            </ul>
+            <div class="keyidea"><span class="kih">Key idea — comprehensive review</span>
+              <p style="margin:.3em 0 0;font-size:.9rem">Cover fundamentals, the four OOP pillars, generics, collections, exceptions and design. The companion's <a href="index.html#quiz">quiz mode</a> and <a href="index.html#reference">cheatsheet</a> make efficient revision tools.</p>
+            </div>
+            <p class="readings"><b>Readings:</b> all chapters — Liang chs. 1–21; Bloch &amp; Loy/Niemeyer for depth.</p>
+            <p class="xref">&rarr; Companion: <a href="index.html#quiz">Quiz mode</a> · <a href="index.html#reference">Cheatsheet</a></p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ========================== GLOSSARY ========================== -->
+    <section id="glossary" class="course-section">
+      <h2>Key concepts — glossary</h2>
+      <p class="section-intro">A quick reference to the terms that recur across the course. For worked examples,
+      see the matching <a href="index.html">lessons</a> and the <a href="index.html#reference">cheatsheet</a>.</p>
+      <dl class="glossary">
+        <dt>JVM</dt><dd>Java Virtual Machine — executes platform-neutral bytecode; the basis of Java's portability.</dd>
+        <dt>JDK / JRE</dt><dd>JDK = JRE + dev tools (javac, jar); JRE = JVM + standard library to run apps.</dd>
+        <dt>Bytecode</dt><dd>The intermediate <code>.class</code> form produced by <code>javac</code> and run by the JVM.</dd>
+        <dt>Primitive type</dt><dd>One of the eight built-in value types (int, double, boolean, char…); not objects.</dd>
+        <dt>Reference type</dt><dd>A variable holding a reference (address) to an object on the heap, not the object itself.</dd>
+        <dt>Class</dt><dd>A blueprint defining the state (fields) and behaviour (methods) of objects.</dd>
+        <dt>Object / instance</dt><dd>A concrete realisation of a class, created with <code>new</code>.</dd>
+        <dt>Constructor</dt><dd>A special method that initialises a new object; can be overloaded and chained.</dd>
+        <dt>this</dt><dd>Reference to the current object; disambiguates fields and chains constructors.</dd>
+        <dt>static</dt><dd>A member belonging to the class itself, shared by all instances.</dd>
+        <dt>Encapsulation</dt><dd>Hiding internal state behind a controlled interface to protect invariants.</dd>
+        <dt>Immutability</dt><dd>An object whose state can't change after construction — simpler and thread-safe.</dd>
+        <dt>Inheritance</dt><dd>An is-a relationship where a subclass reuses/specialises a superclass via <code>extends</code>.</dd>
+        <dt>super</dt><dd>Refers to the superclass; invokes its constructor or overridden methods.</dd>
+        <dt>Overriding</dt><dd>Redefining an inherited method (same signature); dispatched at runtime.</dd>
+        <dt>Overloading</dt><dd>Multiple methods, same name, different parameters; resolved at compile time.</dd>
+        <dt>Polymorphism</dt><dd>One reference type, many runtime forms, via dynamic dispatch.</dd>
+        <dt>Dynamic binding</dt><dd>The JVM selects the method implementation based on the object's actual type.</dd>
+        <dt>Abstract class</dt><dd>A class that can't be instantiated; may declare abstract methods for subclasses.</dd>
+        <dt>Interface</dt><dd>A pure contract of methods a class promises to implement; supports multiple inheritance of type.</dd>
+        <dt>instanceof</dt><dd>Tests an object's runtime type before a safe downcast.</dd>
+        <dt>equals / hashCode</dt><dd>Value-equality and hashing contract; must stay consistent for hash collections.</dd>
+        <dt>Generics</dt><dd>Type parameters (<code>&lt;T&gt;</code>) giving compile-time type safety and fewer casts.</dd>
+        <dt>Wildcard (PECS)</dt><dd><code>? extends</code> for producers, <code>? super</code> for consumers.</dd>
+        <dt>Type erasure</dt><dd>Generic type info exists at compile time only; the runtime sees raw types.</dd>
+        <dt>Collection</dt><dd>Framework of reusable data structures: List, Set, Queue, Map.</dd>
+        <dt>HashMap / HashSet</dt><dd>Hash-table-backed structures with average O(1) lookup.</dd>
+        <dt>Big-O</dt><dd>Asymptotic cost notation — e.g. O(1), O(log n), O(n), O(n²).</dd>
+        <dt>Exception</dt><dd>An object representing an error; checked exceptions must be declared or caught.</dd>
+        <dt>try-with-resources</dt><dd>Auto-closes resources declared in the <code>try</code> header.</dd>
+        <dt>SOLID</dt><dd>Five OO design principles for maintainable, flexible software.</dd>
+        <dt>Composition</dt><dd>A has-a relationship; often preferred over inheritance for flexibility.</dd>
+        <dt>Design pattern</dt><dd>A named, reusable solution to a recurring design problem (Singleton, Strategy…).</dd>
+        <dt>JavaFX</dt><dd>The modern Java GUI toolkit: Stage &rarr; Scene &rarr; scene-graph nodes, with property binding.</dd>
+        <dt>Maven / Gradle</dt><dd>Build tools that manage dependencies and package apps into JARs.</dd>
+      </dl>
+    </section>
+
+    <!-- ========================= BIBLIOGRAPHY ======================= -->
+    <section id="bibliography" class="course-section">
+      <h2>Bibliography</h2>
+      <p class="section-intro">Recommended texts. The Liang text is the primary spine of the programme.</p>
+      <ul class="biblio">
+        <li>
+          <div class="cite">Y. Daniel Liang (2024). <i>Introduction to Java Programming and Data Structures</i>, 13th ed. Pearson. ISBN 0138123536.</div>
+          <p class="note">Primary text — seamlessly integrates programming, data structures and algorithms; aligned to recent Java. The chapter spine for nearly every session.</p>
+          <p class="where">Sessions 1–30 (core reference)</p>
+        </li>
+        <li>
+          <div class="cite">Josh Bloch (2017). <i>Effective Java</i>, 3rd ed. Addison-Wesley Professional. ISBN 0134686042.</div>
+          <p class="note">The definitive Java best-practices guide — items on immutability, equals/hashCode, generics, exceptions and API design.</p>
+          <p class="where">Sessions 11–28 (OOP, generics, collections, exceptions, design)</p>
+        </li>
+        <li>
+          <div class="cite">Marc Loy, Patrick Niemeyer, Daniel Leuck (2023). <i>Learning Java</i>, 6th ed. O'Reilly. ISBN 9781098145538.</div>
+          <p class="note">An accessible introduction to real-world Java programming — useful for the toolchain, JavaFX and packaging context.</p>
+          <p class="where">Sessions 1–2, 20, 22–23 (setup, tooling, JavaFX, packaging)</p>
+        </li>
+      </ul>
+      <p class="section-intro" style="margin-top:1rem">See also: University Code of Conduct, Attendance Policy and Ethics Code (linked from the official syllabus). Full syllabus: <a href="SYLLABUS.pdf">SYLLABUS.pdf</a>.</p>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>Java Study — companion notes for Computer Programming 2 (CP2). Static site, runs entirely in the browser.</p>
+    <p style="margin-top:.3rem"><a href="index.html">Lessons</a> · <a href="index.html#quiz">Quiz</a> · <a href="index.html#reference">Cheatsheet</a> · <a href="course.html">Course outline</a> · <a href="SYLLABUS.pdf">Syllabus PDF</a></p>
+  </footer>
+
+</body>
+</html>
