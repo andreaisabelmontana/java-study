@@ -181,6 +181,25 @@ footer { text-align: center; padding: 2rem 2rem 3rem; color: var(--ink-2); font-
 .toast.success { background: #226633; }
 .toast.error { background: #993939; }
 
+/* ========================  COURSEWORK  ================================== */
+#coursework { margin-top: 2.5rem; padding-top: 1.8rem; border-top: 1px solid var(--line); }
+#coursework h2 { margin-top: 0; }
+#coursework .muted { color: var(--ink-2); margin: 0 0 .3rem; font-size: .95rem; }
+.proj-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(216px, 1fr)); gap: .9rem; margin-top: 1.1rem; }
+.proj-card {
+  display: flex; flex-direction: column; gap: .25rem;
+  padding: .85rem 1rem;
+  border: 1px solid var(--line); border-left: 3px solid var(--accent);
+  border-radius: 8px; background: var(--paper);
+  box-shadow: 0 1px 2px rgba(26,29,34,.05);
+  transition: box-shadow .2s ease, transform .2s ease;
+}
+.proj-card:hover { box-shadow: 0 8px 20px rgba(26,29,34,.1); transform: translateY(-2px); text-decoration: none; }
+.proj-card b { font-family: "Source Serif Pro", "Georgia", serif; font-weight: 700; color: var(--ink); font-size: 1.05rem; }
+.proj-card span { color: var(--ink-2); font-size: .88rem; line-height: 1.45; }
+.proj-card::after { content: "live ↗"; font-size: .72rem; color: var(--accent); margin-top: .25rem; letter-spacing: .04em; font-family: "JetBrains Mono", Consolas, monospace; }
+.proj-card.src::after { content: "source ↗"; }
+
 /* ========================  RESPONSIVE  ================================== */
 @media (max-width: 900px) {
   #layout { grid-template-columns: 1fr; }
