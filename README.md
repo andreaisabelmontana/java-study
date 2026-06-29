@@ -34,6 +34,13 @@ syllabus — Sessions 01 through 20.
 | 20 | JavaFX, compilation, packaging |
 | 21 | JUnit 5 testing |
 
+## Coursework
+
+The [course outline](course.html#coursework) links the hands-on projects built
+alongside this material — including **Library System** and **FutClub Manager**
+(Java/JavaFX), the **Recalc** formula engine, and several game builds (Pong,
+Snake, Echolocation Maze, Chess Dodge).
+
 ## Run locally
 
 ```bash
@@ -42,21 +49,16 @@ python -m http.server 8000
 # → http://localhost:8000
 ```
 
-## Deploy
-
-The repo is set up for GitHub Pages — push to `main` and enable Pages with
-source set to `main / root`. `.nojekyll` is included.
-
 ## File layout
 
 ```
 java-study/
-├── index.html
-├── .nojekyll
-├── README.md
+├── index.html      # interactive study companion (lessons / quiz / cheatsheet)
+├── course.html     # syllabus-driven course outline + coursework links
+├── project.html    # example project walkthrough
 ├── css/styles.css
 └── js/
-    ├── content.js   # lesson data (~600 lines of notes + code samples)
+    ├── content.js   # lesson data — notes + code samples
     ├── quiz.js      # quiz-mode runner
     └── app.js       # router, sidebar, syntax highlighter, progress tracking
 ```

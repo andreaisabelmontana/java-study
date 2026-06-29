@@ -138,6 +138,14 @@
     .tip-box { background: var(--accent-soft); border-radius: 8px; padding: 1rem 1.2rem; margin-top: 1.3rem; }
     .tip-box h4 { margin-top: 0; }
     .tip-box ul { margin: .3em 0; }
+
+    /* coursework project grid */
+    .proj-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem; margin-top: 1.3rem; }
+    .proj-card { background: var(--bg); border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 8px; padding: 1rem 1.1rem; display: flex; flex-direction: column; gap: .35rem; }
+    .proj-card .pname { font-family: "Source Serif Pro", serif; font-weight: 700; font-size: 1.08rem; color: var(--ink); }
+    .proj-card p { font-size: .88rem; color: var(--ink-2); margin: 0; flex: 1; }
+    .proj-card a.plink { font-size: .8rem; font-weight: 600; font-family: "JetBrains Mono", Consolas, monospace; }
+    .proj-card a.plink::after { content: " ↗"; }
   </style>
 </head>
 <body>
@@ -169,6 +177,7 @@
       <a href="#program">Program</a>
       <a href="#glossary">Key concepts</a>
       <a href="#bibliography">Bibliography</a>
+      <a href="#coursework">Coursework</a>
     </div>
   </nav>
 
@@ -1292,6 +1301,55 @@ class Sorter {
         </li>
       </ul>
       <p class="section-intro" style="margin-top:1rem">See also: University Code of Conduct, Attendance Policy and Ethics Code (linked from the official syllabus). Full syllabus: <a href="SYLLABUS.pdf">SYLLABUS.pdf</a>.</p>
+    </section>
+
+    <!-- ========================= COURSEWORK ========================= -->
+    <section id="coursework" class="course-section">
+      <h2>🧪 Coursework — projects I built</h2>
+      <p class="section-intro">Hands-on projects from this course, applying the Java, OOP and data-structure
+      ideas above — plus a few language and game builds that grew out of them. Each links to a live demo or its repository.</p>
+      <div class="proj-grid">
+        <div class="proj-card">
+          <span class="pname">Library System</span>
+          <p>Multi-role library manager — loans, fines and CSV export.</p>
+          <a class="plink" href="https://andreaisabelmontana.github.io/library-system/" target="_blank" rel="noopener">Live demo</a>
+        </div>
+        <div class="proj-card">
+          <span class="pname">FutClub Manager</span>
+          <p>JavaFX desktop club-operations suite with role-aware access.</p>
+          <a class="plink" href="https://andreaisabelmontana.github.io/futclub-manager/" target="_blank" rel="noopener">Live demo</a>
+        </div>
+        <div class="proj-card">
+          <span class="pname">Recalc</span>
+          <p>Spreadsheet formula engine in Java — parser and cycle detection.</p>
+          <a class="plink" href="https://github.com/andreaisabelmontana/recalc" target="_blank" rel="noopener">Repository</a>
+        </div>
+        <div class="proj-card">
+          <span class="pname">Parsekit</span>
+          <p>Strongly-typed parser-combinator library for TypeScript.</p>
+          <a class="plink" href="https://github.com/andreaisabelmontana/parsekit" target="_blank" rel="noopener">Repository</a>
+        </div>
+        <div class="proj-card">
+          <span class="pname">Pong</span>
+          <p>Modern Pong — paddle-spin physics and three CPU difficulties.</p>
+          <a class="plink" href="https://andreaisabelmontana.github.io/pong/" target="_blank" rel="noopener">Live demo</a>
+        </div>
+        <div class="proj-card">
+          <span class="pname">Snake</span>
+          <p>Snake refined — smooth gliding, wrap modes, rising speed.</p>
+          <a class="plink" href="https://andreaisabelmontana.github.io/snake/" target="_blank" rel="noopener">Live demo</a>
+        </div>
+        <div class="proj-card">
+          <span class="pname">Echolocation Maze</span>
+          <p>Navigate a pitch-black maze using fading sonar pulses.</p>
+          <a class="plink" href="https://andreaisabelmontana.github.io/echolocation-maze/" target="_blank" rel="noopener">Live demo</a>
+        </div>
+        <div class="proj-card">
+          <span class="pname">Chess Dodge</span>
+          <p>Survival arcade — dodge chess-piece hazards on a 6×6 board.</p>
+          <a class="plink" href="https://andreaisabelmontana.github.io/chess-dodge-game/" target="_blank" rel="noopener">Live demo</a>
+        </div>
+      </div>
     </section>
 
   </main>
