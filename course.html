@@ -1228,7 +1228,7 @@ class Sorter {
     <section id="examples" class="course-section">
       <h2>Worked examples</h2>
       <p class="section-intro">The syllabus pairs almost every session with <em>exercises in class</em>, and a core
-      objective is to <b>write, compile and run</b> Java. These six programmes are complete and self-contained —
+      objective is to <b>write, compile and run</b> Java. These eleven programmes are complete and self-contained —
       each compiles with <code>javac</code> on Java 17 and runs as shown — chosen to make a specific session's
       idea concrete rather than illustrative. Read them top to bottom, then try changing the inputs and predicting
       the output before you run them.</p>
@@ -1487,6 +1487,258 @@ public class BankDemo {
 declined: need 500.0 but balance is 70.0
 final balance: 70.0</code></pre></div>
         <p class="xref">&rarr; See <a href="#program">Session 21</a> (exception handling) and <a href="#program">Session 13</a> (validating setters that throw).</p>
+      </div>
+
+      <!-- E7 — equals/hashCode/Comparable contracts -->
+      <div class="example">
+        <div class="ex-meta"><b>Sessions 15–16, 26</b> · The equals / hashCode / Comparable contracts</div>
+        <h4>7 · A value object as a hash key</h4>
+        <p class="ex-lede">For a user-defined type to behave correctly inside a <code>HashMap</code>, <code>HashSet</code> or a
+        <code>TreeSet</code>, it must honour two contracts. <code>equals</code> and <code>hashCode</code> must agree
+        (equal objects share a hash code) so a re-created key still finds its value and duplicates collapse; and
+        <code>Comparable</code> must define a total order so the sorted collections work. <code>Objects.hash</code> and
+        the pattern <code>instanceof</code> keep both correct and concise.</p>
+        <pre><code>import java.util.*;
+
+// A small immutable value object used as a hash key AND sorted — so it must
+// honour both the equals/hashCode contract and the Comparable contract.
+final class Point implements Comparable&lt;Point&gt; {
+    private final int x, y;
+    Point(int x, int y) { this.x = x; this.y = y; }
+
+    // equals: logical (value) equality — two Points are equal iff x and y match.
+    @Override public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Point p)) return false;   // pattern instanceof
+        return x == p.x &amp;&amp; y == p.y;
+    }
+    // hashCode MUST agree with equals: equal objects -&gt; equal hash codes.
+    @Override public int hashCode() { return Objects.hash(x, y); }
+
+    // Comparable: a total order (by x, then y) so a TreeSet/sort can use it.
+    @Override public int compareTo(Point p) {
+        int c = Integer.compare(x, p.x);
+        return c != 0 ? c : Integer.compare(y, p.y);
+    }
+    @Override public String toString() { return "(" + x + "," + y + ")"; }
+}
+
+public class PointKey {
+    public static void main(String[] args) {
+        // Because equals + hashCode agree, a re-created equal key finds the value.
+        Map&lt;Point, String&gt; labels = new HashMap&lt;&gt;();
+        labels.put(new Point(1, 2), "A");
+        labels.put(new Point(3, 4), "B");
+        System.out.println("lookup (1,2): " + labels.get(new Point(1, 2)));
+
+        // A HashSet dedups using the same contract: the duplicate is dropped.
+        Set&lt;Point&gt; seen = new HashSet&lt;&gt;(List.of(
+            new Point(1, 2), new Point(1, 2), new Point(0, 0)));
+        System.out.println("distinct points: " + seen.size());
+
+        // Comparable gives a sorted view for free (natural ordering).
+        System.out.println("sorted: " + new TreeSet&lt;&gt;(seen));
+    }
+}</code></pre>
+        <div class="ex-out"><span class="oh">Output</span>
+<pre><code>lookup (1,2): A
+distinct points: 2
+sorted: [(0,0), (1,2)]</code></pre></div>
+        <p class="xref">&rarr; See <a href="#program">Session 15</a> (the equals/hashCode contract), <a href="#program">Session 16</a> (the <code>Comparable</code> interface) and <a href="#program">Session 26</a> (why hash collections depend on it).</p>
+      </div>
+
+      <!-- E8 — try-with-resources & AutoCloseable -->
+      <div class="example">
+        <div class="ex-meta"><b>Session 21</b> · Exception handling — try-with-resources &amp; AutoCloseable</div>
+        <h4>8 · Automatic, ordered resource cleanup</h4>
+        <p class="ex-lede">Any class implementing <code>AutoCloseable</code> can sit in a <code>try</code>-with-resources
+        header, and Java closes each one automatically — in the <em>reverse</em> order it opened them — whether the block
+        finishes normally or throws. This is the modern replacement for hand-written <code>finally</code> cleanup, and it
+        is impossible to forget. A custom resource makes the lifecycle visible without touching real files.</p>
+        <pre><code>// try-with-resources closes every resource automatically, in REVERSE order of
+// opening, whether the block finishes normally or throws. Any class that
+// implements AutoCloseable can take part — not just files and streams.
+class Resource implements AutoCloseable {
+    private final String name;
+    Resource(String name) {
+        this.name = name;
+        System.out.println("open  " + name);
+    }
+    void use() { System.out.println("use   " + name); }
+    @Override public void close() { System.out.println("close " + name); }
+}
+
+public class Resources {
+    public static void main(String[] args) {
+        // Two resources opened in one header; both are closed for us.
+        try (Resource a = new Resource("A");
+             Resource b = new Resource("B")) {
+            a.use();
+            b.use();
+            throw new RuntimeException("boom");   // close still runs for A and B
+        } catch (RuntimeException e) {
+            System.out.println("caught: " + e.getMessage());
+        }
+        System.out.println("done");
+    }
+}</code></pre>
+        <div class="ex-out"><span class="oh">Output</span>
+<pre><code>open  A
+open  B
+use   A
+use   B
+close B
+close A
+caught: boom
+done</code></pre></div>
+        <p class="xref">&rarr; See <a href="#program">Session 21</a> (exception-handling best practices). Compare with example 6, which uses a manual <code>finally</code>.</p>
+      </div>
+
+      <!-- E9 — design patterns: Strategy + Factory -->
+      <div class="example">
+        <div class="ex-meta"><b>Session 28</b> · Design patterns — Strategy &amp; Factory</div>
+        <h4>9 · Swappable algorithms behind an interface</h4>
+        <p class="ex-lede">Two Gang-of-Four patterns working together. <b>Strategy</b> captures an interchangeable algorithm
+        behind an interface, so the <code>Checkout</code> context delegates and new tax rules can be added without editing
+        it (the open/closed principle). A static <b>Factory</b> maps a country code to the right strategy, decoupling
+        callers from the concrete implementations. Here each strategy is a one-line lambda — an interface with a single
+        method <em>is</em> a functional interface.</p>
+        <pre><code>import java.util.*;
+
+// STRATEGY (behavioural): an interface captures an interchangeable algorithm;
+// the context holds one and delegates, so new strategies are added without
+// editing the context (open/closed principle).
+interface TaxStrategy {
+    double tax(double amount);
+}
+
+// FACTORY (creational): a static method maps a name to a concrete strategy,
+// decoupling callers from the concrete classes.
+class TaxStrategies {
+    static TaxStrategy of(String country) {
+        return switch (country) {
+            case "ES" -&gt; amount -&gt; amount * 0.21;          // Spain: 21%
+            case "DE" -&gt; amount -&gt; amount * 0.19;          // Germany: 19%
+            case "US" -&gt; amount -&gt; 0.0;                     // no VAT
+            default   -&gt; throw new IllegalArgumentException("unknown: " + country);
+        };
+    }
+}
+
+class Checkout {
+    private TaxStrategy strategy;                            // the context
+    Checkout(TaxStrategy strategy) { this.strategy = strategy; }
+    void setStrategy(TaxStrategy s) { this.strategy = s; }   // swap at runtime
+    double total(double net) { return net + strategy.tax(net); }
+}
+
+public class Strategy {
+    public static void main(String[] args) {
+        double net = 100.0;
+        for (String country : List.of("ES", "DE", "US")) {
+            Checkout c = new Checkout(TaxStrategies.of(country));   // factory
+            System.out.printf(Locale.US, "%s: net %.2f -&gt; total %.2f%n",
+                              country, net, c.total(net));          // strategy
+        }
+    }
+}</code></pre>
+        <div class="ex-out"><span class="oh">Output</span>
+<pre><code>ES: net 100.00 -&gt; total 121.00
+DE: net 100.00 -&gt; total 119.00
+US: net 100.00 -&gt; total 100.00</code></pre></div>
+        <p class="xref">&rarr; See <a href="#program">Session 28</a> (creational &amp; behavioural patterns), built on interfaces (<a href="#program">S16</a>) and polymorphism (<a href="#program">S15</a>).</p>
+      </div>
+
+      <!-- E10 — generics: a generic class + the consumer-super half of PECS -->
+      <div class="example">
+        <div class="ex-meta"><b>Session 25</b> · Generics — a generic class &amp; the <code>super</code> half of PECS</div>
+        <h4>10 · A generic stack and a wildcard copy</h4>
+        <p class="ex-lede">Example 4 showed a generic <em>method</em> and the <em>producer-extends</em> side of PECS; this
+        completes the picture. <code>Stack&lt;T&gt;</code> is a generic <em>class</em> — one definition, any element type, full
+        compile-time safety. And <code>copy</code> shows both wildcards in one signature: the source is a producer
+        (<code>? extends T</code>, read-only) and the destination is a consumer (<code>? super T</code>, write-only), which
+        is exactly what lets you pour a <code>List&lt;Integer&gt;</code> into a <code>List&lt;Number&gt;</code>.</p>
+        <pre><code>import java.util.*;
+
+// A generic CLASS (not just a method): one definition, many element types,
+// full compile-time type safety.
+class Stack&lt;T&gt; {
+    private final Deque&lt;T&gt; items = new ArrayDeque&lt;&gt;();
+    void push(T x) { items.push(x); }
+    T pop()        { return items.pop(); }
+    boolean isEmpty() { return items.isEmpty(); }
+
+    // PECS in one signature:
+    //   src is a PRODUCER of T  -&gt; "? extends T" (we only read from it)
+    //   dst is a CONSUMER of T  -&gt; "? super T"   (we only write to it)
+    static &lt;T&gt; void copy(List&lt;? super T&gt; dst, List&lt;? extends T&gt; src) {
+        for (T x : src) dst.add(x);
+    }
+}
+
+public class Pecs {
+    public static void main(String[] args) {
+        Stack&lt;String&gt; s = new Stack&lt;&gt;();
+        s.push("a"); s.push("b"); s.push("c");
+        StringBuilder popped = new StringBuilder();
+        while (!s.isEmpty()) popped.append(s.pop());   // LIFO
+        System.out.println("popped order: " + popped);
+
+        // copy Integers (subtype) into a List&lt;Number&gt; (supertype) — legal only
+        // because of the extends/super wildcards.
+        List&lt;Integer&gt; src = List.of(1, 2, 3);
+        List&lt;Number&gt; dst = new ArrayList&lt;&gt;();
+        Stack.copy(dst, src);
+        System.out.println("copied: " + dst);
+    }
+}</code></pre>
+        <div class="ex-out"><span class="oh">Output</span>
+<pre><code>popped order: cba
+copied: [1, 2, 3]</code></pre></div>
+        <p class="xref">&rarr; See <a href="#program">Session 25</a> (generic classes, wildcards, PECS). Pairs with example 4 (the producer-extends side).</p>
+      </div>
+
+      <!-- E11 — recursion -->
+      <div class="example">
+        <div class="ex-meta"><b>Sessions 6–8</b> · Recursion — base case &amp; recursive case</div>
+        <h4>11 · Thinking recursively</h4>
+        <p class="ex-lede">A recursive method calls itself on a smaller problem. Every one needs a <b>base case</b> that stops
+        the recursion and a <b>recursive case</b> that moves toward it — miss either and you get a
+        <code>StackOverflowError</code>. Factorial is the canonical example; a recursive binary search shows the same
+        shape solving a real problem in O(log n), halving the search interval on each call.</p>
+        <pre><code>public class Recursion {
+
+    // Every recursion needs a BASE CASE (stops) and a RECURSIVE CASE that
+    // moves toward it. Factorial: n! = n * (n-1)!, with 0! = 1.
+    static long factorial(int n) {
+        if (n &lt;= 1) return 1;            // base case
+        return n * factorial(n - 1);     // recursive case (shrinks toward base)
+    }
+
+    // Binary search expressed recursively: halve the interval each call, so the
+    // depth — and the work — is O(log n).
+    static int search(int[] a, int target, int lo, int hi) {
+        if (lo &gt; hi) return -1;                  // base case: empty range, miss
+        int mid = (lo + hi) &gt;&gt;&gt; 1;               // unsigned shift avoids overflow
+        if (a[mid] == target) return mid;
+        return target &lt; a[mid]
+            ? search(a, target, lo, mid - 1)     // recurse on the left half
+            : search(a, target, mid + 1, hi);    // recurse on the right half
+    }
+
+    public static void main(String[] args) {
+        System.out.println("5! = " + factorial(5));
+
+        int[] sorted = {2, 5, 8, 12, 16, 23, 38, 56, 72, 91};
+        System.out.println("index of 23: " + search(sorted, 23, 0, sorted.length - 1));
+        System.out.println("index of 17: " + search(sorted, 17, 0, sorted.length - 1));
+    }
+}</code></pre>
+        <div class="ex-out"><span class="oh">Output</span>
+<pre><code>5! = 120
+index of 23: 5
+index of 17: -1</code></pre></div>
+        <p class="xref">&rarr; See <a href="#program">Session 6</a> (loops &amp; the iteration/recursion choice) and <a href="#program">Session 8</a> (the iterative binary search this mirrors).</p>
       </div>
     </section>
 
