@@ -157,6 +157,32 @@
     .ex-out { margin: .6rem 0 0; }
     .ex-out .oh { font-size: .68rem; text-transform: uppercase; letter-spacing: .07em; font-weight: 700; color: #2f8d6e; display: block; margin-bottom: .15rem; }
     .ex-out pre { background: #f1f7f4; color: var(--ink); border: 1px solid #d6e8df; }
+
+    /* binary-search visualiser — animates the algorithm from the worked examples (reuse tokens) */
+    .viz { background: var(--bg); border: 1px solid var(--line); border-left: 3px solid #4caf94; border-radius: 10px; padding: 1.2rem 1.4rem; margin: 1.3rem 0; }
+    .viz > h4 { margin: .1em 0 .2em; font-size: 1.08rem; }
+    .viz .ex-meta { font-size: .76rem; text-transform: uppercase; letter-spacing: .05em; color: var(--ink-2); margin-bottom: .5rem; }
+    .viz .ex-meta b { color: #2f8d6e; }
+    .viz .ex-lede { color: var(--ink-2); font-size: .93rem; margin: .2em 0 .8em; max-width: 80ch; }
+    .viz .ex-lede b { color: var(--ink); }
+    .bsv-controls { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; margin-bottom: 1rem; }
+    .bsv-target { font-size: .88rem; color: var(--ink-2); display: inline-flex; align-items: center; gap: .4rem; }
+    .bsv-select { font: inherit; font-size: .9rem; padding: .3rem .5rem; border: 1px solid var(--line); border-radius: 6px; background: var(--paper); color: var(--ink); }
+    .viz button { font: inherit; font-size: .85rem; padding: .35rem .9rem; }
+    .viz button:disabled { opacity: .45; cursor: default; background: var(--paper); border-color: var(--line); }
+    .bsv-array { display: flex; flex-wrap: wrap; gap: .4rem; margin: .4rem 0 .2rem; }
+    .bsv-cell { position: relative; min-width: 2.7rem; flex: 0 0 auto; text-align: center; background: var(--paper); border: 1px solid var(--line); border-radius: 6px; padding: .85rem .2rem .3rem; transition: background .18s ease, border-color .18s ease, opacity .18s ease, transform .18s ease; }
+    .bsv-cell .bsv-val { display: block; font-family: "JetBrains Mono", Consolas, monospace; font-weight: 700; font-size: .95rem; color: var(--ink); }
+    .bsv-cell .bsv-idx { display: block; font-family: "JetBrains Mono", Consolas, monospace; font-size: .62rem; color: var(--ink-2); margin-top: .1rem; }
+    .bsv-cell .bsv-ptr { position: absolute; top: -.05rem; left: 0; right: 0; font-family: "JetBrains Mono", Consolas, monospace; font-size: .58rem; font-weight: 700; letter-spacing: .03em; color: var(--accent); min-height: .8em; }
+    .bsv-cell.out { opacity: .35; }
+    .bsv-cell.in-range { border-color: #b9d8cb; background: #f1f7f4; }
+    .bsv-cell.lo, .bsv-cell.hi { border-color: #7fb2e0; }
+    .bsv-cell.mid { border-color: var(--accent); background: var(--accent-soft); transform: translateY(-2px); }
+    .bsv-cell.found { border-color: #2f8d6e; background: #d8efe4; transform: translateY(-2px); }
+    .bsv-status { font-size: .9rem; color: var(--ink-2); margin: .6rem 0 0; min-height: 1.4em; }
+    .bsv-status code { font-size: .85em; }
+    .viz noscript { display: block; font-size: .88rem; color: var(--ink-2); }
   </style>
 </head>
 <body>
@@ -1305,6 +1331,24 @@ average: 69.0</code></pre></div>
         <p class="xref">&rarr; See <a href="#program">Session 8</a> (arrays, searching &amp; sorting).</p>
       </div>
 
+      <!-- Interactive: binary-search visualiser (animates the algorithm from E2 / E11) -->
+      <div class="viz" id="binsearch-viz">
+        <div class="ex-meta"><b>Try it</b> · Visualising the algorithm, not running Java</div>
+        <h4>Watch binary search step through the array</h4>
+        <p class="ex-lede">Binary search is the algorithm behind <a href="#examples">Example&nbsp;2</a>
+        (<code>Arrays.binarySearch</code> on the sorted array) and is written out by hand as the recursive
+        <code>search(int[] a, int target, int lo, int hi)</code> method in <a href="#examples">Example&nbsp;11</a>.
+        The logic is <b>language-agnostic</b>: the widget below animates the exact same steps — the
+        <code>lo</code>&thinsp;/&thinsp;<code>mid</code>&thinsp;/&thinsp;<code>hi</code> pointers and each comparison
+        — on the same sorted array, halving the range every step (O(log&nbsp;n)) and returning the index, or
+        <code>&minus;1</code> on a miss. It <b>does not run Java in the browser</b>; it visualises how the
+        algorithm you implemented in Java behaves.</p>
+        <div id="bsv-root">
+          <noscript>This visualiser needs JavaScript. The algorithm it animates is the binary search in
+          Examples&nbsp;2 and&nbsp;11 above.</noscript>
+        </div>
+      </div>
+
       <!-- E3 — classes, encapsulation, inheritance, polymorphism -->
       <div class="example">
         <div class="ex-meta"><b>Sessions 10–16</b> · Classes, encapsulation, inheritance &amp; polymorphism</div>
@@ -1889,5 +1933,6 @@ index of 17: -1</code></pre></div>
     <p style="margin-top:.3rem"><a href="index.html">Lessons</a> · <a href="index.html#quiz">Quiz</a> · <a href="index.html#reference">Cheatsheet</a> · <a href="course.html">Course outline</a> · <a href="SYLLABUS.pdf">Syllabus PDF</a></p>
   </footer>
 
+  <script src="js/binsearch-viz.js"></script>
 </body>
 </html>
