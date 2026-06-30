@@ -146,6 +146,17 @@
     .proj-card p { font-size: .88rem; color: var(--ink-2); margin: 0; flex: 1; }
     .proj-card a.plink { font-size: .8rem; font-weight: 600; font-family: "JetBrains Mono", Consolas, monospace; }
     .proj-card a.plink::after { content: " ↗"; }
+
+    /* worked examples — complete, compilable programs (reuse tokens) */
+    .example { background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 1.2rem 1.4rem; margin: 1.3rem 0; }
+    .example > h4 { margin: .1em 0 .2em; font-size: 1.08rem; }
+    .example .ex-meta { font-size: .76rem; text-transform: uppercase; letter-spacing: .05em; color: var(--ink-2); margin-bottom: .5rem; }
+    .example .ex-meta b { color: var(--accent); }
+    .example .ex-lede { color: var(--ink-2); font-size: .93rem; margin: .2em 0 .6em; max-width: 80ch; }
+    .example pre { font-size: .82rem; padding: .8rem 1rem; margin: .6rem 0; }
+    .ex-out { margin: .6rem 0 0; }
+    .ex-out .oh { font-size: .68rem; text-transform: uppercase; letter-spacing: .07em; font-weight: 700; color: #2f8d6e; display: block; margin-bottom: .15rem; }
+    .ex-out pre { background: #f1f7f4; color: var(--ink); border: 1px solid #d6e8df; }
   </style>
 </head>
 <body>
@@ -175,6 +186,7 @@
       <a href="#methodology">Methodology</a>
       <a href="#assessment">Assessment</a>
       <a href="#program">Program</a>
+      <a href="#examples">Worked examples</a>
       <a href="#glossary">Key concepts</a>
       <a href="#bibliography">Bibliography</a>
       <a href="#coursework">Coursework</a>
@@ -1209,6 +1221,272 @@ class Sorter {
             <p class="xref">&rarr; Companion: <a href="index.html#quiz">Quiz mode</a> · <a href="index.html#reference">Cheatsheet</a></p>
           </li>
         </ol>
+      </div>
+    </section>
+
+    <!-- ========================= WORKED EXAMPLES ===================== -->
+    <section id="examples" class="course-section">
+      <h2>Worked examples</h2>
+      <p class="section-intro">The syllabus pairs almost every session with <em>exercises in class</em>, and a core
+      objective is to <b>write, compile and run</b> Java. These six programmes are complete and self-contained —
+      each compiles with <code>javac</code> on Java 17 and runs as shown — chosen to make a specific session's
+      idea concrete rather than illustrative. Read them top to bottom, then try changing the inputs and predicting
+      the output before you run them.</p>
+
+      <!-- E1 — selections, loops, methods -->
+      <div class="example">
+        <div class="ex-meta"><b>Sessions 4–7</b> · Expressions, selection, loops &amp; methods</div>
+        <h4>1 · Temperature classifier</h4>
+        <p class="ex-lede">Converts Celsius to Fahrenheit and labels each reading with a multi-way <code>if-else</code>.
+        Note <code>c * 9 / 5</code>: because <code>c</code> is a <code>double</code>, the whole expression is real
+        (not integer) division — and <code>Locale.US</code> fixes the decimal separator so the output is deterministic.</p>
+        <pre><code>import java.util.Locale;
+
+public class Temperature {
+    // Classify a Celsius reading with a multi-way if-else.
+    static String category(double c) {
+        if (c &lt; 0)       return "freezing";
+        else if (c &lt; 10) return "cold";
+        else if (c &lt; 25) return "mild";
+        else             return "hot";
+    }
+
+    public static void main(String[] args) {
+        double[] readings = {-4.0, 8.5, 17.2, 30.0};
+        for (double c : readings) {
+            double f = c * 9 / 5 + 32;   // one double operand promotes 9/5 to 1.8
+            System.out.printf(Locale.US, "%6.1f C = %6.1f F  (%s)%n", c, f, category(c));
+        }
+    }
+}</code></pre>
+        <div class="ex-out"><span class="oh">Output</span>
+<pre><code>  -4.0 C =   24.8 F  (freezing)
+   8.5 C =   47.3 F  (cold)
+  17.2 C =   63.0 F  (mild)
+  30.0 C =   86.0 F  (hot)</code></pre></div>
+        <p class="xref">&rarr; See <a href="#program">Sessions 4–5</a> (operators &amp; selections) and <a href="#program">Session 7</a> (methods).</p>
+      </div>
+
+      <!-- E2 — arrays, search, sort -->
+      <div class="example">
+        <div class="ex-meta"><b>Session 8</b> · Arrays — search, sort &amp; complexity</div>
+        <h4>2 · Sorting and binary search</h4>
+        <p class="ex-lede">Sorts in place, then runs a binary search — which only works on <em>sorted</em> data. A miss
+        returns a negative number, <code>-(insertionPoint) - 1</code>, encoding where the value <em>would</em> go.
+        The sum is a <code>long</code> so a large array can't overflow an <code>int</code>.</p>
+        <pre><code>import java.util.Arrays;
+
+public class ArraySearch {
+    public static void main(String[] args) {
+        int[] scores = {88, 42, 75, 96, 60, 53};
+
+        Arrays.sort(scores);                       // in place: {42,53,60,75,88,96}
+        System.out.println("sorted:  " + Arrays.toString(scores));
+
+        int idx = Arrays.binarySearch(scores, 75); // O(log n), needs sorted input
+        System.out.println("found 75 at index " + idx);
+
+        int missing = Arrays.binarySearch(scores, 70);
+        // A miss returns -(insertionPoint) - 1, a negative number.
+        System.out.println("70 absent, raw result " + missing
+                + " (would insert at " + (-missing - 1) + ")");
+
+        // Average via a single O(n) pass; sum is a long to avoid int overflow.
+        long sum = 0;
+        for (int s : scores) sum += s;
+        System.out.printf(java.util.Locale.US, "average: %.1f%n", (double) sum / scores.length);
+    }
+}</code></pre>
+        <div class="ex-out"><span class="oh">Output</span>
+<pre><code>sorted:  [42, 53, 60, 75, 88, 96]
+found 75 at index 3
+70 absent, raw result -4 (would insert at 3)
+average: 69.0</code></pre></div>
+        <p class="xref">&rarr; See <a href="#program">Session 8</a> (arrays, searching &amp; sorting).</p>
+      </div>
+
+      <!-- E3 — classes, encapsulation, inheritance, polymorphism -->
+      <div class="example">
+        <div class="ex-meta"><b>Sessions 10–16</b> · Classes, encapsulation, inheritance &amp; polymorphism</div>
+        <h4>3 · A small payroll hierarchy</h4>
+        <p class="ex-lede">An <code>abstract</code> base declares the <code>monthlyPay()</code> contract; two subclasses
+        implement it differently. One <code>List&lt;Employee&gt;</code> holds both concrete types, and the loop calls
+        <code>monthlyPay()</code> and <code>toString()</code> via <b>dynamic dispatch</b> — each object runs its own
+        version. The <code>name</code> field is <code>private final</code>: encapsulated and immutable.</p>
+        <pre><code>import java.util.List;
+
+// Abstract base: shared state (name) + a contract every employee must honour.
+abstract class Employee {
+    private final String name;            // encapsulated: private + final
+    protected Employee(String name) { this.name = name; }
+    public String getName() { return name; }
+    public abstract double monthlyPay();  // each subtype computes its own
+    @Override public String toString() {
+        return String.format(java.util.Locale.US, "%-8s -&gt; %7.2f", name, monthlyPay());
+    }
+}
+
+class Salaried extends Employee {
+    private final double annual;
+    Salaried(String name, double annual) { super(name); this.annual = annual; }
+    @Override public double monthlyPay() { return annual / 12.0; }
+}
+
+class Hourly extends Employee {
+    private final double rate;
+    private final int hours;
+    Hourly(String name, double rate, int hours) {
+        super(name); this.rate = rate; this.hours = hours;
+    }
+    @Override public double monthlyPay() { return rate * hours; }
+}
+
+public class Payroll {
+    public static void main(String[] args) {
+        // One list of the base type holds several concrete types (polymorphism).
+        List&lt;Employee&gt; staff = List.of(
+            new Salaried("Ana", 48000),
+            new Hourly("Ben", 22.5, 160),
+            new Salaried("Cleo", 60000)
+        );
+
+        double total = 0;
+        for (Employee e : staff) {       // dynamic dispatch picks the right monthlyPay()
+            System.out.println(e);        // toString() is overridden
+            total += e.monthlyPay();
+        }
+        System.out.printf(java.util.Locale.US, "%-8s -&gt; %7.2f%n", "TOTAL", total);
+    }
+}</code></pre>
+        <div class="ex-out"><span class="oh">Output</span>
+<pre><code>Ana      -&gt; 4000.00
+Ben      -&gt; 3600.00
+Cleo     -&gt; 5000.00
+TOTAL    -&gt; 12600.00</code></pre></div>
+        <p class="xref">&rarr; See <a href="#program">Session 13</a> (encapsulation), <a href="#program">Session 14</a> (inheritance, <code>@Override</code>, <code>toString</code>) and <a href="#program">Session 15</a> (polymorphism).</p>
+      </div>
+
+      <!-- E4 — generics + bounded type parameter -->
+      <div class="example">
+        <div class="ex-meta"><b>Session 25</b> · Generics — bounded types &amp; wildcards</div>
+        <h4>4 · A type-safe generic <code>max</code></h4>
+        <p class="ex-lede">One method works for any comparable type. <code>&lt;T extends Comparable&lt;? super T&gt;&gt;</code>
+        is a bounded type parameter (so <code>compareTo</code> exists), and <code>List&lt;? extends T&gt;</code> is the
+        <em>producer-extends</em> half of PECS — it lets the method read from any list of <code>T</code> or its subtypes.</p>
+        <pre><code>import java.util.List;
+
+public class GenericMax {
+    // Bounded type parameter: T must be Comparable, so we can call compareTo.
+    // "? extends T" lets us accept List&lt;Integer&gt; where T is Number, etc. (PECS).
+    static &lt;T extends Comparable&lt;? super T&gt;&gt; T max(List&lt;? extends T&gt; items) {
+        T best = items.get(0);
+        for (T x : items)
+            if (x.compareTo(best) &gt; 0) best = x;
+        return best;
+    }
+
+    public static void main(String[] args) {
+        System.out.println("max int    : " + max(List.of(3, 9, 2, 7)));
+        System.out.println("max string : " + max(List.of("pear", "apple", "fig")));
+    }
+}</code></pre>
+        <div class="ex-out"><span class="oh">Output</span>
+<pre><code>max int    : 9
+max string : pear</code></pre></div>
+        <p class="xref">&rarr; See <a href="#program">Session 25</a> (generics, PECS) and <a href="#program">Session 16</a> (the <code>Comparable</code> interface).</p>
+      </div>
+
+      <!-- E5 — collections: Map, Set, comparators -->
+      <div class="example">
+        <div class="ex-meta"><b>Session 26</b> · Sets &amp; maps — counting &amp; uniqueness</div>
+        <h4>5 · Word frequency</h4>
+        <p class="ex-lede">A classic hash-table task. <code>Map.merge</code> inserts <code>1</code> or adds <code>1</code> in
+        average O(1); a <code>TreeSet</code> gives the distinct, sorted vocabulary; and a composed <code>Comparator</code>
+        sorts entries by count (descending), breaking ties alphabetically.</p>
+        <pre><code>import java.util.*;
+
+public class WordCount {
+    public static void main(String[] args) {
+        String text = "the cat sat on the mat the cat ran";
+
+        // Map&lt;key,value&gt;: average O(1) get/put on a hash table.
+        Map&lt;String, Integer&gt; freq = new HashMap&lt;&gt;();
+        for (String w : text.split(" "))
+            freq.merge(w, 1, Integer::sum);   // insert 1, or add 1 if present
+
+        // A Set removes duplicates; here it shows the distinct vocabulary.
+        Set&lt;String&gt; vocabulary = new TreeSet&lt;&gt;(freq.keySet());  // sorted
+        System.out.println("distinct words: " + vocabulary);
+
+        // Sort entries by count descending, then alphabetically.
+        List&lt;Map.Entry&lt;String, Integer&gt;&gt; entries = new ArrayList&lt;&gt;(freq.entrySet());
+        entries.sort(
+            Comparator.&lt;Map.Entry&lt;String, Integer&gt;&gt;comparingInt(Map.Entry::getValue).reversed()
+                      .thenComparing(Map.Entry::getKey));
+
+        for (Map.Entry&lt;String, Integer&gt; e : entries)
+            System.out.println(e.getKey() + " : " + e.getValue());
+    }
+}</code></pre>
+        <div class="ex-out"><span class="oh">Output</span>
+<pre><code>distinct words: [cat, mat, on, ran, sat, the]
+the : 3
+cat : 2
+mat : 1
+on : 1
+ran : 1
+sat : 1</code></pre></div>
+        <p class="xref">&rarr; See <a href="#program">Session 26</a> (sets, maps, hash tables) and <a href="#program">Session 15</a> (the equals/hashCode contract behind them).</p>
+      </div>
+
+      <!-- E6 — exceptions: custom checked + finally -->
+      <div class="example">
+        <div class="ex-meta"><b>Session 21</b> · Exception handling — custom types &amp; <code>finally</code></div>
+        <h4>6 · A bank account with a custom exception</h4>
+        <p class="ex-lede">A <code>private</code> balance protects the invariant; the constructor rejects a negative
+        opening with an <em>unchecked</em> <code>IllegalArgumentException</code> (a programming bug), while an
+        overdraft raises a <em>checked</em> <code>InsufficientFundsException</code> the caller must handle. The
+        <code>finally</code> block runs whether or not an exception was thrown.</p>
+        <pre><code>// A custom checked exception models a recoverable domain error.
+class InsufficientFundsException extends Exception {
+    InsufficientFundsException(String msg) { super(msg); }
+}
+
+class Account {
+    private double balance;
+    Account(double opening) {
+        if (opening &lt; 0) throw new IllegalArgumentException("opening &lt; 0"); // unchecked: a bug
+        this.balance = opening;
+    }
+    void withdraw(double amount) throws InsufficientFundsException {
+        if (amount &gt; balance)
+            throw new InsufficientFundsException(
+                "need " + amount + " but balance is " + balance);
+        balance -= amount;
+    }
+    double balance() { return balance; }
+}
+
+public class BankDemo {
+    public static void main(String[] args) {
+        Account acc = new Account(100.0);
+        try {
+            acc.withdraw(30.0);
+            System.out.println("after withdraw: " + acc.balance());
+            acc.withdraw(500.0);                 // throws
+            System.out.println("not reached");
+        } catch (InsufficientFundsException e) {
+            System.out.println("declined: " + e.getMessage());
+        } finally {
+            System.out.println("final balance: " + acc.balance());  // always runs
+        }
+    }
+}</code></pre>
+        <div class="ex-out"><span class="oh">Output</span>
+<pre><code>after withdraw: 70.0
+declined: need 500.0 but balance is 70.0
+final balance: 70.0</code></pre></div>
+        <p class="xref">&rarr; See <a href="#program">Session 21</a> (exception handling) and <a href="#program">Session 13</a> (validating setters that throw).</p>
       </div>
     </section>
 
